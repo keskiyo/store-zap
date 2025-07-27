@@ -1,3 +1,28 @@
 {
-	"cSpell.words": ["avto", "logoavto"]
+	"cSpell.words": [
+		"avto",
+		"blackpure",
+		"Catalogauto",
+		"engene",
+		"Katalog",
+		"logoavto",
+		"tovars",
+		"Автотовары"
+	],
+	"files.associations": {
+		"*.tsx": "typescriptreact"
+	},
+	"emmet.triggerExpansionOnTab": true,
+	"typescriptreact.format.enable": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"javascript.preferences.importModuleSpecifier": "non-relative",
+	"tailwindCSS.emmetCompletions": true,
+	"css.validate": false,
+	"editor.quickSuggestions": {
+		"other": true,
+		"comments": false,
+		"strings": true
+	}
 }

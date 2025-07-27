@@ -9,7 +9,8 @@
 	--white: #fff;
 	--purple: #5c62ec;
 	--orange: #ff9100;
-	--gradient: linear-gradient(90deg, #291d53, #4d1740, #5a1e2d);
+	--gray: #333;
+	--gray-text: #999;
 
 	/* Nav */
 	--nav-bg: var(--white);
@@ -22,8 +23,8 @@
 	--header-gradient: var(--gradient);
 
 	/* Footer */
-	--footer-bg: var(--black);
-	--footer-text: var(--white);
+	--footer-bg: var(--gray);
+	--footer-text: var(--gray-text);
 
 	/* Light mode */
 	--page-bg: var(--white);
@@ -59,16 +60,6 @@ body {
 	background-color: var(--page-bg);
 	color: var(--text-color);
 }
-
-#root {
-	min-height: 100vh;
-}
-#App {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-}
-
 /* General */
 
 .container {
@@ -80,29 +71,6 @@ body {
 .none {
 	display: none !important;
 }
-
-.section {
-	padding: 70px 0;
-}
-
-.title-1 {
-	margin-bottom: 60px;
-
-	font-size: 60px;
-	font-weight: 700;
-	line-height: 1.3;
-	color: var(--title-1);
-	text-align: center;
-}
-
-.title-2 {
-	margin-bottom: 20px;
-
-	font-size: 40px;
-	font-weight: 700;
-	line-height: 1.3;
-}
-
 /* Nav */
 
 .nav {
@@ -173,30 +141,28 @@ body {
 	background-color: var(--accent);
 }
 
-/* Btn */
+/* Footer */
 
-.btn {
-	display: inline-block;
-	height: 48px;
-	padding: 12px 28px;
+.footer {
+	margin-top: auto;
+	padding: 60px 0 50px;
+	background-color: var(--footer-bg);
+	color: var(--footer-text);
+}
 
-	border-radius: 5px;
-	background-color: var(--accent);
-	color: var(--white);
-	letter-spacing: 0.15px;
+.footer__wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	row-gap: 27px;
+}
+
+.copyright {
 	font-size: 16px;
-	font-weight: 500;
-
-	transition: opacity 0.2s ease-in;
 }
 
-.btn:hover {
-	opacity: 0.8;
-}
-
-.btn:active {
-	position: relative;
-	top: 1px;
+.copyright p + p {
+	margin-top: 0.5em;
 }
 
 /* Projects  */
@@ -240,27 +206,9 @@ body {
 
 /* Content list */
 
-.content-list {
-	margin: 0 auto;
-	max-width: 570px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	row-gap: 40px;
-	text-align: center;
-}
-
-.content-list a {
-	color: var(--accent);
-}
-
 .content-list__item {
 	font-size: 18px;
 	line-height: 1.5;
-}
-
-.content-list__item p + p {
-	margin-top: 0.5em;
 }
 
 @media (max-width: 620px) {

@@ -1,11 +1,13 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import Logo from '@/public/forSite/logoavto.jpg'
+import { MainPage } from '@/components/shared'
+import { Categories } from '@/components/shared'
 
 export default function Home() {
 	return (
-		<>
-			<div>asd</div>
-		</>
+		<main className='py-8'>
+			<div className='container'>
+				{/* <MainPage /> */}
+				<Categories />
+			</div>
+		</main>
 	)
 }

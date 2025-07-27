@@ -20,14 +20,14 @@ export const Nav: React.FC<Props> = ({ className }) => {
 						width={65}
 						height={65}
 					/>
-					<a href='/' className='logo'>
+					<Link href='/' className='logo'>
 						<strong style={{ color: 'var(--orange)' }}>Rus-avto</strong>
 						<p className='text-sm text-gray-400 leading-3'>Автозапчасти</p>
-					</a>
+					</Link>
 
 					<ul className='nav-list'>
 						<li className='nav-list__item'>
-							<a href='/'>Главная</a>
+							<Link href='/'>Главная</Link>
 						</li>
 
 						<li className='nav-list__item'>
@@ -43,9 +43,17 @@ export const Nav: React.FC<Props> = ({ className }) => {
 						</li>
 
 						<div className='flex items-center gap-3'>
-							<Button variant='outline' className='flex items-center gap-1'>
-								<User size={15} />
-								Войти
+							<Button
+								variant='outline'
+								className='flex items-center gap-1 border hover:border-[#ff9100] group transition-colors duration-200 cursor-pointer'
+							>
+								<User
+									size={15}
+									className='group-hover:text-[#ff9100] transition-colors'
+								/>
+								<span className='group-hover:text-[#ff9100] transition-colors'>
+									Войти
+								</span>
 							</Button>
 						</div>
 					</ul>
