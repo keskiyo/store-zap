@@ -17,7 +17,7 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
 		<Link
 			href={`/category/${category.id}`}
 			className={cn(
-				'group block rounded-lg border border-gray-200',
+				'group block rounded-lg border border-gray-500',
 				'overflow-hidden shadow-sm hover:shadow-md',
 				'transition-all',
 				className
@@ -33,7 +33,7 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
 					style={{ right: 0, left: '2em' }}
 				/>
 			</div>
-			<div className='p-4 border-t-2 border-gray-200'>
+			<div className='p-4 border-t-2 border-gray-400'>
 				<h3 className='font-medium text-lg text-gray-900'>{category.title}</h3>
 				<p className='text-sm text-[#8d9191] mt-1'>
 					{category.productCount} товаров

@@ -1,5 +1,5 @@
-import { MainPage } from '@/components/shared'
-import { Categories } from '@/components/shared'
+import { Contacts, MainPage, Categories } from '@/components/shared'
+import React from 'react'
 
 export default function Home() {
 	return (
@@ -7,6 +7,7 @@ export default function Home() {
 			<div className='container'>
 				{/* <MainPage /> */}
 				<Categories />
+				{/* <Contacts /> */}
 			</div>
 		</main>
 	)

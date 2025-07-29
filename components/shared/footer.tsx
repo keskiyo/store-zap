@@ -19,7 +19,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
 						<div className='flex flex-col gap-3'>
 							<FooterLink href='/about'>О магазине</FooterLink>
 							<FooterLink href='/delivery'>Оплата и доставка</FooterLink>
-							<span>Avtozap@gmail.com</span>
+							<span>Autovaz@gmail.com</span>
 						</div>
 					</div>
 
@@ -46,7 +46,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
 
 				{/* Копирайт */}
 				<div className='pt-8 copyright'>
-					<p>© {currentYear} rus-avto.ru</p>
+					<p>© {currentYear} rus-autovaz.ru</p>
 				</div>
 			</div>
 		</footer>

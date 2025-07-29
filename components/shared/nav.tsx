@@ -15,13 +15,13 @@ export const Nav: React.FC<Props> = ({ className }) => {
 			<div className='container'>
 				<div className='nav-row'>
 					<Image
-						src='/forSite/logoavto.jpg'
+						src='/forSite/logoauto.jpg'
 						alt='rus.avto'
 						width={65}
 						height={65}
 					/>
 					<Link href='/' className='logo'>
-						<strong style={{ color: 'var(--orange)' }}>Rus-avto</strong>
+						<strong style={{ color: 'var(--orange)' }}>Rus-autovaz</strong>
 						<p className='text-sm text-gray-400 leading-3'>Автозапчасти</p>
 					</Link>
 
@@ -38,9 +38,9 @@ export const Nav: React.FC<Props> = ({ className }) => {
 							<a href='/'>Контакты</a>
 						</li>
 
-						<li className='nav-list__item'>
+						{/* <li className='nav-list__item'>
 							<a href='/'>Корзина</a>
-						</li>
+						</li> */}
 
 						<div className='flex items-center gap-3'>
 							<Button
