@@ -8,7 +8,7 @@ interface Props {
 export const TovarItem: React.FC<Props> = ({ className }) => {
 	return (
 		<div className={cn('flex items-center justify-between', className)}>
-			asd
+			Тут список товаров
 		</div>
 	)
 }
