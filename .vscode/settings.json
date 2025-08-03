@@ -7,13 +7,16 @@
 		"Checbox",
 		"engene",
 		"Katalog",
+		"Lada",
 		"logoauto",
 		"logoavto",
 		"Luzar",
+		"MASUMA",
 		"Tovar",
 		"tovars",
 		"yandexmap",
-		"Автотовары"
+		"Автотовары",
+		"задн"
 	],
 	"files.associations": {
 		"*.tsx": "typescriptreact"

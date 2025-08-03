@@ -3,6 +3,7 @@ import { cn } from '@/components/shared/lib/utils'
 import {
 	CheckboxFilterGroup,
 	FilterCheckbox,
+	RangeSlider,
 	Title,
 } from '@/components/shared/'
 import { Input } from '@/components/ui'
@@ -28,6 +29,7 @@ export const Filter: React.FC<Props> = ({ className }) => {
 					/>
 					<Input type='number' placeholder='10000' min={100} max={10000} />
 				</div>
+				<RangeSlider min={0} max={10000} step={1} value={[0, 10000]} />
 			</div>
 
 			<div className='flex flex-col gap-4'>

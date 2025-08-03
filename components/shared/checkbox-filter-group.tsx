@@ -55,7 +55,7 @@ export const CheckboxFilterGroup: React.FC<Props> = ({
 						className='text-[#ff9100] text-sm mt-4'
 						onClick={() => setShowAll(!showALL)}
 					>
-						{showALL ? 'Скрыть' : '+ Показать все'}
+						{showALL ? '⯅ Скрыть' : '⯆ Показать еще'}
 					</button>
 				</div>
 			)}

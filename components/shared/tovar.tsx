@@ -19,7 +19,14 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 					</div>
 					<div className='flex-1'>
 						<div className='flex flex-col gap-16'>
-							<TovarItem />
+							<TovarItem
+								id={1}
+								name='Тормозные колодки Masuma MK-2501'
+								price={2495}
+								article='123456'
+								brand='Masuma'
+								imageUrl='/tovars/Амортизатор задн. газ..jpg'
+							/>
 						</div>
 					</div>
 				</div>
