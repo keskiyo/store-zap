@@ -1,6 +1,7 @@
 import React from 'react'
 import { cn } from '@/components/shared/lib/utils'
-import { TopKatalog, Filter, TovarItem } from '@/components/shared'
+import { TopKatalog, Filter } from '@/components/shared'
+import { ProductsGroupList } from '@/components/shared/products-group-list'
 
 interface Props {
 	className?: string
@@ -13,21 +14,81 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 				<TopKatalog />
 			</div>
 			<div className='mt-10 pb-14'>
-				<div className='flex gap-[60px]'>
+				<div className='flex gap-[80px]'>
 					<div className='w-[250px]'>
 						<Filter />
 					</div>
 					<div className='flex-1'>
-						<div className='flex flex-col gap-16'>
-							<TovarItem
-								id={1}
-								name='Тормозные колодки Masuma MK-2501'
-								price={2495}
-								article='123456'
-								brand='Masuma'
-								imageUrl='/tovars/Амортизатор задн. газ..jpg'
-							/>
-						</div>
+						<ProductsGroupList
+							title='Подвеска и рулевое управление'
+							products={[
+								{
+									id: 1,
+									name: 'Амортизатор крышки багажника',
+									article: '1234567890',
+									brand: 'Trial',
+									imageUrl: '/tovars/Амортизатор крышки багажника.jpg',
+									price: 1000,
+								},
+								{
+									id: 1,
+									name: 'Амортизатор крышки багажника',
+									article: '1234567890',
+									brand: 'Trial',
+									imageUrl: '/tovars/Амортизатор крышки багажника.jpg',
+									price: 1000,
+								},
+								{
+									id: 1,
+									name: 'Амортизатор крышки багажника',
+									article: '1234567890',
+									brand: 'Trial',
+									imageUrl: '/tovars/Амортизатор крышки багажника.jpg',
+									price: 1000,
+								},
+								{
+									id: 1,
+									name: 'Амортизатор крышки багажника',
+									article: '1234567890',
+									brand: 'Trial',
+									imageUrl: '/tovars/Амортизатор крышки багажника.jpg',
+									price: 1000,
+								},
+								{
+									id: 1,
+									name: 'Амортизатор крышки багажника',
+									article: '1234567890',
+									brand: 'Trial',
+									imageUrl: '/tovars/Амортизатор крышки багажника.jpg',
+									price: 1000,
+								},
+								{
+									id: 1,
+									name: 'Амортизатор крышки багажника',
+									article: '1234567890',
+									brand: 'Trial',
+									imageUrl: '/tovars/Амортизатор крышки багажника.jpg',
+									price: 1000,
+								},
+								{
+									id: 1,
+									name: 'Амортизатор крышки багажника',
+									article: '1234567890',
+									brand: 'Trial',
+									imageUrl: '/tovars/Амортизатор крышки багажника.jpg',
+									price: 1000,
+								},
+								{
+									id: 1,
+									name: 'Амортизатор крышки багажника',
+									article: '1234567890',
+									brand: 'Trial',
+									imageUrl: '/tovars/Амортизатор крышки багажника.jpg',
+									price: 1000,
+								},
+							]}
+							categoryId={1}
+						/>
 					</div>
 				</div>
 			</div>

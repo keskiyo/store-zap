@@ -1,7 +1,7 @@
 import React from 'react'
 import { cn } from '@/components/shared/lib/utils'
 import { TopKatalog } from '@/components/shared'
-import { CategoryItem } from '@/components/shared'
+import { CategoriesGroupList } from '@/components/shared/categories-group-list'
 
 interface Props {
 	className?: string
@@ -11,10 +11,14 @@ export const Categories: React.FC<Props> = ({ className }) => {
 	return (
 		<div className={cn('flex flex-col gap-4', className)}>
 			<TopKatalog />
-			<CategoryItem
-				id={1}
-				name='Подвеска и рулевое управление'
-				imageUrl='/tovars/forCatalog/suspension_and_steering.jpg'
+			<CategoriesGroupList
+				categories={[
+					{
+						id: 8,
+						name: 'Аксессуары',
+						imageUrl: '/tovars/forCatalog/trinket.jpg',
+					},
+				]}
 			/>
 		</div>
 	)

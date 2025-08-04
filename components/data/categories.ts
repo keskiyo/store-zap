@@ -50,8 +50,8 @@ export const categoriesData: CategoryCard[] = [
 	},
 	{
 		id: 8,
-		title: 'Кузов и составляющие',
-		imageSrc: '/tovars/forCatalog/body_and_components.jpg',
+		title: 'Аксессуары',
+		imageSrc: '/tovars/forCatalog/trinket.jpg',
 		productCount: 178,
 	},
 	{

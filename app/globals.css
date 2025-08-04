@@ -72,6 +72,11 @@ body {
 	display: none !important;
 }
 /* Nav */
+.transition-all {
+	transition-property: all;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 300ms;
+}
 
 .nav {
 	padding: 20px 0;
@@ -99,6 +104,17 @@ body {
 
 .logo strong {
 	font-weight: 700;
+}
+
+.sticky-nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: #fff;
+	border-bottom: 1px solid #ddd;
+	padding: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 /* Footer */
 

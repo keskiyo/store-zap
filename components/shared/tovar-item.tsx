@@ -22,10 +22,10 @@ export const TovarItem: React.FC<Props> = ({
 }) => {
 	return (
 		<div className={className}>
-			<div className='flex gap-6 w-full max-w-[900px] bg-white rounded-md border border-gray-300 p-4 shadow-sm transition-shadow duration-300 hover:shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]'>
+			<div className='flex relative gap-6 w-full max-w-[900px] bg-white rounded-md border border-gray-300 p-4 shadow-sm transition-shadow duration-300 hover:shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]'>
 				<Link href={`/product/${id}`} className='flex justify-center'>
 					{/* Левая часть картинка - изображение */}
-					<div className='w-[215px] flex-shrink-0 border border-white rounded-md relative overflow-hidden'>
+					<div className='w-[200px] flex-shrink-0 border border-white rounded-md relative overflow-hidden'>
 						<img
 							src={imageUrl}
 							alt={name}
@@ -34,9 +34,9 @@ export const TovarItem: React.FC<Props> = ({
 					</div>
 				</Link>
 				{/* Правая часть от картинки - информация */}
-				<div className='flex-grow flex flex-col justify-between'>
+				<div className='flex flex-col' style={{ width: '100%' }}>
 					<h2 className='font-bold text-2xl mb-3'>{name}</h2>
-					<div className='flex justify-between'>
+					<div className=' w-full flex justify-between'>
 						<div>
 							<div className='mb-1 flex items-center gap-2 text-gray-400 text-sm select-none'>
 								<span className='w-[70px]'>Код: </span>
@@ -51,7 +51,7 @@ export const TovarItem: React.FC<Props> = ({
 								<span className='font-semibold text-gray-600'>{brand}</span>
 							</div>
 						</div>
-						<div className='text-right flex flex-col justify-end'>
+						<div className='text-right flex-col absolute bottom-7 right-7'>
 							<div className='text-2xl font-bold text-orange-400 mb-2'>
 								{price} ₽
 							</div>
