@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from '@/components/shared/lib/utils'
+import { cn } from '@/lib/utils'
 import { FooterLink } from '@/components/shared'
 
 interface FooterProps {
@@ -17,9 +17,9 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
 					<div className='flex flex-col gap-4'>
 						<h4 className='text-lg font-bold'>ИНФОРМАЦИЯ</h4>
 						<div className='flex flex-col gap-3'>
-							<FooterLink href='/about'>О магазине</FooterLink>
+							<FooterLink href='/'>О магазине</FooterLink>
 							<FooterLink href='/delivery'>Оплата и доставка</FooterLink>
-							<span>Autovaz@gmail.com</span>
+							<span>Rus-autovaz@gmail.com</span>
 						</div>
 					</div>
 

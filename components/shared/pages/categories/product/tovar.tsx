@@ -1,7 +1,6 @@
 import React from 'react'
-import { cn } from '@/components/shared/lib/utils'
-import { TopKatalog, Filter } from '@/components/shared'
-import { ProductsGroupList } from '@/components/shared/products-group-list'
+import { cn } from '@/lib/utils'
+import { TopKatalog, Filter, ProductsGroupList } from '@/components/shared'
 
 interface Props {
 	className?: string
@@ -20,7 +19,8 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 					</div>
 					<div className='flex-1'>
 						<ProductsGroupList
-							title='Подвеска и рулевое управление'
+							categoryId={1}
+							title='Название категории'
 							products={[
 								{
 									id: 1,
@@ -31,7 +31,7 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 									price: 1000,
 								},
 								{
-									id: 1,
+									id: 2,
 									name: 'Амортизатор крышки багажника',
 									article: '1234567890',
 									brand: 'Trial',
@@ -39,7 +39,7 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 									price: 1000,
 								},
 								{
-									id: 1,
+									id: 3,
 									name: 'Амортизатор крышки багажника',
 									article: '1234567890',
 									brand: 'Trial',
@@ -47,7 +47,7 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 									price: 1000,
 								},
 								{
-									id: 1,
+									id: 4,
 									name: 'Амортизатор крышки багажника',
 									article: '1234567890',
 									brand: 'Trial',
@@ -55,7 +55,7 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 									price: 1000,
 								},
 								{
-									id: 1,
+									id: 5,
 									name: 'Амортизатор крышки багажника',
 									article: '1234567890',
 									brand: 'Trial',
@@ -63,7 +63,7 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 									price: 1000,
 								},
 								{
-									id: 1,
+									id: 6,
 									name: 'Амортизатор крышки багажника',
 									article: '1234567890',
 									brand: 'Trial',
@@ -71,7 +71,7 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 									price: 1000,
 								},
 								{
-									id: 1,
+									id: 7,
 									name: 'Амортизатор крышки багажника',
 									article: '1234567890',
 									brand: 'Trial',
@@ -79,7 +79,7 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 									price: 1000,
 								},
 								{
-									id: 1,
+									id: 8,
 									name: 'Амортизатор крышки багажника',
 									article: '1234567890',
 									brand: 'Trial',
@@ -87,7 +87,6 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 									price: 1000,
 								},
 							]}
-							categoryId={1}
 						/>
 					</div>
 				</div>

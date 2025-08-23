@@ -3,7 +3,7 @@
 import {
 	FilterCheckbox,
 	FilterCheckboxProps,
-} from '@/components/shared/filter-checkbox'
+} from '@/components/shared/pages/another/filter-checkbox'
 import React from 'react'
 
 type Item = FilterCheckboxProps

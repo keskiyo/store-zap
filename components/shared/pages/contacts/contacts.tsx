@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { cn } from '@/components/shared/lib/utils'
+import { cn } from '@/lib/utils'
 import { Title } from '@/components/shared'
 import { YandexMap } from '@/components/ui'
 

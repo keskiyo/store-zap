@@ -1,8 +1,8 @@
 import React from 'react'
-import { cn } from '@/components/shared/lib/utils'
-import { Input } from '../ui'
-import { Button } from '../ui'
+import { cn } from '@/lib/utils'
+import { Button } from '../../../ui'
 import { ArrowBigRight, Search, ShoppingCart } from 'lucide-react'
+import { SearchInput } from '@/components/shared/pages/another/search-input'
 
 interface Props {
 	className?: string
@@ -10,25 +10,8 @@ interface Props {
 
 export const TopKatalog: React.FC<Props> = ({ className }) => {
 	return (
-		<div className={cn('flex items-center justify-between gap-8', className)}>
-			<Input
-				className='w-225 font-style: italic'
-				type='text'
-				placeholder='Искать на сайте ...'
-			></Input>
-
-			<Button
-				variant='outline'
-				className='flex items-center gap-1 border hover:border-[#ff9100] group transition-colors duration-200 cursor-pointer'
-			>
-				<Search
-					size={16}
-					className='group-hover:text-[#ff9100] transition-colors'
-				/>
-				<span className='group-hover:text-[#ff9100] transition-colors'>
-					Поиск
-				</span>
-			</Button>
+		<div className={cn('flex items-center justify-between', className)}>
+			<SearchInput />
 
 			<div>
 				<Button

@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { cn } from '@/components/shared/lib/utils'
+import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button } from '../ui'
+import { Button } from '../../../ui'
 import { User } from 'lucide-react'
 import { StickyNav } from '@/components/shared'
 

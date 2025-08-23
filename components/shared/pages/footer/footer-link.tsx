@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from '@/components/shared/lib/utils'
+import { cn } from '@/lib/utils'
 
 interface Props {
 	href: string

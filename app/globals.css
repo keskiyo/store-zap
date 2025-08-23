@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@tailwind utilities;
 
 :root {
 	/* Colors */
@@ -52,6 +53,7 @@
 html,
 body {
 	min-height: 100vh;
+	scroll-behavior: smooth;
 
 	font-family: 'DM Sans', sans-serif;
 	letter-spacing: -0.5px;
@@ -184,6 +186,12 @@ body {
 .content-list__item {
 	font-size: 18px;
 	line-height: 1.5;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
 }
 
 @media (max-width: 620px) {

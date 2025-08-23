@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect } from 'react'
-import { cn } from '@/components/shared/lib/utils'
+import { cn } from '@/lib/utils'
 
 interface YandexMapProps {
 	className?: string

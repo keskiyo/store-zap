@@ -1,7 +1,7 @@
 import React from 'react'
-import { cn } from '@/components/shared/lib/utils'
+import { cn } from '@/lib/utils'
 import { TopKatalog } from '@/components/shared'
-import { CategoriesGroupList } from '@/components/shared/categories-group-list'
+import { CategoriesGroupList } from '@/components/shared/pages/categories/categories-group-list'
 
 interface Props {
 	className?: string

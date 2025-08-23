@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { cn } from '@/components/shared/lib/utils'
+import { cn } from '@/lib/utils'
 import { Button, DropdownMenu, Input } from '@/components/ui'
 import {
 	AlignJustify,
@@ -15,6 +15,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { SearchInputNav } from '@/components/shared'
 
 interface Props {
 	className?: string
@@ -45,26 +46,9 @@ export const StickyNav: React.FC<Props> = ({ className }) => {
 					</Link>
 
 					<div
-						className={cn('flex items-center justify-between gap-8', className)}
+						className={cn('flex items-center justify-between gap-6', className)}
 					>
-						<Input
-							className='w-125 font-style: italic'
-							type='text'
-							placeholder='Искать на сайте ...'
-						></Input>
-
-						<Button
-							variant='outline'
-							className='flex items-center gap-1 border hover:border-[#ff9100] group transition-colors duration-200 cursor-pointer'
-						>
-							<Search
-								size={16}
-								className='group-hover:text-[#ff9100] transition-colors'
-							/>
-							<span className='group-hover:text-[#ff9100] transition-colors'>
-								Поиск
-							</span>
-						</Button>
+						<SearchInputNav />
 
 						<div>
 							<Button
