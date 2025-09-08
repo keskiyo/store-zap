@@ -1,11 +1,18 @@
 import { prisma } from '@/prisma/prisma-client'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(request: Request) {
+	const { searchParams } = new URL(request.url)
+	const categoryId = searchParams.get('categoryId')
+
+	const where: any = {}
+	if (categoryId) {
+		where.categoryId = Number(categoryId)
+	}
+
 	const brands = await prisma.product.findMany({
-		select: {
-			brand: true,
-		},
+		where,
+		select: { brand: true },
 		distinct: ['brand'],
 	})
 
@@ -15,17 +22,10 @@ export async function GET() {
 		return a.brand.localeCompare(b.brand)
 	})
 
-	const englishBrands = sortedBrands.filter(
-		brand => brand.brand.localeCompare('en') === 0
-	)
-	const russianBrands = sortedBrands.filter(
-		brand => brand.brand.localeCompare('ru') === 0
-	)
-
-	const result = [
-		...englishBrands.map(brand => brand.brand),
-		...russianBrands.map(brand => brand.brand),
-	]
+	const result = sortedBrands.map((brand, index) => ({
+		id: String(index + 1),
+		name: brand.brand,
+	}))
 
 	return NextResponse.json(result)
 }

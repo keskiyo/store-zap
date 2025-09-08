@@ -10,7 +10,7 @@ interface Props {
 
 export const TopKatalog: React.FC<Props> = ({ className }) => {
 	return (
-		<div className={cn('flex items-center justify-between', className)}>
+		<div className={cn('flex items-center justify-between mt-6', className)}>
 			<SearchInput />
 
 			<div>

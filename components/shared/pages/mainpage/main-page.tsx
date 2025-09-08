@@ -10,7 +10,7 @@ export const MainPage: React.FC<Props> = ({ className }) => {
 	return (
 		<div className={cn('', className)}>
 			<Title
-				text='Rus-avto - интернет-магазин для российских автомобилей.'
+				text='Rus-autovaz - интернет-магазин для российских автомобилей.'
 				className='text-[#8d9191]'
 				size='xl'
 			/>

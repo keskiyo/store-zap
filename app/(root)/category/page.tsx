@@ -1,12 +1,11 @@
 import React from 'react'
-import { MainPage, Tovar } from '@/components/shared'
+import { Categories } from '@/components/shared'
 
 export default function Home() {
 	return (
 		<main className='py-8'>
 			<div className='container'>
-				<MainPage />
-				{/* <Tovar /> */}
+				<Categories />
 			</div>
 		</main>
 	)

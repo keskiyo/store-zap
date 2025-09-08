@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Api } from '@/components/shared/services/api-client'
+import { Api } from '@/services/api-client'
 import { cn } from '@/lib/utils'
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui'
@@ -50,13 +50,13 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 			<div
 				ref={ref}
 				className={cn(
-					'flex items-center justify-between gap-6 h-11 z-30',
+					'flex items-center justify-between gap-6 h-11 z-30 relative',
 					className
 				)}
 			>
 				<Search
 					size={20}
-					className='h-5 top-40 left-46.5 absolute translate-y-[-50%] text-gray-400'
+					className='h-5 top-5.5 left-3 absolute translate-y-[-50%] text-gray-400'
 				/>
 				<Input
 					className='w-255 font-style: italic bg-gray-100 outline-none pl-11'
@@ -69,19 +69,19 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 				{products.length > 0 && (
 					<div
 						className={cn(
-							'absolute w-full bg-white rounded-xl py-2 top-14 shadow-md transition-all duration-200 invisible opacity-0 z-30',
-							focused && 'visible opacity-100 top-12'
+							'absolute w-255 bg-white rounded-xl py-2 top-full shadow-md transition-all duration-200 invisible opacity-0 z-30',
+							focused && 'visible opacity-100'
 						)}
 					>
-						{products.map(product => (
+						{products.slice(0, 6).map(product => (
 							<Link
 								onClick={onClickItem}
 								key={product.id}
-								className='flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10'
+								className='flex items-center gap-3 w-255 px-3 py-2 hover:bg-orange-100'
 								href={`/product/${product.id}`}
 							>
 								<img
-									className='rounded-sm h-8 w-8'
+									className='rounded-sm h-10 w-10 object-contain'
 									src={product.imageUrl ?? ''}
 									alt={product.name}
 								/>

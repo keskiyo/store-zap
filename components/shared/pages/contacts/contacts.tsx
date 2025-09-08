@@ -17,7 +17,7 @@ export const Contacts: React.FC<Props> = ({ className }) => {
 				size='lg'
 			/>
 
-			<span className='text-[#444444]'> Номер телефона: </span>
+			<span className='text-[#444444]'> Номер телефона: +7 982 542-72-27</span>
 			<span className='text-[#444444]'>Почта для связи: Autovaz@gmail.com</span>
 
 			<div className='flex items-center gap-3'>

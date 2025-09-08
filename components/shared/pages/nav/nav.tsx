@@ -12,9 +12,6 @@ interface Props {
 	className?: string
 }
 
-const cats = ['Главная', 'Каталог', 'Контакты']
-const activeIndex = 0
-
 export const Nav: React.FC<Props> = ({ className }) => {
 	const [isScrolled, setIsScrolled] = useState(false)
 	const [lastScrollY, setLastScrollY] = useState(0)
@@ -22,10 +19,6 @@ export const Nav: React.FC<Props> = ({ className }) => {
 	useEffect(() => {
 		const handleScroll = () => {
 			const currentScrollY = window.scrollY
-			const documentHeight = document.documentElement.scrollHeight
-			const windowHeight = window.innerHeight
-			const distanceFromBottom =
-				documentHeight - (currentScrollY + windowHeight)
 
 			// Показываем StickyNav когда прокрутили больше 150px вниз
 			if (currentScrollY > 150) {
@@ -65,18 +58,26 @@ export const Nav: React.FC<Props> = ({ className }) => {
 								className
 							)}
 						>
-							{cats.map((cat, index) => (
-								<a
-									className={cn(
-										'flex items-center font-bold pb-1 transition-colors font-[Poppins] text-[16px] border-b-2 border-transparent',
-										'hover:text-[#ff9100] hover:border-[#ff9100]',
-										activeIndex === index && 'text-[#ff9100] border-[#ff9100]'
-									)}
-									key={index}
+							<div className='flex items-center font-bold pb-1 transition-colors font-[Poppins] text-[18px] border-b-2 border-transparent gap-8'>
+								<Link
+									href='/'
+									className='hover:text-[#ff9100] hover:border-[#ff9100]'
 								>
-									{cat}
-								</a>
-							))}
+									Главная
+								</Link>
+								<Link
+									href='/category'
+									className='hover:text-[#ff9100] hover:border-[#ff9100]'
+								>
+									Каталог
+								</Link>
+								<Link
+									href='/contacts'
+									className='hover:text-[#ff9100] hover:border-[#ff9100]'
+								>
+									Контакты
+								</Link>
+							</div>
 						</div>
 
 						<div className='flex items-center gap-3'>

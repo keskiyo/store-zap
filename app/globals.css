@@ -7,7 +7,7 @@
 	--blackpure: #000;
 	--black: #171718;
 	--black-border: #4b4b4b;
-	--white: #fff;
+	--white: #eeeeee;
 	--purple: #5c62ec;
 	--orange: #ff9100;
 	--gray: #333;
@@ -68,6 +68,7 @@ body {
 	margin: 0 auto;
 	padding: 0 15px;
 	max-width: 1200px;
+	background-color: var(--white);
 }
 
 .none {
@@ -82,7 +83,7 @@ body {
 
 .nav {
 	padding: 20px 0;
-	background-color: var(--nav-bg);
+	background-color: var(--white);
 	border-bottom: 1px solid var(--nav-border);
 	color: var(--nav-text);
 	letter-spacing: normal;

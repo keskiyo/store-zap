@@ -1,18 +1,35 @@
+'use client'
+
 import React from 'react'
-import { cn } from '@/lib/utils'
-import {
-	CheckboxFilterGroup,
-	FilterCheckbox,
-	RangeSlider,
-	Title,
-} from '@/components/shared/'
+import { CheckboxFilterGroup, RangeSlider, Title } from '@/components/shared/'
 import { Input } from '@/components/ui'
+import {
+	useQueryFilters,
+	useBrands,
+	useFilters,
+	useCategoryId,
+} from '@/hooks/index'
 
 interface Props {
 	className?: string
 }
 
 export const Filter: React.FC<Props> = ({ className }) => {
+	const categoryId = useCategoryId()
+	const { brands, loading } = useBrands(categoryId)
+	const filters = useFilters()
+
+	useQueryFilters(filters)
+
+	const items = brands.map(item => ({
+		value: String(item.id),
+		text: item.name,
+	}))
+	const updatePrices = (prices: number[]) => {
+		filters.setPrices('priceFrom', prices[0])
+		filters.setPrices('priceTo', prices[1])
+	}
+
 	return (
 		<div className={className}>
 			<Title text='Фильтрация' size='sm' className='mb-5 font-bolt' />
@@ -24,34 +41,45 @@ export const Filter: React.FC<Props> = ({ className }) => {
 						type='number'
 						placeholder='0'
 						min={0}
-						max={10000}
-						defaultValue={0}
+						max={5000}
+						value={String(filters.prices.priceFrom)}
+						onChange={e =>
+							filters.setPrices('priceFrom', Number(e.target.value))
+						}
 					/>
-					<Input type='number' placeholder='10000' min={100} max={10000} />
+					<Input
+						type='number'
+						placeholder='5000'
+						min={100}
+						max={5000}
+						value={String(filters.prices.priceTo)}
+						onChange={e => filters.setPrices('priceTo', Number(e.target.value))}
+					/>
 				</div>
-				<RangeSlider min={0} max={10000} step={1} value={[0, 10000]} />
+				<RangeSlider
+					min={0}
+					max={5000}
+					step={10}
+					value={[
+						filters.prices.priceFrom || 0,
+						filters.prices.priceTo || 5000,
+					]}
+					onValueChange={updatePrices}
+				/>
 			</div>
 
 			<div className='flex flex-col gap-4'>
 				<CheckboxFilterGroup
 					title='По производителю:'
 					className='mt-3'
-					items={[
-						{ value: '1', text: 'Trial' },
-						{ value: '2', text: 'Лада Деталь' },
-						{ value: '3', text: 'GSP' },
-						{ value: '4', text: 'Luzar' },
-					]}
-					limit={3}
-					defaultItems={[
-						{ value: '1', text: 'Trial' },
-						{ value: '2', text: 'Лада Деталь' },
-						{ value: '3', text: 'GSP' },
-						{ value: '4', text: 'Luzar' },
-					]}
+					items={items}
+					limit={5}
+					defaultItems={items.slice(0, 5)}
+					name='brands'
+					loading={loading}
+					onClickCheckbox={filters.setSelectedBrands}
+					selected={filters.selectedBrands}
 				/>
-				{/* <FilterCheckbox text='Trial' value='1' />
-				<FilterCheckbox text='Лада Деталь' value='2' /> */}
 			</div>
 		</div>
 	)

@@ -4,9 +4,10 @@ import { TopKatalog, Filter, ProductsGroupList } from '@/components/shared'
 
 interface Props {
 	className?: string
+	categoryId: number
 }
 
-export const Tovar: React.FC<Props> = ({ className }) => {
+export const Tovar: React.FC<Props> = ({ className, categoryId }) => {
 	return (
 		<>
 			<div className={cn('flex flex-col gap-4', className)}>
@@ -20,7 +21,6 @@ export const Tovar: React.FC<Props> = ({ className }) => {
 					<div className='flex-1'>
 						<ProductsGroupList
 							categoryId={1}
-							title='Название категории'
 							products={[
 								{
 									id: 1,

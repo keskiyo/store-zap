@@ -26,11 +26,9 @@ export const StickyNav: React.FC<Props> = ({ className }) => {
 		<nav
 			className={cn(
 				'p-4 sticky top-0 z-[50] shadow-md transition-all duration-300',
-				'backdrop-blur-lg bg-white/70',
-				'supports-backdrop-blur:bg-white/70',
-				'border-b border-gray-200/50',
 				className
 			)}
+			style={{ backgroundColor: 'var(--white)' }}
 		>
 			<div className='container'>
 				<div className='nav-row'>
@@ -98,14 +96,14 @@ export const StickyNav: React.FC<Props> = ({ className }) => {
 								</div>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent
-								className='absolute top-full bg-white shadow-md w-30'
-								style={{ left: '-20px' }}
+								className='absolute top-full bg-white shadow-md w-30 mt-2'
+								style={{ left: '-60px' }}
 							>
 								<DropdownMenuItem className='text-center justify-center'>
 									<Link href='/'>Главная</Link>
 								</DropdownMenuItem>
 								<DropdownMenuItem className='text-center justify-center'>
-									<Link href='/catalog'>Каталог</Link>
+									<Link href='/category'>Каталог</Link>
 								</DropdownMenuItem>
 								<DropdownMenuItem className='text-center justify-center'>
 									<Link href='/contacts'>Контакты</Link>
