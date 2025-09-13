@@ -5,22 +5,25 @@ import React from 'react'
 // Выводит данные по категориям
 interface ReturnProps {
 	categories: Category[]
+	isLoading: boolean
 }
 
 export const useCategories = (): ReturnProps => {
 	const [categories, setcategories] = React.useState<Category[]>([])
+	const [isLoading, setIsLoading] = React.useState(true)
 
 	React.useEffect(() => {
-		async function fetchCategories() {
+		const fetchCategories = async () => {
 			try {
+				setIsLoading(true)
 				const categories = await Api.categories.getAll()
 				setcategories(categories)
-			} catch (error) {
-				console.log(error)
+			} finally {
+				setIsLoading(false)
 			}
 		}
 		fetchCategories()
 	}, [])
 
-	return { categories }
+	return { categories, isLoading }
 }

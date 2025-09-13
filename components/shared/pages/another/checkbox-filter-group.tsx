@@ -95,7 +95,7 @@ export const CheckboxFilterGroup: React.FC<Props> = ({
 			{items.length > limit && (
 				<div className={showAll ? 'border-t border-t-neutral-100 mt-4' : ''}>
 					<button
-						className='text-[#ff9100] text-sm mt-4'
+						className='text-[#ff9100] text-sm mt-3'
 						onClick={() => setShowAll(!showAll)}
 					>
 						{showAll ? '⯅ Скрыть' : '⯆ Показать еще'}

@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { TopKatalog } from '@/components/shared'
 import Link from 'next/link'
 import { useCategories } from '@/hooks/usecategories'
+import { Skeleton } from '@/components/ui'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -13,7 +14,30 @@ interface Props {
 }
 
 export const Categories: React.FC<Props> = ({ className }) => {
-	const { categories } = useCategories()
+	const { categories, isLoading } = useCategories()
+
+	if (isLoading) {
+		return (
+			<div className={cn('flex flex-col gap-4', className)}>
+				<TopKatalog />
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+					{Array.from({ length: 6 }).map((_, index) => (
+						<div
+							key={index}
+							className='group block rounded-lg border border-gray-200 overflow-hidden shadow-sm'
+						>
+							<div className='relative h-70 bg-muted overflow-hidden flex justify-center items-center'>
+								<Skeleton className='w-48 h-48 rounded' />
+							</div>
+							<div className='p-4 border-t-2 border-gray-200'>
+								<Skeleton className='h-6 w-3/4 rounded' />
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className={cn('flex flex-col gap-4', className)}>
@@ -31,6 +55,8 @@ export const Categories: React.FC<Props> = ({ className }) => {
 								src={category.img ?? ''}
 								alt={category.name}
 								width='300px'
+								loading='lazy'
+								decoding='async'
 							/>
 						</div>
 						<div className='p-4 border-t-2 border-gray-400'>

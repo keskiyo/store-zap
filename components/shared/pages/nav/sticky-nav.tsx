@@ -37,6 +37,7 @@ export const StickyNav: React.FC<Props> = ({ className }) => {
 						alt='rus.avto'
 						width={65}
 						height={65}
+						priority
 					/>
 					<Link href='/' className='logo'>
 						<strong style={{ color: 'var(--orange)' }}>Rus-autovaz</strong>

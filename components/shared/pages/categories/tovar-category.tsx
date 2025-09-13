@@ -1,20 +1,60 @@
+'use client'
+
 import React from 'react'
 import { cn } from '@/lib/utils'
 import { TopKatalog, Filter, ProductsGroupList } from '@/components/shared'
+import { useSearchParams } from 'next/navigation'
 
 interface Props {
 	className?: string
 	categoryId: number
 }
 
-export const TovarCategory: React.FC<Props> = async ({
-	className,
-	categoryId,
-}) => {
-	const products = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/products?categoryId=${categoryId}`,
-		{ cache: 'no-store' }
-	).then(res => res.json())
+export const TovarCategory: React.FC<Props> = ({ className, categoryId }) => {
+	const searchParams = useSearchParams()
+	const [products, setProducts] = React.useState<any[]>([])
+	const [loading, setLoading] = React.useState(true)
+
+	// Функция для загрузки товаров с учетом фильтров
+	const fetchProducts = React.useCallback(async () => {
+		setLoading(true)
+		try {
+			// Формируем URL с параметрами
+			const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/products`)
+			url.searchParams.set('categoryId', categoryId.toString())
+
+			const brands = searchParams.get('brands')
+			const priceFrom = searchParams.get('priceFrom')
+			const priceTo = searchParams.get('priceTo')
+
+			if (brands) {
+				url.searchParams.set('brands', brands)
+			}
+			if (priceFrom) {
+				url.searchParams.set('priceFrom', priceFrom)
+			}
+			if (priceTo) {
+				url.searchParams.set('priceTo', priceTo)
+			}
+
+			const response = await fetch(url.toString(), {
+				cache: 'no-store',
+			})
+			const data = await response.json()
+			setProducts(data)
+		} catch (error) {
+			console.error('Ошибка поиска товаров:', error)
+			setProducts([])
+		} finally {
+			setLoading(false)
+		}
+	}, [categoryId, searchParams])
+
+	// Загружаем товары только при изменении параметров URL
+	React.useEffect(() => {
+		fetchProducts()
+	}, [fetchProducts])
+
 	return (
 		<>
 			<div className={cn('flex flex-col', className)}>
@@ -26,7 +66,11 @@ export const TovarCategory: React.FC<Props> = async ({
 						<Filter />
 					</div>
 					<div className='flex-1 min-w-0'>
-						<ProductsGroupList categoryId={categoryId} products={products} />
+						<ProductsGroupList
+							categoryId={categoryId}
+							products={products}
+							loading={loading}
+						/>
 					</div>
 				</div>
 			</div>

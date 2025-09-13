@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 export const useBrands = (categoryId?: string) => {
 	const [brands, setBrands] = useState<{ id: string; name: string }[]>([])
 	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
 		if (!categoryId) {
@@ -15,19 +14,13 @@ export const useBrands = (categoryId?: string) => {
 		const fetchBrands = async () => {
 			try {
 				setLoading(true)
-				setError(null)
 
-				const response = await fetch(`/api/brands?categoryId=${categoryId}`)
+				const brands = await fetch(`/api/brands?categoryId=${categoryId}`)
 
-				if (!response.ok) {
-					throw new Error('Ошибка загрузки брендов')
-				}
-
-				const data = await response.json()
+				const data = await brands.json()
 				setBrands(data)
-			} catch (err) {
-				setError(err instanceof Error ? err.message : 'Произошла ошибка')
-				setBrands([])
+			} catch (error) {
+				console.log(error)
 			} finally {
 				setLoading(false)
 			}
@@ -39,6 +32,5 @@ export const useBrands = (categoryId?: string) => {
 	return {
 		brands,
 		loading,
-		error,
 	}
 }

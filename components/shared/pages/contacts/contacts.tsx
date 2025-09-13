@@ -1,14 +1,69 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { Title } from '@/components/shared'
-import { YandexMap } from '@/components/ui'
+import { YandexMap, Skeleton } from '@/components/ui'
 
 interface Props {
 	className?: string
 }
 
 export const Contacts: React.FC<Props> = ({ className }) => {
+	const [isLoading, setIsLoading] = React.useState(true)
+	const [isMapLoaded, setIsMapLoaded] = React.useState(false)
+	const [mapKey, setMapKey] = React.useState(0)
+
+	// Имитация загрузки данных
+	React.useEffect(() => {
+		const timer = setTimeout(() => {
+			setIsLoading(false)
+		}, 1000)
+
+		return () => clearTimeout(timer)
+	}, [])
+
+	// Обработчик загрузки карты
+	const handleMapLoad = () => {
+		setIsMapLoaded(true)
+	}
+
+	React.useEffect(() => {
+		if (!isLoading && !isMapLoaded) {
+			setMapKey(prev => prev + 1)
+		}
+	}, [isLoading, isMapLoaded])
+
+	if (isLoading) {
+		return (
+			<div className={cn('flex flex-col gap-6', className)}>
+				{/* Заголовок */}
+				<Skeleton className='h-10 w-3/4' />
+
+				{/* Контактная информация */}
+				<div className='space-y-3'>
+					<Skeleton className='h-8 w-3/4' />
+					<Skeleton className='h-6 w-1/2' />
+					<Skeleton className='h-6 w-2/3' />
+				</div>
+
+				{/* Социальные сети */}
+				<div className='flex items-center gap-3'>
+					<Skeleton className='h-8 w-48' />
+					<Skeleton className='w-11 h-11 rounded-lg' />
+					<Skeleton className='w-11 h-11 rounded-lg' />
+				</div>
+
+				{/* Заголовок карты */}
+				<Skeleton className='h-10 w-2/3' />
+
+				{/* Скелетон карты */}
+				<Skeleton className='h-[500px]' />
+			</div>
+		)
+	}
+
 	return (
 		<div className={cn('flex flex-col gap-4', className)}>
 			<Title
@@ -46,7 +101,19 @@ export const Contacts: React.FC<Props> = ({ className }) => {
 				className='text-[#444444]'
 				size='lg'
 			/>
-			<YandexMap className='my-4' height='500px' />
+			<div className='relative'>
+				<YandexMap
+					key={mapKey}
+					className='my-4'
+					height='500px'
+					onLoad={handleMapLoad}
+				/>
+				{!isMapLoaded && (
+					<div className='absolute inset-0 z-10'>
+						<Skeleton />
+					</div>
+				)}
+			</div>
 		</div>
 	)
 }
