@@ -2,7 +2,6 @@ import { Api } from '@/services/api-client'
 import { Category } from '@prisma/client'
 import React from 'react'
 
-// Выводит данные по категориям
 interface ReturnProps {
 	categories: Category[]
 	isLoading: boolean

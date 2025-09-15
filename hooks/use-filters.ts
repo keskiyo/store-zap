@@ -125,11 +125,11 @@ export const useFilters = (): ReturnProps => {
 	return React.useMemo(
 		() => ({
 			selectedBrands: appliedSelectedBrands,
+			setTempSelectedBrands: setTempSelectedBrandsHandler,
 			prices: appliedPrices,
+			setTempPrices: updateTempPrice,
 			tempSelectedBrands,
 			tempPrices,
-			setTempPrices: updateTempPrice,
-			setTempSelectedBrands: setTempSelectedBrandsHandler,
 			applyFilters,
 			resetFilters,
 			syncFiltersFromUrl,
