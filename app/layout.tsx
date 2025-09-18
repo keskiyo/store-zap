@@ -1,7 +1,5 @@
-import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import './globals.css'
-import { Footer, Nav } from '../components/shared'
 import React from 'react'
 
 const nunito = Nunito({
@@ -10,11 +8,6 @@ const nunito = Nunito({
 	weight: ['400', '500', '600', '700', '800', '900'],
 })
 
-export const metadata: Metadata = {
-	title: 'Запчасти для российских автомобилей в магазине Rus-avto.ru',
-	description: 'Автозапчасти для российских автомобилей',
-}
-
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -22,13 +15,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${nunito.className} antialiased`}>
-				<main className='min-h-screen flex flex-col'>
-					<Nav />
-					{children}
-					<Footer />
-				</main>
-			</body>
+			<body className={`${nunito.className} antialiased`}>{children}</body>
 		</html>
 	)
 }

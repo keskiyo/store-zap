@@ -56,7 +56,7 @@ export const SearchInputNav: React.FC<Props> = ({ className }) => {
 					className='h-5 top-5.5 left-3 absolute translate-y-[-50%] text-gray-400'
 				/>
 				<Input
-					className='w-170 font-style: italic bg-gray-100 outline-none pl-11'
+					className='w-full font-style: italic bg-gray-100 outline-none pl-11 transition-all duration-200'
 					type='text'
 					placeholder='Искать на сайте ...'
 					onFocus={() => setFocused(true)}
@@ -66,7 +66,7 @@ export const SearchInputNav: React.FC<Props> = ({ className }) => {
 				{products.length > 0 && (
 					<div
 						className={cn(
-							'absolute w-170 backdrop-blur-lg bg-white/90 supports-backdrop-blur:bg-white/70 rounded-xl py-2 top-full shadow-md transition-all duration-200 z-30 invisible opacity-0',
+							'absolute w-full backdrop-blur-lg bg-white/90 supports-backdrop-blur:bg-white/70 rounded-xl py-2 top-full shadow-md transition-all duration-200 z-30 invisible opacity-0',
 							focused && 'visible opacity-100'
 						)}
 					>
@@ -74,7 +74,7 @@ export const SearchInputNav: React.FC<Props> = ({ className }) => {
 							<Link
 								onClick={onClickItem}
 								key={product.id}
-								className='flex items-center gap-3 w-170 px-3 py-2 hover:bg-orange-100'
+								className='flex items-center gap-3 w-full px-3 py-2 hover:bg-orange-100'
 								href={`/product/${product.id}`}
 							>
 								<img

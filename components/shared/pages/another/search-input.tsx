@@ -59,7 +59,7 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 					className='h-5 top-5.5 left-3 absolute translate-y-[-50%] text-gray-400'
 				/>
 				<Input
-					className='w-255 font-style: italic bg-gray-100 outline-none pl-11'
+					className='w-full font-style: italic bg-gray-100 outline-none pl-11'
 					type='text'
 					placeholder='Искать на сайте ...'
 					onFocus={() => setFocused(true)}
@@ -69,7 +69,7 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 				{products.length > 0 && (
 					<div
 						className={cn(
-							'absolute w-255 bg-white rounded-xl py-2 top-full shadow-md transition-all duration-200 invisible opacity-0 z-30',
+							'absolute w-full bg-white rounded-xl py-2 top-full shadow-md transition-all duration-200 invisible opacity-0 z-30',
 							focused && 'visible opacity-100'
 						)}
 					>
@@ -77,7 +77,7 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 							<Link
 								onClick={onClickItem}
 								key={product.id}
-								className='flex items-center gap-3 w-255 px-3 py-2 hover:bg-orange-100'
+								className='flex items-center gap-3 w-full px-3 py-2 hover:bg-orange-100'
 								href={`/product/${product.id}`}
 							>
 								<img

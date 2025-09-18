@@ -4,7 +4,7 @@ import { prisma } from '@/prisma/prisma-client'
 export async function GET(request: Request) {
 	try {
 		const { searchParams } = new URL(request.url)
-		const id = searchParams.get('id')
+		const id = Number(searchParams.get('id'))
 
 		if (!id) {
 			return NextResponse.json(
@@ -13,16 +13,9 @@ export async function GET(request: Request) {
 			)
 		}
 
-		let whereCondition = {}
-		if (id) {
-			whereCondition = { id: parseInt(id) }
-		}
-
 		const product = await prisma.product.findFirst({
-			where: whereCondition,
-			include: {
-				category: true,
-			},
+			where: { id },
+			include: { category: true },
 		})
 
 		if (!product) {

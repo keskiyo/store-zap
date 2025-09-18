@@ -25,14 +25,12 @@ export default async function ProductPage({
 
 	return (
 		<div className='container'>
-			<div className='flex flex-1'>
-				<ProductImage imageUrl={product.imageUrl} />
-				<div className='w-[870px] p-7 ml-10'>
+			<div className='flex items-center flex-1'>
+				<ProductImage className='w-80' imageUrl={product.imageUrl} />
+				<div className='w-full p-7 ml-10'>
 					<ProductDescriptions product={product} />
 				</div>
 			</div>
 		</div>
 	)
 }
-
-// 7:24:41

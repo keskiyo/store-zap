@@ -20,11 +20,9 @@ export const Nav: React.FC<Props> = ({ className }) => {
 		const handleScroll = () => {
 			const currentScrollY = window.scrollY
 
-			// Показываем StickyNav когда прокрутили больше 150px вниз
 			if (currentScrollY > 150) {
 				setIsScrolled(true)
 			}
-			// Скрываем только когда до верха остается меньше 100px
 			if (currentScrollY <= 100) {
 				setIsScrolled(false)
 			}
@@ -50,7 +48,9 @@ export const Nav: React.FC<Props> = ({ className }) => {
 						/>
 						<Link href='/' className='logo'>
 							<strong style={{ color: 'var(--orange)' }}>Rus-autovaz</strong>
-							<p className='text-sm text-gray-400 leading-3'>Автозапчасти</p>
+							<p className='text-sm text-gray-400 leading-3 tracking-wide'>
+								Автозапчасти
+							</p>
 						</Link>
 
 						<div
@@ -111,3 +111,5 @@ export const Nav: React.FC<Props> = ({ className }) => {
 		</div>
 	)
 }
+
+// Сделать чтобы если авторизовался как админ будет кнопка профиль и панель админа, а если пользователь будет кнопка профиль

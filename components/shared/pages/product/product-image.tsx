@@ -8,24 +8,24 @@ interface Props {
 export const ProductImage: React.FC<Props> = ({ className, imageUrl }) => {
 	if (!imageUrl) {
 		return (
-			<div className={className}>
-				<div className='w-70 h-auto bg-gray-200 flex items-center justify-center'>
-					<img
-						src='/tovars/No img.jpg'
-						alt='No img'
-						className='object-cover rounded-3xl'
-					/>
-				</div>
+			<div className={`flex rounded-3xl overflow-hidden ${className}`}>
+				<img
+					src='/tovars/No img.jpg'
+					alt='No img'
+					className='object-contain w-full h-auto rounded-3xl'
+				/>
 			</div>
 		)
 	}
 	return (
-		<div className={className}>
+		<div className={`flex rounded-3xl overflow-hidden ${className}`}>
 			<img
 				src={imageUrl}
-				alt='name'
-				className='relative ml-7 left-3 top-4 z-10 w-70 h-auto object-cover rounded-3x1'
+				alt='product'
+				className=' object-contain w-full h-auto rounded-3xl'
 			/>
 		</div>
 	)
 }
+
+// 8 46 38
