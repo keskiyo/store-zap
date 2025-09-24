@@ -1,11 +1,19 @@
 import React from 'react'
 import { Categories } from '@/components/shared'
+import { prisma } from '@/prisma/prisma-client'
+import { notFound } from 'next/navigation'
 
-export default function Home() {
+export default async function Home() {
+	const product = await prisma.product.findMany()
+
+	if (!product) {
+		return notFound()
+	}
+
 	return (
 		<main className='py-8'>
 			<div className='container'>
-				<Categories />
+				<Categories products={product} />
 			</div>
 		</main>
 	)

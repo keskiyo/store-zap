@@ -27,5 +27,3 @@ export const ProductImage: React.FC<Props> = ({ className, imageUrl }) => {
 		</div>
 	)
 }
-
-// 8 46 38

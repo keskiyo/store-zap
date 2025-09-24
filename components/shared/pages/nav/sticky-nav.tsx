@@ -15,7 +15,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { SearchInputNav } from '@/components/shared'
+import { CartDrawer, SearchInputNav } from '@/components/shared'
 
 interface Props {
 	className?: string
@@ -57,8 +57,9 @@ export const StickyNav: React.FC<Props> = ({ className }) => {
 						</div>
 
 						<div>
-							<Button
-								className='
+							<CartDrawer>
+								<Button
+									className='
       group 
       relative 
       flex items-center 
@@ -71,25 +72,26 @@ export const StickyNav: React.FC<Props> = ({ className }) => {
       hover:bg-[#ff9100]/90
       hover:shadow-md
     '
-								variant='outline'
-							>
-								<span className='font-semibold'>520 ₽</span>
-								<span className='h-full w-[1px] bg-white/30 mx-3' />
-								<div className='flex items-center gap-2 transition-all duration-300 group-hover:opacity-0 group-hover:-translate-x-4'>
-									<ShoppingCart size={16} strokeWidth={2} />
-									<span className='font-semibold'>3</span>
-								</div>
+									variant='outline'
+								>
+									<span className='font-semibold'>520 ₽</span>
+									<span className='h-full w-[1px] bg-white/30 mx-3' />
+									<div className='flex items-center gap-2 transition-all duration-300 group-hover:opacity-0 group-hover:-translate-x-4'>
+										<ShoppingCart size={16} strokeWidth={2} />
+										<span className='font-semibold'>3</span>
+									</div>
 
-								<ArrowBigRight
-									size={23}
-									className='
+									<ArrowBigRight
+										size={23}
+										className='
         absolute right-4
         transition-all duration-300 
         opacity-0 group-hover:opacity-100
         translate-x-4 group-hover:translate-x-0
       '
-								/>
-							</Button>
+									/>
+								</Button>
+							</CartDrawer>
 						</div>
 						<div className='flex items-center gap-3'>
 							<DropdownMenu modal={false}>

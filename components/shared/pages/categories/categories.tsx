@@ -6,14 +6,16 @@ import { TopKatalog } from '@/components/shared'
 import Link from 'next/link'
 import { useCategories } from '@/hooks/usecategories'
 import { Skeleton } from '@/components/ui'
+import { Product } from '@prisma/client'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 interface Props {
 	className?: string
+	products: Product[]
 }
 
-export const Categories: React.FC<Props> = ({ className }) => {
+export const Categories: React.FC<Props> = ({ className, products }) => {
 	const { categories, isLoading } = useCategories()
 
 	if (isLoading) {
@@ -59,9 +61,14 @@ export const Categories: React.FC<Props> = ({ className }) => {
 								decoding='async'
 							/>
 						</div>
-						<div className='p-4 border-t-2 border-gray-400'>
-							<h3 className='font-medium text-lg text-gray-900'>
+						<div className='flex items-center justify-between p-4 border-t-2 border-gray-400'>
+							<h3 className='font-medium text-lg text-gray-600'>
 								{category.name}
+							</h3>
+							<h3 className='font-medium text-[14px] text-gray-600'>
+								{products.filter(product => product.categoryId === category.id)
+									.length || 0}{' '}
+								шт.
 							</h3>
 						</div>
 					</Link>
