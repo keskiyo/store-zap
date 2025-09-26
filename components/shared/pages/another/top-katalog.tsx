@@ -8,14 +8,10 @@ interface Props {
 
 export const TopKatalog: React.FC<Props> = ({ className }) => {
 	return (
-		<div
-			className={cn('flex items-center justify-between mt-6 w-full', className)}
-		>
-			<div className='hidden md:flex flex-1 mx-2'>
-				<SearchInput className='w-full' />
-			</div>
+		<div className={cn('flex items-center gap-2 w-full', className)}>
+			<SearchInput />
 
-			<div>
+			<div className='flex-shrink-0'>
 				<CartButton />
 			</div>
 		</div>

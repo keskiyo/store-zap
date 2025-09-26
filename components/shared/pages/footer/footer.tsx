@@ -11,8 +11,8 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
 
 	return (
 		<footer className={cn('footer', className)}>
-			<div className='footer__wrapper'>
-				<div className='flex flex-wrap justify-between gap-40'>
+			<div className='footer__wrapper w-full px-4'>
+				<div className='flex flex-col md:flex-row md:justify-between gap-10 md:gap-40'>
 					{/* Колонка информации */}
 					<div className='flex flex-col gap-4'>
 						<h4 className='text-lg font-bold'>ИНФОРМАЦИЯ</h4>

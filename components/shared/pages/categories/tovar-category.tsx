@@ -57,9 +57,7 @@ export const TovarCategory: React.FC<Props> = ({ className, categoryId }) => {
 
 	return (
 		<>
-			<div className={cn('flex flex-col', className)}>
-				<TopKatalog />
-			</div>
+			<div className={cn('flex flex-col', className)}></div>
 			<div className='mt-10 pb-14'>
 				<div className='flex flex-col lg:flex-row gap-6 lg:gap-8 xl:gap-[80px]'>
 					<div className='hidden lg:block flex-shrink-0 w-[250px]'>

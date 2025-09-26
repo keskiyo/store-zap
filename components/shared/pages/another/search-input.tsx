@@ -45,39 +45,30 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 	return (
 		<>
 			{focused && (
-				<div className='fixed top-0 left-0 bottom-0 right-0 bg-black/59 z-30' />
+				<div className='fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-30' />
 			)}
-			<div
-				ref={ref}
-				className={cn(
-					'flex items-center justify-between gap-6 h-11 z-30 relative',
-					className
-				)}
-			>
+			<div ref={ref} className={cn('relative w-full', className)}>
 				<Search
 					size={20}
-					className='h-5 top-5.5 left-3 absolute translate-y-[-50%] text-gray-400'
+					className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10'
 				/>
+
 				<Input
-					className='w-full font-style: italic bg-gray-100 outline-none pl-11'
+					className='w-full bg-gray-100 outline-none pl-11 pr-4 h-11 border-0 focus-visible:ring-2 focus-visible:ring-orange-500'
 					type='text'
 					placeholder='Искать на сайте ...'
 					onFocus={() => setFocused(true)}
 					value={searchQuery}
 					onChange={e => setSearchQuery(e.target.value)}
 				/>
-				{products.length > 0 && (
-					<div
-						className={cn(
-							'absolute w-full bg-white rounded-xl py-2 top-full shadow-md transition-all duration-200 invisible opacity-0 z-30',
-							focused && 'visible opacity-100'
-						)}
-					>
+
+				{products.length > 0 && focused && (
+					<div className='absolute w-full bg-white rounded-lg py-2 top-full mt-1 shadow-lg border z-40'>
 						{products.slice(0, 6).map(product => (
 							<Link
 								onClick={onClickItem}
 								key={product.id}
-								className='flex items-center gap-3 w-full px-3 py-2 hover:bg-orange-100'
+								className='flex items-center gap-3 w-full px-3 py-2 hover:bg-orange-50 transition-colors'
 								href={`/product/${product.id}`}
 							>
 								<img
@@ -85,7 +76,7 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 									src={product.imageUrl ?? ''}
 									alt={product.name}
 								/>
-								<span>{product.name}</span>
+								<span className='text-sm'>{product.name}</span>
 							</Link>
 						))}
 					</div>

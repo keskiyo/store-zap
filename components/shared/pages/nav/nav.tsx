@@ -1,115 +1,78 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '../../../ui'
 import { User } from 'lucide-react'
-import { StickyNav } from '@/components/shared'
+import { NavMobile, TopKatalog } from '@/components/shared'
 
 interface Props {
 	className?: string
 }
 
 export const Nav: React.FC<Props> = ({ className }) => {
-	const [isScrolled, setIsScrolled] = useState(false)
-	const [lastScrollY, setLastScrollY] = useState(0)
-
-	useEffect(() => {
-		const handleScroll = () => {
-			const currentScrollY = window.scrollY
-
-			if (currentScrollY > 150) {
-				setIsScrolled(true)
-			}
-			if (currentScrollY <= 100) {
-				setIsScrolled(false)
-			}
-
-			setLastScrollY(currentScrollY)
-		}
-
-		window.addEventListener('scroll', handleScroll, { passive: true })
-		return () => window.removeEventListener('scroll', handleScroll)
-	}, [lastScrollY])
-
 	return (
 		<div>
 			<nav className={cn('nav', className)}>
-				<div className='container'>
-					<div className='nav-row'>
-						<Image
-							src='/forSite/logoauto.jpg'
-							alt='rus.avto'
-							width={65}
-							height={65}
-							priority
-						/>
-						<Link href='/' className='logo'>
-							<strong style={{ color: 'var(--orange)' }}>Rus-autovaz</strong>
-							<p className='text-sm text-gray-400 leading-3 tracking-wide'>
-								Автозапчасти
-							</p>
-						</Link>
-
-						<div
-							className={cn(
-								'inline-flex gap-8 cursor-pointer text-gray-600',
-								className
-							)}
-						>
-							<div className='flex items-center font-bold pb-1 transition-colors font-[Poppins] text-[18px] border-b-2 border-transparent gap-8'>
-								<Link
-									href='/'
-									className='hover:text-[#ff9100] hover:border-[#ff9100]'
-								>
-									Главная
-								</Link>
-								<Link
-									href='/category'
-									className='hover:text-[#ff9100] hover:border-[#ff9100]'
-								>
-									Каталог
-								</Link>
-								<Link
-									href='/contacts'
-									className='hover:text-[#ff9100] hover:border-[#ff9100]'
-								>
-									Контакты
-								</Link>
-							</div>
+				<div className='container '>
+					<div className='hidden lg:flex items-center justify-between py-3 gap-4'>
+						<div className='flex items-center gap-3 flex-shrink-0 min-w-[140px]'>
+							<Image
+								src='/forSite/logoauto.jpg'
+								alt='rus.avto'
+								width={65}
+								height={65}
+								priority
+								className='w-12 h-12 lg:w-16 lg:h-16'
+							/>
+							<Link href='/' className='flex flex-col'>
+								<strong className='text-lg lg:text-xl text-orange-500'>
+									Rus-autovaz
+								</strong>
+								<p className='text-xs lg:text-sm text-gray-500 leading-3'>
+									Автозапчасти
+								</p>
+							</Link>
 						</div>
 
-						<div className='flex items-center gap-3'>
+						<div className='flex-grow flex justify-center mx-2'>
+							<TopKatalog className='w-full max-w-3xl' />
+						</div>
+
+						<div className='flex items-center gap-4 flex-shrink-0 min-w-[300px] justify-end'>
+							<Link
+								href='/'
+								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap'
+							>
+								Главная
+							</Link>
+							<Link
+								href='/category'
+								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap'
+							>
+								Каталог
+							</Link>
+							<Link
+								href='/contacts'
+								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap'
+							>
+								Контакты
+							</Link>
+
 							<Button
 								variant='outline'
-								className='flex items-center gap-1 border hover:border-[#ff9100] group transition-colors duration-200 cursor-pointer'
+								className='flex items-center gap-2 border-gray-300 hover:border-orange-500 hover:text-orange-500 transition-all duration-200 whitespace-nowrap cursor-pointer'
 							>
-								<User
-									size={15}
-									className='group-hover:text-[#ff9100] transition-colors'
-								/>
-								<span className='group-hover:text-[#ff9100] transition-colors'>
-									Войти
-								</span>
+								<User size={18} />
+								<span>Войти</span>
 							</Button>
 						</div>
 					</div>
+					<NavMobile />
 				</div>
 			</nav>
-			<div
-				className={cn(
-					'fixed top-0 left-0 w-full transition-all duration-300 z-[50]',
-					isScrolled
-						? 'translate-y-0 opacity-100'
-						: '-translate-y-full opacity-0'
-				)}
-			>
-				<StickyNav />
-			</div>
 		</div>
 	)
 }
-
-// Сделать чтобы если авторизовался как админ будет кнопка профиль и панель админа, а если пользователь будет кнопка профиль

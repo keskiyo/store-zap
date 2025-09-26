@@ -82,7 +82,7 @@ body {
 }
 
 .nav {
-	padding: 20px 0;
+	padding: 10px 0;
 	background-color: var(--white);
 	border-bottom: 1px solid var(--nav-border);
 	color: var(--nav-text);
@@ -91,7 +91,6 @@ body {
 
 .nav-row {
 	display: flex;
-	justify-content: flex-end;
 	align-items: center;
 	column-gap: 30px;
 	row-gap: 20px;
@@ -99,7 +98,6 @@ body {
 }
 
 .logo {
-	margin-right: auto;
 	color: var(--nav-text);
 	font-size: 24px;
 	font-family: 'Poppins', sans-serif;
