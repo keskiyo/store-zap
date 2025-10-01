@@ -27,7 +27,7 @@ export const NavMobile: React.FC<Props> = ({ className }) => {
 	}, [])
 
 	return (
-		<div>
+		<div className={className}>
 			{/* Мобильная навигация */}
 			<div className='lg:hidden flex items-center justify-between py-3'>
 				{/* Логотип и кнопка меню */}

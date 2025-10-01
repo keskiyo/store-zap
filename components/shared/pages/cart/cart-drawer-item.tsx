@@ -15,8 +15,9 @@ export const CartDrawerItem: React.FC<Props> = ({
 	imageUrl,
 	name,
 	price,
-	quantity,
-	details,
+	count,
+	brand,
+	article,
 	disabled,
 	onClickCountButton,
 	onClickRemove,
@@ -35,12 +36,12 @@ export const CartDrawerItem: React.FC<Props> = ({
 			<CartItem.Image src={imageUrl} />
 
 			<div className='flex-1'>
-				<CartItem.Info name={name} details={details} />
+				<CartItem.Info name={name} brand={brand} article={article} />
 
 				<hr className='my-3' />
 
 				<div className='flex items-center justify-between'>
-					<CountButton onClick={onClickCountButton} value={quantity} />
+					<CountButton onClick={onClickCountButton} value={count} />
 
 					<div className='flex items-center gap-3'>
 						<CartItem.Price value={price} />

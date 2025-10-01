@@ -54,7 +54,7 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 				/>
 
 				<Input
-					className='w-full bg-gray-100 outline-none pl-11 pr-4 h-11 border-0 focus-visible:ring-2 focus-visible:ring-orange-500'
+					className='w-full bg-gray-100 border-gray-500 outline pl-11 pr-4 h-11 border-0 focus-visible:ring-2 focus-visible:ring-orange-500'
 					type='text'
 					placeholder='Искать на сайте ...'
 					onFocus={() => setFocused(true)}

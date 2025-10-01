@@ -1,11 +1,10 @@
 export interface CartItemProps {
 	id: number
 	name: string
-	// brand: string
-	// article: string
-	details: string
+	article: string
+	brand: string
 	price: number
 	imageUrl: string
-	quantity: number
+	count: number
 	disabled?: boolean
 }

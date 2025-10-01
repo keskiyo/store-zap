@@ -1,4 +1,7 @@
+'use client'
+
 import React from 'react'
+import Image from 'next/image'
 import {
 	Sheet,
 	SheetClose,
@@ -11,10 +14,13 @@ import {
 } from '@/components/ui/sheet'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
-import { ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { Title, CartDrawerItem } from '@/components/shared'
+import { cn } from '@/lib/utils'
+import { useCart } from '@/hooks/index'
 
 interface Props {
-	className?: string
+	className?: string //11 13
 }
 
 export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
@@ -30,7 +36,21 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
 						В корзине <span className='font-bold'>3 товара</span>
 					</SheetTitle>
 				</SheetHeader>
-				{/* Тут сами товары */}
+
+				<div className='-mx-6 mt-5 overflow-auto flex-1'>
+					<div className='mb-2'>
+						<CartDrawerItem
+							id={1}
+							name='Шаровый комплект'
+							price={3946}
+							imageUrl='public/tovars/Shar_compl.jpg'
+							count={3}
+							brand='GSP'
+							article='111113'
+						/>
+					</div>
+				</div>
+
 				<SheetFooter className=' bg-white p-8'>
 					<div className='w-full'>
 						<div className='flex mb-4'>
