@@ -4,10 +4,10 @@ import { CreateCartItemValues } from '../services/dto/cart.dto'
 import { CartStateItem } from '@/lib/get-cart-details'
 
 type ReturnProps = {
-	totalAmount: number
+	sum: number
 	items: CartStateItem[]
 	loading: boolean
-	updateItemQuantity: (id: number, quantity: number) => void
+	updateItemCount: (id: number, count: number) => void
 	removeCartItem: (id: number) => void
 	addCartItem: (values: CreateCartItemValues) => void
 }

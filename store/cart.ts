@@ -7,14 +7,14 @@ import { CreateCartItemValues } from '../services/dto/cart.dto'
 export interface CartState {
 	loading: boolean
 	error: boolean
-	totalAmount: number
+	sum: number
 	items: CartStateItem[]
 
 	/* Получение товаров из корзины */
 	fetchCartItems: () => Promise<void>
 
 	/* Запрос на обновление количества товара */
-	updateItemQuantity: (id: number, quantity: number) => Promise<void>
+	updateItemCount: (id: number, count: number) => Promise<void>
 
 	/* Запрос на добавление товара в корзину */
 	addCartItem: (values: CreateCartItemValues) => Promise<void>
@@ -27,7 +27,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 	items: [],
 	error: false,
 	loading: true,
-	totalAmount: 0,
+	sum: 0,
 
 	fetchCartItems: async () => {
 		try {
@@ -42,10 +42,10 @@ export const useCartStore = create<CartState>((set, get) => ({
 		}
 	},
 
-	updateItemQuantity: async (id: number, quantity: number) => {
+	updateItemCount: async (id: number, count: number) => {
 		try {
 			set({ loading: true, error: false })
-			const data = await Api.cart.updateItemQuantity(id, quantity)
+			const data = await Api.cart.updateItemCount(id, count)
 			set(getCartDetails(data))
 		} catch (error) {
 			console.error(error)
