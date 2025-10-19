@@ -1,8 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import { cn } from '@/lib/utils'
-import { TopKatalog, Filter, ProductsGroupList } from '@/components/shared'
+import { Filter, ProductsGroupList } from '@/components/shared'
 import { useSearchParams } from 'next/navigation'
 
 interface Props {
@@ -57,18 +57,21 @@ export const TovarCategory: React.FC<Props> = ({ className, categoryId }) => {
 
 	return (
 		<>
-			<div className={cn('flex flex-col', className)}></div>
-			<div className='mt-10 pb-14'>
-				<div className='flex flex-col lg:flex-row gap-6 lg:gap-8 xl:gap-[80px]'>
-					<div className='hidden lg:block flex-shrink-0 w-[250px]'>
-						<Filter />
-					</div>
-					<div className='flex-1 min-w-0'>
-						<ProductsGroupList
-							categoryId={categoryId}
-							products={products}
-							loading={loading}
-						/>
+			<div className={cn('flex flex-col', className)}>
+				<div className='mt-10 pb-14'>
+					<div className='flex flex-col lg:flex-row gap-6 lg:gap-8 xl:gap-[80px]'>
+						<div className='hidden lg:block flex-shrink-0 w-[250px]'>
+							<Suspense>
+								<Filter />
+							</Suspense>
+						</div>
+						<div className='flex-1 min-w-0'>
+							<ProductsGroupList
+								categoryId={categoryId}
+								products={products}
+								loading={loading}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

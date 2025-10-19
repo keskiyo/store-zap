@@ -1,11 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui'
+import { Plus } from 'lucide-react'
 
 interface Props {
 	id: number
 	name: string
 	price: number
+	count: number
 	article: string
 	brand: string
 	imageUrl: string
@@ -17,6 +20,7 @@ export const TovarItem: React.FC<Props> = ({
 	name,
 	price,
 	article,
+	count,
 	brand,
 	imageUrl,
 	className,
@@ -110,6 +114,12 @@ export const TovarItem: React.FC<Props> = ({
 									{brand}
 								</span>
 							</div>
+							{/* <div className='flex items-center gap-2 text-gray-400 text-xs sm:text-sm'>
+								<span className='w-12 sm:w-16 flex-shrink-0'>Количество:</span>
+								<span className='font-semibold text-gray-600 truncate'>
+									{count}
+								</span>
+							</div> */}
 						</div>
 
 						{/* Цена и кнопка */}
@@ -122,27 +132,24 @@ export const TovarItem: React.FC<Props> = ({
 						'
 						>
 							<div className='text-lg sm:text-xl lg:text-2xl font-bold text-orange-400 whitespace-nowrap'>
-								{price.toLocaleString('ru-RU')} ₽
+								{price} ₽
 							</div>
-
-							<button
-								className='
-									bg-orange-500 hover:bg-orange-400 active:bg-orange-300 
-									active:translate-y-[1px] active:shadow-inner 
-									text-white rounded-md 
+							<Link href={`/product/${id}`}>
+								<Button
+									className='
+									bg-orange-500 text-white rounded-md 
 									px-3 sm:px-4 py-1.5 sm:py-2
 									text-xs sm:text-sm md:text-base 
-									font-medium 
-									transition-all duration-150 
-									cursor-pointer 
+									font-medium cursor-pointer 
 									whitespace-nowrap
 									w-full xs:w-auto sm:w-full lg:w-auto
 									max-w-[120px] sm:max-w-[140px]
 								'
-								type='button'
-							>
-								В корзину
-							</button>
+								>
+									<Plus size={20} className='mr-1' />
+									Добавить
+								</Button>
+							</Link>
 						</div>
 					</div>
 				</div>
@@ -171,3 +178,5 @@ export const TovarList: React.FC<TovarListProps> = ({ items, className }) => {
 		</div>
 	)
 }
+
+// упростить

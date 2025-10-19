@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { findOrCreateCart } from '@/lib/find-or-create-cart'
 import { CreateCartItemValues } from '@/services/dto/cart.dto'
+import { updateCartTotalSum } from '@/lib/update-cart-total-sum'
 
 export async function GET(req: NextRequest) {
 	try {
@@ -42,16 +43,42 @@ export async function POST(req: NextRequest) {
 			token = crypto.randomUUID()
 		}
 
-		const newCart = await findOrCreateCart(token)
+		const userCart = await findOrCreateCart(token)
 
 		const data = (await req.json()) as CreateCartItemValues
 
 		const findCartProduct = await prisma.cartProduct.findFirst({
 			where: {
-				cartId: newCart.id,
+				cartId: userCart.id,
 				productId: data.productId,
 			},
 		})
+
+		// Если товар есть в корзине увеличиваем количество
+		if (findCartProduct) {
+			await prisma.cartProduct.update({
+				where: {
+					id: findCartProduct.id,
+				},
+				data: {
+					count: findCartProduct.count + 1,
+				},
+			})
+		} else {
+			// Если товара в корзине нет создаем его
+			await prisma.cartProduct.create({
+				data: {
+					cartId: userCart.id,
+					productId: data.productId,
+					count: 1,
+				},
+			}) // 15 16
+		}
+
+		const updateUserCart = await updateCartTotalSum(token)
+		const resp = NextResponse.json(updateUserCart)
+		resp.cookies.set('cartToken', token)
+		return resp
 	} catch (error) {
 		console.error('POST_CART error', error)
 		return NextResponse.json(

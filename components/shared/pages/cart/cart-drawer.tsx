@@ -17,7 +17,6 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Title, CartDrawerItem } from '@/components/shared'
 import { cn } from '@/lib/utils'
 import { useCart } from '@/hooks/index'
-import { useCartStore } from '@/store/cart'
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 	const { sum, items, updateItemCount, removeCartItem } = useCart()
