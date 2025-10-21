@@ -47,6 +47,14 @@ export async function POST(req: NextRequest) {
 
 		const data = (await req.json()) as CreateCartItemValues
 
+		const product = await prisma.product.findUnique({
+			where: { id: data.productId },
+		})
+
+		if (!product) {
+			return NextResponse.json({ message: 'Товар не найден' }, { status: 404 })
+		}
+
 		const findCartProduct = await prisma.cartProduct.findFirst({
 			where: {
 				cartId: userCart.id,
@@ -72,7 +80,7 @@ export async function POST(req: NextRequest) {
 					productId: data.productId,
 					count: 1,
 				},
-			}) // 15 16
+			})
 		}
 
 		const updateUserCart = await updateCartTotalSum(token)

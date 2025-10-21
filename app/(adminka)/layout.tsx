@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './admin-style.css'
 
 export const metadata: Metadata = {
-	title: 'Админка',
+	title: 'Rus-autovaz | Админка',
 	description: 'Панель администратора',
 }
 

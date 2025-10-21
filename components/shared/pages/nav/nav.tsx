@@ -10,9 +10,10 @@ import { NavMobile, TopKatalog } from '@/components/shared'
 
 interface Props {
 	className?: string
+	hasSearch?: boolean
 }
 
-export const Nav: React.FC<Props> = ({ className }) => {
+export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 	return (
 		<div>
 			<nav className={cn('nav', className)}>
@@ -36,10 +37,11 @@ export const Nav: React.FC<Props> = ({ className }) => {
 								</p>
 							</Link>
 						</div>
-
-						<div className='flex-grow flex justify-center mx-2'>
-							<TopKatalog className='w-full max-w-3xl' />
-						</div>
+						{hasSearch && (
+							<div className='flex-grow flex justify-center mx-2'>
+								<TopKatalog className='w-full max-w-3xl' />
+							</div>
+						)}
 
 						<div className='flex items-center gap-4 flex-shrink-0 min-w-[300px] justify-end'>
 							<Link

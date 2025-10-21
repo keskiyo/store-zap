@@ -105,7 +105,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 										<span className='font-bold text-lg'>{sum} ₽</span>
 									</div>
 
-									<Link href='/checkout'>
+									<Link href='/checkorder'>
 										<Button
 											onClick={() => setRedirecting(true)}
 											loading={redirecting}

@@ -9,9 +9,10 @@ import { TopKatalog } from '@/components/shared'
 
 interface Props {
 	className?: string
+	hasSearch?: boolean
 }
 
-export const NavMobile: React.FC<Props> = ({ className }) => {
+export const NavMobile: React.FC<Props> = ({ className, hasSearch = true }) => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
 	// Закрытие мобильного меню при изменении размера окна
@@ -58,9 +59,11 @@ export const NavMobile: React.FC<Props> = ({ className }) => {
 			</div>
 
 			{/* Поиск для мобильных устройств */}
-			<div className='lg:hidden mt-3 mb-2'>
-				<TopKatalog className='w-full min-w-0' />
-			</div>
+			{hasSearch && (
+				<div className='lg:hidden mt-3 mb-2'>
+					<TopKatalog className='w-full min-w-0' />
+				</div>
+			)}
 
 			{/* Мобильное меню */}
 			{isMobileMenuOpen && (
