@@ -4,7 +4,6 @@ import { Title } from '@/components/shared'
 import { Button } from '@/components/ui'
 import { useCartStore } from '@/store/cart'
 import { Product, ProductSpecification } from '@prisma/client'
-import React from 'react'
 import toast from 'react-hot-toast'
 
 interface Props {
@@ -17,8 +16,6 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 		state.loading,
 	])
 	const isAvailable = product.count > 0
-	const formatPrice = (price: number) =>
-		new Intl.NumberFormat('ru-RU').format(price)
 
 	const onSubmit = async () => {
 		try {
@@ -26,7 +23,7 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 				productId: product.id,
 			})
 
-			toast.success(product.name + ' добавлена в корзину')
+			toast.success('${product.name} добавлена в корзину')
 		} catch (err) {
 			toast.error('Не удалось добавить товар в корзину')
 			console.error(err)
@@ -35,6 +32,7 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 	return (
 		<>
 			<Title text={product.name} size='md' className='font-extrabold mb-2' />
+
 			<p className='text-gray-600 mb-2 text-1xl px-3'>
 				<span className='font-medium'>Бренд:</span> {product.brand} |{' '}
 				<span className='font-medium'>Артикул:</span> {product.article}
@@ -62,28 +60,28 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 				</div>
 			)}
 
-			<div>
-				{isAvailable ? (
-					<span className='inline-block bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full mb-6'>
-						В наличии: {product.count} шт.
-					</span>
-				) : (
-					<span className='inline-block bg-red-100 text-red-600 text-sm px-3 py-1 rounded-full mb-6'>
-						Нет в наличии
-					</span>
-				)}
+			<div className='mb-6'>
+				<span
+					className={`inline-block text-sm px-3 py-1 rounded-full ${
+						isAvailable
+							? 'bg-green-100 text-green-700'
+							: 'bg-red-100 text-red-600'
+					}`}
+				>
+					{isAvailable ? `В наличии: ${product.count} шт.` : 'Нет в наличии'}
+				</span>
 			</div>
 
 			<p
 				className='text-2xl font-bold mb-2 px-3'
 				style={{ color: 'var(--orange)' }}
 			>
-				{formatPrice(product.price)} ₽
+				{new Intl.NumberFormat('ru-RU').format(product.price)} ₽
 			</p>
 
 			<Button
 				loading={loading}
-				onClick={() => onSubmit?.()}
+				onClick={onSubmit}
 				disabled={!isAvailable}
 				className={`font-bold py-3 px-6 rounded-lg transition-colors duration-200 ${
 					isAvailable
@@ -96,5 +94,3 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 		</>
 	)
 }
-
-// упростить

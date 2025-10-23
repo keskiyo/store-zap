@@ -11,10 +11,8 @@ export default async function Home() {
 	}
 
 	return (
-		<main className='py-8'>
-			<div className='container'>
-				<Categories products={product} />
-			</div>
-		</main>
+		<div className='container'>
+			<Categories products={product} />
+		</div>
 	)
 }

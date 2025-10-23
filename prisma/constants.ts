@@ -159,7 +159,7 @@ export const products = [
 		name: 'Фильтр салона угольный',
 		article: '111121',
 		brand: 'Dashwa',
-		imageUrl: '/tovars/фильтр салона угольный.jpg',
+		imageUrl: '/tovars/Фильтр салона угольный.jpg',
 		price: 550,
 		categoryId: 7,
 	},

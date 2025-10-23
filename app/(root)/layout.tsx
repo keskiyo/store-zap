@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Footer, Nav } from '../../components/shared'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
 	title: 'Запчасти для российских автомобилей в магазине Rus-avto.ru',
@@ -13,11 +14,11 @@ export default function HomeLayout({
 }>) {
 	return (
 		<main className='min-h-screen flex flex-col'>
-			<Nav />
+			<Suspense>
+				<Nav />
+			</Suspense>
 			{children}
 			<Footer />
 		</main>
 	)
 }
-
-

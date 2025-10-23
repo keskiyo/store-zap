@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client'
 import { categories, products } from './constants'
 import { prisma } from './prisma-client'
 import { hashSync } from 'bcrypt'
@@ -21,6 +20,7 @@ async function up() {
 				verified: new Date(),
 			},
 		],
+		skipDuplicates: true,
 	})
 
 	await prisma.category.createMany({
@@ -56,19 +56,59 @@ async function up() {
 }
 
 async function down() {
-	await prisma.$executeRaw`TRUNCATE TABLE "User" RESTART IDENTITY CASCADE`
-	await prisma.$executeRaw`TRUNCATE TABLE "Category" RESTART IDENTITY CASCADE`
-	await prisma.$executeRaw`TRUNCATE TABLE "Cart" RESTART IDENTITY CASCADE`
-	await prisma.$executeRaw`TRUNCATE TABLE "CartProduct" RESTART IDENTITY CASCADE`
-	await prisma.$executeRaw`TRUNCATE TABLE "Product" RESTART IDENTITY CASCADE`
+	// Безопасное удаление данных с проверкой существования таблиц
+	try {
+		await prisma.cartProduct.deleteMany()
+		console.log('CartProduct data deleted')
+	} catch (error) {
+		console.log('CartProduct table does not exist yet')
+	}
+
+	try {
+		await prisma.cart.deleteMany()
+		console.log('Cart data deleted')
+	} catch (error) {
+		console.log('Cart table does not exist yet')
+	}
+
+	try {
+		await prisma.product.deleteMany()
+		console.log('Product data deleted')
+	} catch (error) {
+		console.log('Product table does not exist yet')
+	}
+
+	try {
+		await prisma.category.deleteMany()
+		console.log('Category data deleted')
+	} catch (error) {
+		console.log('Category table does not exist yet')
+	}
+
+	try {
+		await prisma.user.deleteMany()
+		console.log('User data deleted')
+	} catch (error) {
+		console.log('User table does not exist yet')
+	}
 }
 
 async function main() {
 	try {
-		await down()
+		console.log('Starting seed...')
+
+		const userCount = await prisma.user.count()
+
+		if (userCount > 0) {
+			console.log('Database already has data. Running down() first...')
+			await down()
+		}
+
 		await up()
-	} catch (e) {
-		console.error(e)
+		console.log('Seed completed successfully!')
+	} catch (error) {
+		console.error('Error during seeding:', error)
+		throw error
 	}
 }
 
