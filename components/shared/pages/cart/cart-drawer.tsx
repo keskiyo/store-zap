@@ -35,7 +35,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 		<Sheet>
 			<SheetTrigger asChild>{children}</SheetTrigger>
 
-			<SheetContent className='flex flex-col justify-between pb-0 bg-[#F4F1EE]'>
+			<SheetContent className='flex flex-col justify-between pb-0 bg-[#F4F1EE] [&>button]:hidden'>
+				<SheetTitle className='sr-only'>Корзина покупок</SheetTitle>
 				<div className={cn('flex flex-col h-full', !sum && 'justify-center')}>
 					{sum > 0 && (
 						<SheetHeader>
@@ -62,9 +63,12 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 								Добавьте хотя бы один товар, чтобы совершить заказ
 							</p>
 
-							<SheetClose>
-								<Button className='w-56 h-12 text-base' size='lg'>
-									<ArrowLeft className='w-5 mr-2' />
+							<SheetClose asChild>
+								<Button
+									className='w-56 h-12 text-base cursor-pointer'
+									size='lg'
+								>
+									<ArrowLeft className='w-5 mr-2 ' />
 									Вернуться назад
 								</Button>
 							</SheetClose>

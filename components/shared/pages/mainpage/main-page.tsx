@@ -8,7 +8,7 @@ interface Props {
 
 export const MainPage: React.FC<Props> = ({ className }) => {
 	return (
-		<div className={cn('', className)}>
+		<div className={cn('py-10', className)}>
 			<Title
 				text='Rus-autovaz - интернет-магазин для российских автомобилей.'
 				className='text-[#8d9191]'

@@ -37,7 +37,7 @@ export const Contacts: React.FC<Props> = ({ className }) => {
 
 	if (isLoading) {
 		return (
-			<div className={cn('flex flex-col gap-6', className)}>
+			<div className={cn('flex flex-col gap-6 py-10', className)}>
 				{/* Заголовок */}
 				<Skeleton className='h-10 w-3/4' />
 
@@ -51,7 +51,7 @@ export const Contacts: React.FC<Props> = ({ className }) => {
 				{/* Социальные сети */}
 				<div className='flex items-center gap-3'>
 					<Skeleton className='h-8 w-48' />
-					<Skeleton className='w-11 h-11 rounded-lg' />
+					{/* <Skeleton className='w-11 h-11 rounded-lg' /> */}
 					<Skeleton className='w-11 h-11 rounded-lg' />
 				</div>
 
@@ -65,7 +65,7 @@ export const Contacts: React.FC<Props> = ({ className }) => {
 	}
 
 	return (
-		<div className={cn('flex flex-col gap-4', className)}>
+		<div className={cn('flex flex-col gap-4 py-10', className)}>
 			<Title
 				text='Наши контакты для связи:'
 				className='text-[#444444]'
@@ -81,13 +81,13 @@ export const Contacts: React.FC<Props> = ({ className }) => {
 					className='text-[#444444]'
 					size='lg'
 				/>
-				<Image
+				{/* <Image
 					src='/forSite/vk.jpg'
 					alt='rus.avto'
 					width={44}
 					height={44}
 					className='rounded-lg'
-				/>
+				/> */}
 				<Image
 					src='/forSite/whatsapp.jpg'
 					alt='rus.avto'

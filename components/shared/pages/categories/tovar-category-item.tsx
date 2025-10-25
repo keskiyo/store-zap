@@ -28,7 +28,7 @@ export const TovarItem: React.FC<Props> = ({
 	return (
 		<div
 			className={cn(
-				'w-full max-w-4xl mx-auto bg-gray-100 rounded-md border border-gray-300 p-4 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1',
+				'w-full max-w-4xl mx-auto bg-white rounded-md border border-gray-300 p-4 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1',
 				className
 			)}
 		>
@@ -37,7 +37,7 @@ export const TovarItem: React.FC<Props> = ({
 				<Link
 					href={`/product/${id}`}
 					className='
-						flex justify-center 
+						flex justify-center items-center
 						w-full sm:w-32 lg:w-40 
 						h-32 sm:h-auto
 						flex-shrink-0

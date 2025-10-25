@@ -70,29 +70,22 @@ export const NavMobile: React.FC<Props> = ({ className, hasSearch = true }) => {
 				<div className='lg:hidden bg-[#eeeeee] mt-4 py-4'>
 					<div className='flex flex-col space-y-3'>
 						<Link
-							href='/'
-							className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 py-2 w-full text-center border-gray-500 outline'
-							onClick={() => setIsMobileMenuOpen(false)}
-						>
-							Главная
-						</Link>
-						<Link
 							href='/category'
-							className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 py-2 w-full text-center border-gray-500 outline'
+							className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 py-2 w-full text-center border-gray-500 outline text-base'
 							onClick={() => setIsMobileMenuOpen(false)}
 						>
 							Каталог
 						</Link>
 						<Link
 							href='/contacts'
-							className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 py-2 w-full text-center border-gray-500 outline'
+							className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 py-2 w-full text-center border-gray-500 outline text-base'
 							onClick={() => setIsMobileMenuOpen(false)}
 						>
 							Контакты
 						</Link>
 						<Button
 							variant='outline'
-							className='flex items-center gap-2 justify-center border-gray-500 hover:border-orange-500 hover:text-orange-500 transition-all duration-200 cursor-pointer w-full text-center'
+							className='flex items-center gap-2 justify-center border-gray-500 hover:border-orange-500 hover:text-orange-500 transition-all duration-200 cursor-pointer w-full text-center text-base'
 						>
 							<User size={18} />
 							<span>Войти</span>

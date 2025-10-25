@@ -22,7 +22,7 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 						<div className='flex items-center gap-3 flex-shrink-0 min-w-[140px]'>
 							<Image
 								src='/forSite/logoauto.jpg'
-								alt='rus.avto'
+								alt='rus-autovaz'
 								width={65}
 								height={65}
 								priority
@@ -45,20 +45,24 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 
 						<div className='flex items-center gap-4 flex-shrink-0 min-w-[300px] justify-end'>
 							<Link
-								href='/'
-								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap'
-							>
-								Главная
-							</Link>
-							<Link
 								href='/category'
-								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap'
+								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap text-[17px]'
 							>
-								Каталог
+								{/* <div className='w-15 h-15 lg:w-16 lg:h-16 relative'>
+									<Image
+										src='/forSite/category.jpg'
+										alt='категории'
+										fill
+										priority
+										className='object-contain'
+									/>
+								</div> */}
+								Категории
 							</Link>
+
 							<Link
 								href='/contacts'
-								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap'
+								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap text-[17px]'
 							>
 								Контакты
 							</Link>
@@ -68,7 +72,7 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 								className='flex items-center gap-2 border-gray-300 hover:border-orange-500 hover:text-orange-500 transition-all duration-200 whitespace-nowrap cursor-pointer'
 							>
 								<User size={18} />
-								<span>Войти</span>
+								<span className='text-[17px]'>Войти</span>
 							</Button>
 						</div>
 					</div>

@@ -17,16 +17,17 @@ export const CartButton: React.FC<Props> = ({ className }) => {
 		state.items,
 		state.loading,
 	])
+	// const { sum, items, loading } = useCartStore()
+
 	return (
 		<CartDrawer>
 			<Button
 				loading={loading}
 				className={cn(
-					'group relative flex items-center bg-orange-500 text-white px-4 py-2 rounded-md cursor-pointer overflow-hidden transition-all duration-300 hover:bg-orange-600 hover:shadow-md h-11',
+					'group relative flex items-center bg-orange-500 text-white px-4 py-2 rounded-md cursor-pointer overflow-hidden transition-all duration-300 hover:bg-orange-600 hover:shadow-md h-10',
 					{ 'w-[105px]': loading },
 					className
 				)}
-				variant='outline'
 			>
 				{/* Десктопная версия */}
 				<div className='hidden sm:flex items-center'>

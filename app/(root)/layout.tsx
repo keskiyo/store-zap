@@ -13,7 +13,7 @@ export default function HomeLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<main className='min-h-screen flex flex-col'>
+		<main className='min-h-screen flex flex-col '>
 			<Suspense>
 				<Nav />
 			</Suspense>

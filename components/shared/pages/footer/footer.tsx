@@ -1,6 +1,7 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
 import { FooterLink } from '@/components/shared'
+import Link from 'next/link'
 
 interface FooterProps {
 	className?: string
@@ -37,9 +38,9 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
 					<div className='flex flex-col gap-4'>
 						<h4 className='text-lg font-bold'>КОНТАКТЫ</h4>
 						<div className='flex flex-col gap-3'>
-							<FooterLink href='tel:+79825427227'>982 542-72-27</FooterLink>
-							<FooterLink href='tel:+79825427228'>982 542-72-28</FooterLink>
-							<FooterLink href='tel:+79825427229'>982 542-72-29</FooterLink>
+							<FooterLink href='tel:+79825427227'>+7 982 542-72-27</FooterLink>
+							<FooterLink href='tel:+79825427228'>+7 982 542-72-28</FooterLink>
+							<FooterLink href='tel:+79825427229'>+7 982 542-72-29</FooterLink>
 						</div>
 					</div>
 				</div>
