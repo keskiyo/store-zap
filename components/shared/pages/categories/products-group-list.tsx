@@ -2,19 +2,22 @@ import { TovarItem } from '@/components/shared'
 import { cn } from '@/lib/utils'
 import React from 'react'
 import { Skeleton } from '@/components/ui'
+import { ProductWithRelations } from '@/@types/prisma'
 
 interface Props {
-	products: any[]
+	items: ProductWithRelations[]
 	className?: string
 	listClassName?: string
 	loading?: boolean
+	categoryId: number
 }
 
 export const ProductsGroupList: React.FC<Props> = ({
 	className,
-	products,
+	items,
 	listClassName,
 	loading = false,
+	categoryId,
 }) => {
 	if (loading) {
 		return (
@@ -62,7 +65,7 @@ export const ProductsGroupList: React.FC<Props> = ({
 		)
 	}
 
-	if (products.length === 0) {
+	if (items.length === 0) {
 		return (
 			<div className={cn('text-center py-12', className)}>
 				<h3 className='text-lg font-medium text-gray-900 mb-2'>
@@ -81,8 +84,16 @@ export const ProductsGroupList: React.FC<Props> = ({
 				className
 			)}
 		>
-			{products.map(product => (
-				<TovarItem key={product.id} {...product} />
+			{items.map((product, i) => (
+				<TovarItem
+					key={product.id}
+					id={product.id}
+					name={product.name}
+					imageUrl={product.imageUrl ?? '/public/tovars/No img.jpg'}
+					price={product.price}
+					article={product.article}
+					brand={product.brand}
+				/>
 			))}
 		</div>
 	)

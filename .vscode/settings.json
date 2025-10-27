@@ -35,9 +35,12 @@
 		"usephonemask",
 		"useproducts",
 		"yandexmap",
+		"yookassa",
+		"YOOMONEY",
 		"Автотовары",
 		"Десктопная",
-		"задн"
+		"задн",
+		"токену"
 	],
 	"files.associations": {
 		"*.tsx": "typescriptreact"

@@ -8,7 +8,6 @@ interface Props {
 	id: number
 	name: string
 	price: number
-	count: number
 	article: string
 	brand: string
 	imageUrl: string
@@ -20,7 +19,6 @@ export const TovarItem: React.FC<Props> = ({
 	name,
 	price,
 	article,
-	count,
 	brand,
 	imageUrl,
 	className,
@@ -68,7 +66,6 @@ export const TovarItem: React.FC<Props> = ({
 							{ label: 'Код:', value: id },
 							{ label: 'Артикул:', value: article },
 							{ label: 'Бренд:', value: brand },
-							// { label: 'Количество:', value: count },
 						].map(({ label, value }) => (
 							<div
 								key={label}

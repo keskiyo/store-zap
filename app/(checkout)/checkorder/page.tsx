@@ -8,6 +8,7 @@ import {
 	Title,
 } from '@/components/shared'
 import { Container } from '@/components/ui'
+import { useSession } from 'next-auth/react'
 import { useCart } from '@/hooks'
 import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -16,10 +17,13 @@ import {
 	checkoutFormSchema,
 	CheckoutFormValues,
 } from '@/components/shared/constants/checkout-form-schema'
+import toast from 'react-hot-toast'
+import { createOrder } from '@/app/actions'
 
 export default function CheckOrder() {
 	const [submitting, setSubmitting] = React.useState(false)
 	const { sum, items, updateItemCount, removeCartItem, loading } = useCart()
+	const { data: session } = useSession()
 
 	const form = useForm<CheckoutFormValues>({
 		resolver: zodResolver(checkoutFormSchema),
@@ -34,7 +38,25 @@ export default function CheckOrder() {
 	})
 
 	const onSubmit = async (data: CheckoutFormValues) => {
-		setSubmitting(true)
+		try {
+			setSubmitting(true)
+
+			const url = await createOrder(data)
+
+			toast.error('Заказ успешно оформлен! 📝 Переход на оплату... ', {
+				icon: '✅',
+			})
+
+			if (url) {
+				location.href = url
+			}
+		} catch (err) {
+			console.log(err)
+			setSubmitting(false)
+			toast.error('Не удалось создать заказ', {
+				icon: '❌',
+			})
+		}
 	}
 
 	const onClickCountButton = (

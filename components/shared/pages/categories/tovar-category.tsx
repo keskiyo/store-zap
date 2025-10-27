@@ -68,7 +68,7 @@ export const TovarCategory: React.FC<Props> = ({ className, categoryId }) => {
 						<div className='flex-1 min-w-0'>
 							<ProductsGroupList
 								categoryId={categoryId}
-								products={products}
+								items={products}
 								loading={loading}
 							/>
 						</div>

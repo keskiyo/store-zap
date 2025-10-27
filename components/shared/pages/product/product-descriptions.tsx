@@ -1,13 +1,14 @@
 'use client'
 
+import { ProductWithRelations } from '@/@types/prisma'
 import { Title } from '@/components/shared'
 import { Button } from '@/components/ui'
 import { useCartStore } from '@/store/cart'
-import { Product, ProductSpecification } from '@prisma/client'
+import { ProductSpecification } from '@prisma/client'
 import toast from 'react-hot-toast'
 
 interface Props {
-	product: Product & { specifications: ProductSpecification[] }
+	product: ProductWithRelations & { specifications: ProductSpecification[] }
 }
 
 export const ProductDescriptions: React.FC<Props> = ({ product }) => {
@@ -23,7 +24,7 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 				productId: product.id,
 			})
 
-			toast.success('${product.name} добавлена в корзину')
+			toast.success(product.name + 'добавлена в корзину')
 		} catch (err) {
 			toast.error('Не удалось добавить товар в корзину')
 			console.error(err)
