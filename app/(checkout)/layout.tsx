@@ -13,7 +13,7 @@ export default function CheckoutLayout({
 	children: React.ReactNode
 }) {
 	return (
-		<main className='min-h-screen flex flex-col bg-[#F4F1EE]'>
+		<main className='min-h-screen flex flex-col bg-[#ececec]'>
 			<Suspense>
 				<Nav hasSearch={false} className='border-b-gray-200' />
 			</Suspense>

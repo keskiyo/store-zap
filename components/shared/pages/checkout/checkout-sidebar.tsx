@@ -33,7 +33,7 @@ export const CheckoutSidebar: React.FC<Props> = ({
 
 			<CheckoutItemsDetails
 				title={
-					<div className='flex items-center'>
+					<div className='flex items-center mt-'>
 						<Package size={20} className='mr-2 text-gray-400' />
 						Стоимость корзины:
 					</div>
@@ -62,7 +62,7 @@ export const CheckoutSidebar: React.FC<Props> = ({
 			<Button
 				loading={loading}
 				type='submit'
-				className='w-full h-14 rounded-2xl mt-6 text-base font-bold'
+				className='w-full h-14 rounded-2xl mt-6 text-base font-bold cursor-pointer hover:border-2'
 			>
 				Оформить заказ
 				<ArrowRight className='w-5 ml-2' />

@@ -23,7 +23,7 @@ import { createOrder } from '@/app/actions'
 export default function CheckOrder() {
 	const [submitting, setSubmitting] = React.useState(false)
 	const { sum, items, updateItemCount, removeCartItem, loading } = useCart()
-	const { data: session } = useSession()
+	// const { data: session } = useSession()
 
 	const form = useForm<CheckoutFormValues>({
 		resolver: zodResolver(checkoutFormSchema),

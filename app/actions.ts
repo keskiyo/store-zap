@@ -110,5 +110,3 @@ export async function createOrder(data: CheckoutFormValues) {
 		console.log('[CreateOrder] server error', err)
 	}
 }
-
-// 19 06

@@ -20,18 +20,18 @@ export const Categories: React.FC<Props> = ({ className, products }) => {
 
 	if (isLoading) {
 		return (
-			<div className={cn('flex flex-col gap-4', className)}>
+			<div className={cn('flex flex-col gap-4 py-10', className)}>
 				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-					{Array.from({ length: 6 }).map((_, index) => (
+					{Array.from({ length: 9 }).map((_, index) => (
 						<div
 							key={index}
-							className='group block rounded-lg border border-gray-200 overflow-hidden shadow-sm'
+							className='group block rounded-lg border border-gray-500 overflow-hidden shadow-sm hover:shadow-md transition-all'
 						>
-							<div className='relative h-70 bg-muted overflow-hidden flex justify-center items-center'>
-								<Skeleton className='w-48 h-48 rounded' />
+							<div className='relative h-70 bg-white overflow-hidden flex justify-center items-center'>
+								<Skeleton className='w-[230px] h-[230px]' />
 							</div>
-							<div className='p-4 border-t-2 border-gray-200'>
-								<Skeleton className='h-6 w-3/4 rounded' />
+							<div className='flex items-center justify-between p-4 border-t-2 border-gray-400'>
+								<Skeleton className='h-8 w-[400px]' />
 							</div>
 						</div>
 					))}

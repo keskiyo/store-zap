@@ -7,6 +7,8 @@ import Image from 'next/image'
 import { Button } from '../../../ui'
 import { User } from 'lucide-react'
 import { NavMobile, TopKatalog } from '@/components/shared'
+import { useSearchParams } from 'next/navigation'
+import { toast } from 'sonner'
 
 interface Props {
 	className?: string
@@ -14,6 +16,16 @@ interface Props {
 }
 
 export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
+	const searchParams = useSearchParams()
+
+	React.useEffect(() => {
+		if (searchParams.has('paid')) {
+			setTimeout(() => {
+				toast.success('Заказ успешно оплачен !')
+			}, 300)
+		}
+	}, [])
+
 	return (
 		<div>
 			<nav className={cn('nav', className)}>
@@ -48,15 +60,6 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 								href='/category'
 								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap text-[17px]'
 							>
-								{/* <div className='w-15 h-15 lg:w-16 lg:h-16 relative'>
-									<Image
-										src='/forSite/category.jpg'
-										alt='категории'
-										fill
-										priority
-										className='object-contain'
-									/>
-								</div> */}
 								Категории
 							</Link>
 

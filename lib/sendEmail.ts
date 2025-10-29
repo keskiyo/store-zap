@@ -11,6 +11,7 @@ export const sendEmail = async (
 		from: 'onboarding@resend.dev',
 		to,
 		subject,
+		text: '',
 		react: template,
 	})
 
