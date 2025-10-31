@@ -1,6 +1,7 @@
 import { Nunito } from 'next/font/google'
 import './globals.css'
 import React from 'react'
+import { Providers } from '@/components/shared'
 
 const nunito = Nunito({
 	subsets: ['cyrillic'],
@@ -15,7 +16,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${nunito.className} antialiased`}>{children}</body>
+			<body className={`${nunito.className} antialiased`}>
+				<Providers>{children}</Providers>
+			</body>
 		</html>
 	)
 }

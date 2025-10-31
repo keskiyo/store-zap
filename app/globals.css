@@ -36,6 +36,9 @@
 	--project-card-bg: var(--white);
 	--project-card-text: var(--black);
 	--box-shadow: 0px 5px 35px rgba(0, 0, 0, 0.25);
+
+	--primary: 22 100% 50%;
+	--primary-foreground: 60 9.1% 97.8%;
 }
 
 .dark {
@@ -266,4 +269,14 @@ body {
 	.social__item {
 		width: 28px;
 	}
+}
+
+#nprogress .bar {
+	@apply: bg-primary !important;
+}
+#nprogress .peg {
+	@apply: shadow-md shadow-primary !important;
+}
+#nprogress .spinner-icon {
+	@apply: border-t-primary border-l-primary !important;
 }

@@ -4,9 +4,12 @@ import React from 'react'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button } from '../../../ui'
-import { User } from 'lucide-react'
-import { NavMobile, TopKatalog } from '@/components/shared'
+import {
+	AuthModal,
+	NavMobile,
+	ProfileButton,
+	TopKatalog,
+} from '@/components/shared'
 import { useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 
@@ -16,6 +19,7 @@ interface Props {
 }
 
 export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
+	const [openAuth, setOpenAuth] = React.useState(false)
 	const searchParams = useSearchParams()
 
 	React.useEffect(() => {
@@ -70,13 +74,9 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 								Контакты
 							</Link>
 
-							<Button
-								variant='outline'
-								className='flex items-center gap-2 border-gray-300 hover:border-orange-500 hover:text-orange-500 transition-all duration-200 whitespace-nowrap cursor-pointer'
-							>
-								<User size={18} />
-								<span className='text-[17px]'>Войти</span>
-							</Button>
+							<AuthModal open={openAuth} onClose={() => setOpenAuth(false)} />
+
+							<ProfileButton onClickSingIn={() => setOpenAuth(true)} />
 						</div>
 					</div>
 					<NavMobile />

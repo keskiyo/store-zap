@@ -1,6 +1,6 @@
 export { Button } from './button'
 export { Checkbox } from './checkbox'
-export { Dialog } from './dialog'
+export * from './dialog'
 export { Drawer } from './drawer'
 export { DropdownMenu } from './dropdown-menu'
 export { Input } from './input'
