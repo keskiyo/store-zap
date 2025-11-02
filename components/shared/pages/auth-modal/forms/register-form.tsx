@@ -1,7 +1,9 @@
 import React from 'react'
 
-interface Props {}
+interface Props {
+	onClose?: VoidFunction
+}
 
-export const RegisterForm: React.FC<Props> = ({}) => {
+export const RegisterForm: React.FC<Props> = ({ onClose }) => {
 	return <div>RegisterForm</div>
 }

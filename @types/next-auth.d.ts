@@ -7,13 +7,16 @@ declare module 'next-auth' {
 		user: {
 			id: string
 			role: UserRole
-			name: string
-			image: string
+			name?: string | null
+			email?: string | null
+			image?: string | null
 		}
 	}
 
 	interface User extends DefaultUser {
 		id: number
+		name?: string | null
+		email?: string | null
 		role: UserRole
 	}
 }

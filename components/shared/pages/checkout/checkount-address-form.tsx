@@ -11,16 +11,11 @@ export const CheckoutAddressForm: React.FC<Props> = ({ className }) => {
 	return (
 		<WhiteBlock title='3. Доставка' className={className}>
 			<div className='flex flex-col gap-5'>
-				<AddressInput
-					name='address'
-					label='Адрес доставки'
-					required={true}
-					placeholder='Введите адрес доставки'
-				/>
+				<AddressInput name='address' label='Адрес доставки' required />
 
 				<FormTextarea
 					name='comment'
-					placeholder='Комментарий к заказу'
+					label='Комментарий к заказу'
 					className='text-base'
 					rows={5}
 				/>
