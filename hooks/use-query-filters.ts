@@ -1,32 +1,44 @@
-'use client'
-
+import { useRouter, useSearchParams } from 'next/navigation'
+import qs from 'qs'
 import React from 'react'
 import { Filters } from './use-filters'
-import qs from 'qs'
-import { useRouter } from 'next/navigation'
 
-export const useQueryFilters = (filters: Filters) => {
-	const isMounted = React.useRef(false)
+interface QueryFiltersProps {
+	filters: Filters
+	categoryId?: string | number
+}
+
+export const useQueryFilters = ({ filters, categoryId }: QueryFiltersProps) => {
 	const router = useRouter()
+	const searchParams = useSearchParams()
+
+	// Реф, чтобы избежать лишних обновлений при первом рендере
+	const isMounted = React.useRef(false)
 
 	React.useEffect(() => {
-		if (isMounted.current) {
-			const params = {
-				...filters.prices,
-				brands: Array.from(filters.selectedBrands),
-			}
-
-			const query = qs.stringify(params, {
-				arrayFormat: 'comma',
-			})
-
-			router.push(`?${query}`, {
-				scroll: false,
-			})
-
-			console.log(filters, 999)
+		if (!isMounted.current) {
+			isMounted.current = true
+			return
 		}
 
-		isMounted.current = true
-	}, [filters])
+		// Подготавливаем новые параметры
+		const newParams = {
+			...(categoryId && { categoryId }), // Добавляем categoryId, если он есть
+			...filters.prices,
+			brands:
+				Array.from(filters.selectedBrands).length > 0
+					? Array.from(filters.selectedBrands)
+					: undefined,
+		}
+
+		const queryStr = qs.stringify(newParams, {
+			arrayFormat: 'comma',
+			skipNulls: true,
+		})
+
+		// Обновляем URL без перезагрузки страницы
+		router.push(queryStr ? `?${queryStr}` : '', {
+			scroll: false,
+		})
+	}, [filters, categoryId, router])
 }

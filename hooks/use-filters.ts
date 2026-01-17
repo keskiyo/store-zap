@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
 interface PriceProps {
@@ -16,11 +16,10 @@ export interface Filters {
 interface ReturnProps extends Filters {
 	tempSelectedBrands: Set<string>
 	tempPrices: PriceProps
-	setTempPrices: (name: keyof PriceProps, value: number) => void
+	setTempPrices: (name: keyof PriceProps, value: number | undefined) => void
 	setTempSelectedBrands: (value: string) => void
-	applyFilters: () => void
-	resetFilters: () => void
-	syncFiltersFromUrl: () => void
+	applyFilters: (categoryId?: number) => void
+	resetFilters: (categoryId?: number) => void
 }
 
 export const useFilters = (): ReturnProps => {
@@ -28,26 +27,36 @@ export const useFilters = (): ReturnProps => {
 	const router = useRouter()
 	const pathname = usePathname()
 
-	// Примененные фильтры (из URL)
-	const [appliedSelectedBrands, setAppliedSelectedBrands] = React.useState<
-		Set<string>
-	>(new Set(searchParams.get('brands')?.split(',')))
-	const [appliedPrices, setAppliedPrices] = React.useState<PriceProps>({
-		priceFrom: Number(searchParams.get('priceFrom')) || undefined,
-		priceTo: Number(searchParams.get('priceTo')) || undefined,
-	})
+	// Инициализация фильтров из URL (только при монтировании)
+	const getInitialValues = React.useCallback(() => {
+		const brands =
+			searchParams.get('brands')?.split(',').filter(Boolean) || []
+		return {
+			brands: new Set(brands),
+			prices: {
+				priceFrom: Number(searchParams.get('priceFrom')) || undefined,
+				priceTo: Number(searchParams.get('priceTo')) || undefined,
+			},
+		}
+	}, [searchParams])
 
-	// Временные фильтры (для формы)
+	// Состояния для формы (то, что сейчас выбрано, но еще не применено)
 	const [tempSelectedBrands, setTempSelectedBrands] = React.useState<
 		Set<string>
-	>(new Set(searchParams.get('brands')?.split(',')))
-	const [tempPrices, setTempPrices] = React.useState<PriceProps>({
-		priceFrom: Number(searchParams.get('priceFrom')) || undefined,
-		priceTo: Number(searchParams.get('priceTo')) || undefined,
-	})
+	>(getInitialValues().brands)
+	const [tempPrices, setTempPrices] = React.useState<PriceProps>(
+		getInitialValues().prices,
+	)
 
-	// Функция для переключения брендов во временном состоянии
-	const setTempSelectedBrandsHandler = (value: string) => {
+	// Синхронизация с URL при изменении URL извне (например, при переходе "назад")
+	React.useEffect(() => {
+		const { brands, prices } = getInitialValues()
+		setTempSelectedBrands(brands)
+		setTempPrices(prices)
+	}, [searchParams.toString()]) // Срабатывает только при реальном изменении URL
+
+	// Обработчик чекбоксов
+	const handleSetTempSelectedBrands = React.useCallback((value: string) => {
 		setTempSelectedBrands(prev => {
 			const newSet = new Set(prev)
 			if (newSet.has(value)) {
@@ -57,91 +66,67 @@ export const useFilters = (): ReturnProps => {
 			}
 			return newSet
 		})
-	}
+	}, [])
 
-	// Синхронизация при изменении URL
-	const syncFiltersFromUrl = React.useCallback(() => {
-		const brandsFromUrl =
-			searchParams.get('brands')?.split(',').filter(Boolean) || []
-		const priceFromFromUrl = Number(searchParams.get('priceFrom')) || undefined
-		const priceToFromUrl = Number(searchParams.get('priceTo')) || undefined
+	// Применить фильтры (отправка запроса)
+	const applyFilters = React.useCallback(
+		(categoryId?: number) => {
+			const params = new URLSearchParams(searchParams.toString())
 
-		setAppliedSelectedBrands(new Set(brandsFromUrl))
-		setAppliedPrices({
-			priceFrom: priceFromFromUrl,
-			priceTo: priceToFromUrl,
-		})
+			// 1. Обработка брендов
+			if (tempSelectedBrands.size > 0) {
+				params.set('brands', Array.from(tempSelectedBrands).join(','))
+			} else {
+				params.delete('brands')
+			}
 
-		setTempPrices({
-			priceFrom: priceFromFromUrl,
-			priceTo: priceToFromUrl,
-		})
-		setTempSelectedBrands(new Set(brandsFromUrl))
-	}, [searchParams])
+			// 2. Обработка цен
+			if (tempPrices.priceFrom)
+				params.set('priceFrom', String(tempPrices.priceFrom))
+			else params.delete('priceFrom')
 
-	React.useEffect(() => {
-		syncFiltersFromUrl()
-	}, [searchParams])
+			if (tempPrices.priceTo)
+				params.set('priceTo', String(tempPrices.priceTo))
+			else params.delete('priceTo')
 
-	const updateTempPrice = (name: keyof PriceProps, value: number) => {
-		setTempPrices(prev => ({
-			...prev,
-			[name]: value === 0 ? undefined : value,
-		}))
-	}
+			// 3. Обязательно добавляем categoryId, если он есть
+			if (categoryId) {
+				params.set('categoryId', String(categoryId))
+			}
 
-	const applyFilters = () => {
-		const params = new URLSearchParams()
-
-		// Добавляем бренды
-		if (tempSelectedBrands.size > 0) {
-			params.set('brands', Array.from(tempSelectedBrands).join(','))
-		}
-
-		// Добавляем цены
-		if (tempPrices.priceFrom && tempPrices.priceFrom > 0) {
-			params.set('priceFrom', tempPrices.priceFrom.toString())
-		}
-
-		if (tempPrices.priceTo && tempPrices.priceTo > 0) {
-			params.set('priceTo', tempPrices.priceTo.toString())
-		}
-
-		// Обновляем URL
-		router.push(`${pathname}?${params.toString()}`)
-	}
-
-	const resetFilters = () => {
-		// Сбрасываем временные фильтры
-		setTempPrices({
-			priceFrom: undefined,
-			priceTo: undefined,
-		})
-		setTempSelectedBrands(new Set())
-
-		// Очищаем URL
-		router.push(pathname)
-		router.refresh()
-	}
-
-	return React.useMemo(
-		() => ({
-			selectedBrands: appliedSelectedBrands,
-			setTempSelectedBrands: setTempSelectedBrandsHandler,
-			prices: appliedPrices,
-			setTempPrices: updateTempPrice,
-			tempSelectedBrands,
-			tempPrices,
-			applyFilters,
-			resetFilters,
-			syncFiltersFromUrl,
-		}),
-		[
-			appliedSelectedBrands,
-			appliedPrices,
-			tempSelectedBrands,
-			tempPrices,
-			pathname,
-		]
+			// Обновляем URL
+			router.push(`${pathname}?${params.toString()}`)
+		},
+		[tempSelectedBrands, tempPrices, pathname, router, searchParams],
 	)
+
+	// Сбросить фильтры
+	const resetFilters = React.useCallback(
+		(categoryId?: number) => {
+			const params = new URLSearchParams()
+
+			// При сбросе мы сохраняем только категорию, чтобы не улететь на главную
+			if (categoryId) {
+				params.set('categoryId', String(categoryId))
+			}
+
+			router.push(`${pathname}?${params.toString()}`)
+		},
+		[pathname, router],
+	)
+
+	return {
+		selectedBrands: tempSelectedBrands, // Для совместимости с UI
+		prices: tempPrices,
+		tempSelectedBrands,
+		tempPrices,
+		setTempSelectedBrands: handleSetTempSelectedBrands,
+		setTempPrices: (name, value) =>
+			setTempPrices(prev => ({
+				...prev,
+				[name]: value === 0 ? undefined : value,
+			})),
+		applyFilters,
+		resetFilters,
+	}
 }

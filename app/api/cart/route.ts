@@ -1,21 +1,34 @@
-import { prisma } from '@/prisma/prisma-client'
-import { NextRequest, NextResponse } from 'next/server'
-import crypto from 'crypto'
+import { authOptions } from '@/components/shared/constants/auth-options'
 import { findOrCreateCart } from '@/lib/find-or-create-cart'
-import { CreateCartItemValues } from '@/services/dto/cart.dto'
 import { updateCartTotalSum } from '@/lib/update-cart-total-sum'
+import { prisma } from '@/prisma/prisma-client'
+import { CreateCartItemValues } from '@/services/dto/cart.dto'
+import crypto from 'crypto'
+import { getServerSession } from 'next-auth'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
 	try {
 		const token = req.cookies.get('cartToken')?.value
+		const session = await getServerSession(authOptions)
 
-		if (!token) {
+		const conditions: any[] = []
+
+		if (token) {
+			conditions.push({ token })
+		}
+
+		if (session?.user?.id) {
+			conditions.push({ userId: Number(session.user.id) })
+		}
+
+		if (conditions.length === 0) {
 			return NextResponse.json({ items: [], sum: 0 })
 		}
 
 		const userCart = await prisma.cart.findFirst({
 			where: {
-				OR: [{ token }],
+				OR: conditions,
 			},
 			include: {
 				items: {
@@ -25,12 +38,18 @@ export async function GET(req: NextRequest) {
 			},
 		})
 
-		return NextResponse.json({ userCart })
+		const response = NextResponse.json(userCart)
+
+		if (userCart && userCart.token) {
+			response.cookies.set('cartToken', userCart.token)
+		}
+
+		return response
 	} catch (error) {
 		console.error('GET_CART error', error)
 		return NextResponse.json(
 			{ message: 'Не удалось получить корзину' },
-			{ status: 500 }
+			{ status: 500 },
 		)
 	}
 }
@@ -52,7 +71,10 @@ export async function POST(req: NextRequest) {
 		})
 
 		if (!product) {
-			return NextResponse.json({ message: 'Товар не найден' }, { status: 404 })
+			return NextResponse.json(
+				{ message: 'Товар не найден' },
+				{ status: 404 },
+			)
 		}
 
 		const findCartProduct = await prisma.cartProduct.findFirst({
@@ -91,7 +113,7 @@ export async function POST(req: NextRequest) {
 		console.error('POST_CART error', error)
 		return NextResponse.json(
 			{ message: 'Не удалось создать корзину' },
-			{ status: 500 }
+			{ status: 500 },
 		)
 	}
 }

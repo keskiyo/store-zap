@@ -1,7 +1,6 @@
 import { create } from 'zustand'
+import { CartStateItem, getCartDetails } from '../lib/get-cart-details'
 import { Api } from '../services/api-client'
-import { getCartDetails } from '../lib/get-cart-details'
-import { CartStateItem } from '../lib/get-cart-details'
 import { CreateCartItemValues } from '../services/dto/cart.dto'
 
 export interface CartState {
@@ -33,10 +32,14 @@ export const useCartStore = create<CartState>((set, get) => ({
 		try {
 			set({ loading: true, error: false })
 			const data = await Api.cart.getCart()
+			if (!data) {
+				set({ items: [], sum: 0 })
+				return
+			}
 			set(getCartDetails(data))
 		} catch (error) {
 			console.error(error)
-			set({ error: true })
+			set({ error: true, items: [], sum: 0 })
 		} finally {
 			set({ loading: false })
 		}
@@ -46,7 +49,9 @@ export const useCartStore = create<CartState>((set, get) => ({
 		try {
 			set({ loading: true, error: false })
 			const data = await Api.cart.updateItemCount(id, count)
-			set(getCartDetails(data))
+			if (data) {
+				set(getCartDetails(data))
+			}
 		} catch (error) {
 			console.error(error)
 			set({ error: true })
@@ -61,11 +66,13 @@ export const useCartStore = create<CartState>((set, get) => ({
 				loading: true,
 				error: false,
 				items: state.items.map(item =>
-					item.id === id ? { ...item, disabled: true } : item
+					item.id === id ? { ...item, disabled: true } : item,
 				),
 			}))
 			const data = await Api.cart.removeCartItem(id)
-			set(getCartDetails(data))
+			if (data) {
+				set(getCartDetails(data))
+			}
 		} catch (error) {
 			console.error(error)
 			set({ error: true })
@@ -81,7 +88,9 @@ export const useCartStore = create<CartState>((set, get) => ({
 		try {
 			set({ loading: true, error: false })
 			const data = await Api.cart.addCartItem(values)
-			set(getCartDetails(data))
+			if (data) {
+				set(getCartDetails(data))
+			}
 		} catch (error) {
 			console.error(error)
 			set({ error: true })

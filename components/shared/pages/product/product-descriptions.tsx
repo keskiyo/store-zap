@@ -11,10 +11,8 @@ interface Props {
 }
 
 export const ProductDescriptions: React.FC<Props> = ({ product }) => {
-	const [addCartItem, loading] = useCartStore(state => [
-		state.addCartItem,
-		state.loading,
-	])
+	const addCartItem = useCartStore(state => state.addCartItem)
+	const loading = useCartStore(state => state.loading)
 	const isAvailable = product.count > 0
 
 	const onSubmit = async () => {
@@ -96,7 +94,7 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 				disabled={!isAvailable}
 				className={`font-bold py-3 px-6 rounded-lg transition-colors duration-200 ${
 					isAvailable
-						? 'bg-orange-400 cursor-pointer'
+						? 'bg-orange-400 text-white cursor-pointer'
 						: 'bg-gray-300 text-gray-500'
 				}`}
 			>

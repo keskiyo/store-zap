@@ -54,7 +54,7 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 			>
 				<div className='flex justify-between items-center'>
 					<div className='mr-2'>
-						<p className='texts-gray-400'>
+						<p className='text-gray-400'>
 							Введите свою почту, чтобы войти в свой аккаунт.
 						</p>
 					</div>

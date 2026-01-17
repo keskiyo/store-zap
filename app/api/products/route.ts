@@ -1,41 +1,38 @@
-import { NextResponse } from 'next/server'
 import { prisma } from '@/prisma/prisma-client'
+import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
 	try {
 		const { searchParams } = new URL(request.url)
-		const categoryId = Number(searchParams.get('categoryId'))
+
+		const query = searchParams.get('query') || ''
 		const brands = searchParams.get('brands')
 		const priceFrom = Number(searchParams.get('priceFrom'))
 		const priceTo = Number(searchParams.get('priceTo'))
 
-		if (!categoryId) {
-			return NextResponse.json(
-				{ error: 'Category ID is required' },
-				{ status: 400 }
-			)
+		// categoryId теперь корректно приходит при нажатии "Применить"
+		const categoryId = searchParams.get('categoryId')
+			? Number(searchParams.get('categoryId'))
+			: undefined
+
+		const where: any = {}
+
+		if (categoryId) {
+			where.categoryId = categoryId
 		}
 
-		// Получаем бренды выбранной категории
-		const brandResults = await prisma.product.findMany({
-			where: { categoryId },
-			select: { brand: true },
-			distinct: ['brand'],
-			orderBy: { brand: 'asc' },
-		})
-		const brandMapping = brandResults.map(item => item.brand)
-
-		// Условия для фильтрации
-		const where: any = { categoryId }
+		if (query) {
+			where.OR = [
+				{ name: { contains: query, mode: 'insensitive' } },
+				{ article: { contains: query, mode: 'insensitive' } },
+				{ brand: { contains: query, mode: 'insensitive' } },
+			]
+		}
 
 		if (brands) {
-			const brandNames = brands
-				.split(',')
-				.map(id => brandMapping[Number(id) - 1])
-				.filter(Boolean)
-
-			if (brandNames.length) {
-				where.brand = { in: brandNames }
+			// Превращаем "Brand1,Brand2" в массив для Prisma
+			where.brand = {
+				in: brands.split(',').map(b => b.trim()),
 			}
 		}
 
@@ -56,7 +53,7 @@ export async function GET(request: Request) {
 		console.error('Database error:', error)
 		return NextResponse.json(
 			{ error: 'Internal server error' },
-			{ status: 500 }
+			{ status: 500 },
 		)
 	}
 }

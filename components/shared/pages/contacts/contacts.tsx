@@ -1,10 +1,10 @@
 'use client'
 
-import React from 'react'
-import Image from 'next/image'
-import { cn } from '@/lib/utils'
 import { Title } from '@/components/shared'
-import { YandexMap, Skeleton } from '@/components/ui'
+import { Skeleton, YandexMap } from '@/components/ui'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import React from 'react'
 
 interface Props {
 	className?: string
@@ -72,8 +72,13 @@ export const Contacts: React.FC<Props> = ({ className }) => {
 				size='lg'
 			/>
 
-			<span className='text-[#444444]'> Номер телефона: +7 982 542-72-27</span>
-			<span className='text-[#444444]'>Почта для связи: Autovaz@gmail.com</span>
+			<span className='text-[#444444]'>
+				{' '}
+				Номер телефона: +7 982 542-72-27
+			</span>
+			<span className='text-[#444444]'>
+				Почта для связи: Rus-autovaz@gmail.com
+			</span>
 
 			<div className='flex items-center gap-3'>
 				<Title
@@ -81,13 +86,13 @@ export const Contacts: React.FC<Props> = ({ className }) => {
 					className='text-[#444444]'
 					size='lg'
 				/>
-				{/* <Image
-					src='/forSite/vk.jpg'
+				<Image
+					src='/forSite/tg.jpg'
 					alt='rus.avto'
-					width={44}
-					height={44}
+					width={75}
+					height={75}
 					className='rounded-lg'
-				/> */}
+				/>
 				<Image
 					src='/forSite/whatsapp.jpg'
 					alt='rus.avto'

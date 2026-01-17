@@ -1,5 +1,5 @@
-import React from 'react'
 import { cn } from '@/lib/utils'
+import React from 'react'
 
 interface Props {
 	href: string
@@ -14,7 +14,7 @@ export const FooterLink: React.FC<Props> = ({ href, children, className }) => {
 			className={cn(
 				'hover:underline hover:decoration-orange-500 hover:text-[#ff9100]',
 				'transition-colors duration-200',
-				className
+				className,
 			)}
 		>
 			{children}

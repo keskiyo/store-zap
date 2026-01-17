@@ -9,9 +9,9 @@ import {
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
-import { toast } from 'sonner'
+import toast from 'react-hot-toast'
 
 interface Props {
 	className?: string
@@ -19,14 +19,26 @@ interface Props {
 }
 
 export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
+	const router = useRouter()
 	const [openAuth, setOpenAuth] = React.useState(false)
 	const searchParams = useSearchParams()
 
 	React.useEffect(() => {
+		let toastMassage = ''
+
 		if (searchParams.has('paid')) {
+			toastMassage = 'Заказ успешно оплачен !'
+		}
+
+		if (searchParams.has('verified')) {
+			toastMassage = 'Почта подтверждена !'
+		}
+
+		if (toastMassage) {
 			setTimeout(() => {
-				toast.success('Заказ успешно оплачен !')
-			}, 300)
+				router.replace('/')
+				toast.success(toastMassage, { duration: 3000 })
+			}, 1000)
 		}
 	}, [])
 
@@ -42,7 +54,7 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 								width={65}
 								height={65}
 								priority
-								className='w-12 h-12 lg:w-16 lg:h-16'
+								className='w-15 h-15 lg:w-19 lg:h-19'
 							/>
 							<Link href='/' className='flex flex-col'>
 								<strong className='text-lg lg:text-xl text-orange-500'>
@@ -64,7 +76,6 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 								href='/category'
 								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap flex flex-column align-items-center cursor-pointer font-size-[22px]'
 							>
-								🔧
 								<span>Категории</span>
 							</Link>
 
@@ -72,7 +83,6 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 								href='/contacts'
 								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap flex flex-column align-items-center cursor-pointer font-size-[22px]'
 							>
-								💬
 								<span>Контакты</span>
 							</Link>
 

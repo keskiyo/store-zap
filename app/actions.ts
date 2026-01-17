@@ -105,7 +105,7 @@ export async function createOrder(data: CheckoutFormValues) {
 		await sendEmail(
 			data.email,
 			'Rus-autovaz | Заказ успешно оформлен! Оплатите заказ #' + order.id,
-			payOrderTemplate
+			payOrderTemplate,
 		)
 
 		return paymentUrl
@@ -122,23 +122,20 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
 			throw new Error('Пользователь не найден')
 		}
 
-		const findUser = await prisma.user.findFirst({
-			where: {
-				id: Number(currentUser.id),
-			},
-		})
+		const data: Prisma.UserUpdateInput = {
+			name: body.name,
+			email: body.email,
+		}
+
+		if (body.password) {
+			data.password = hashSync(body.password as string, 10)
+		}
 
 		await prisma.user.update({
 			where: {
 				id: Number(currentUser.id),
 			},
-			data: {
-				name: body.name,
-				email: body.email,
-				password: body.password
-					? hashSync(body.password as string, 10)
-					: findUser?.password,
-			},
+			data,
 		})
 	} catch (err) {
 		console.log('Error [UPDATE_USER]', err)
@@ -147,30 +144,32 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
 }
 
 export async function registerUser(
-	body: Prisma.UserCreateInput & { captchaToken: string }
+	body: Prisma.UserCreateInput,
+	// & { captchaToken: string },
 ) {
 	try {
-		const captchaResponse = await fetch('https://hcaptcha.com/siteverify', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: `response=${body.captchaToken}&secret=${process.env.HCAPTCHA_SECRET_KEY}`,
-		})
+		// const captchaResponse = await fetch('https://hcaptcha.com/siteverify', {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/x-www-form-urlencoded',
+		// 	},
+		// 	body: `response=${body.captchaToken}&secret=${process.env.HCAPTCHA_SECRET_KEY}`,
+		// })
 
-		const captchaResult = await captchaResponse.json()
+		// const captchaResult = await captchaResponse.json()
 
-		if (!captchaResult.success) {
-			throw new Error(
-				'Ошибка проверки безопасности. Пожалуйста, попробуйте еще раз'
-			)
-		}
+		// if (!captchaResult.success) {
+		// 	throw new Error(
+		// 		'Ошибка проверки безопасности. Пожалуйста, попробуйте еще раз',
+		// 	)
+		// }
 
 		const user = await prisma.user.findFirst({
 			where: {
 				email: body.email,
 			},
 		})
+		console.log(user)
 
 		if (user) {
 			if (!user.verified) {
@@ -204,7 +203,7 @@ export async function registerUser(
 		await sendEmail(
 			createdUser.email,
 			'Rus-autovaz | 📝 Подтверждение регистрации',
-			verificationUser
+			verificationUser,
 		)
 	} catch (err) {
 		console.log('Error [CREATE_USER]', err)

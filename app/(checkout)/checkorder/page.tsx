@@ -1,5 +1,6 @@
 'use client'
 
+import { createOrder } from '@/app/actions'
 import {
 	CheckoutAddressForm,
 	CheckoutCardForm,
@@ -7,23 +8,23 @@ import {
 	CheckoutSidebar,
 	Title,
 } from '@/components/shared'
-import { Container } from '@/components/ui'
-import { useSession } from 'next-auth/react'
-import { useCart } from '@/hooks'
-import React from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	checkoutFormSchema,
 	CheckoutFormValues,
 } from '@/components/shared/constants/checkout-form-schema'
+import { Container } from '@/components/ui'
+import { useCart } from '@/hooks'
+import { Api } from '@/services/api-client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useSession } from 'next-auth/react'
+import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { createOrder } from '@/app/actions'
 
 export default function CheckOrder() {
 	const [submitting, setSubmitting] = React.useState(false)
 	const { sum, items, updateItemCount, removeCartItem, loading } = useCart()
-	// const { data: session } = useSession()
+	const { data: session } = useSession()
 
 	const form = useForm<CheckoutFormValues>({
 		resolver: zodResolver(checkoutFormSchema),
@@ -36,6 +37,20 @@ export default function CheckOrder() {
 			comment: '',
 		},
 	})
+
+	React.useEffect(() => {
+		async function fetchUserInfo() {
+			const data = await Api.auth.getMe()
+			const [firstName, lastName] = data.name.split(' ')
+			form.setValue('email', data.email)
+			form.setValue('firstName', firstName)
+			form.setValue('lastName', lastName)
+		}
+
+		if (session) {
+			fetchUserInfo()
+		}
+	}, [session])
 
 	const onSubmit = async (data: CheckoutFormValues) => {
 		try {
@@ -62,7 +77,7 @@ export default function CheckOrder() {
 	const onClickCountButton = (
 		id: number,
 		count: number,
-		type: 'plus' | 'minus'
+		type: 'plus' | 'minus',
 	) => {
 		const newCount = type === 'plus' ? count + 1 : count - 1
 		updateItemCount(id, newCount)
@@ -86,16 +101,27 @@ export default function CheckOrder() {
 							/>
 
 							<CheckoutPersonalForm
-								className={loading ? 'opacity-40 pointer-events-none' : ''}
+								className={
+									loading
+										? 'opacity-40 pointer-events-none'
+										: ''
+								}
 							/>
 
 							<CheckoutAddressForm
-								className={loading ? 'opacity-40 pointer-events-none' : ''}
+								className={
+									loading
+										? 'opacity-40 pointer-events-none'
+										: ''
+								}
 							/>
 						</div>
 
 						<div className='w-[450px]'>
-							<CheckoutSidebar sum={sum} loading={loading || submitting} />
+							<CheckoutSidebar
+								sum={sum}
+								loading={loading || submitting}
+							/>
 						</div>
 					</div>
 				</form>

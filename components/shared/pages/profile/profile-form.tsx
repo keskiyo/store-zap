@@ -4,8 +4,8 @@ import { updateUserInfo } from '@/app/actions'
 import { FormInput } from '@/components/shared'
 import { Title } from '@/components/shared/pages/another/title'
 import {
-	formRegisterSchema,
-	TRegisterSchema,
+	fromUpdateSchema,
+	TUpdateSchema,
 } from '@/components/shared/pages/auth-modal/forms/schemas'
 import { Button, Container } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -21,21 +21,22 @@ interface Props {
 
 export const ProfileForm: React.FC<Props> = ({ data }) => {
 	const form = useForm({
-		resolver: zodResolver(formRegisterSchema),
+		resolver: zodResolver(fromUpdateSchema),
 		defaultValues: {
 			email: data.email,
 			name: data.name,
 			password: '',
 			confirmPassword: '',
 		},
+		mode: 'onChange',
 	})
 
-	const onSubmit = async (data: TRegisterSchema) => {
+	const onSubmit = async (data: TUpdateSchema) => {
 		try {
 			await updateUserInfo({
 				email: data.email,
 				name: data.name,
-				password: data.password,
+				password: data.password || undefined,
 			})
 
 			toast.success('Данные обновлены', {
@@ -54,27 +55,29 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
 	}
 
 	return (
-		<Container className='my-10 flex justify-center'>
-			<Title text='Профиль пользователя' size='md' className='font-bold' />
+		<Container className='my-10'>
+			<Title
+				text='Профиль пользователя'
+				size='md'
+				className='font-bold flex justify-center'
+			/>
 			<FormProvider {...form}>
 				<form
 					className='flex flex-col gap-5 w-96 mt-10'
 					onSubmit={form.handleSubmit(onSubmit)}
 				>
 					<FormInput name='email' label='E-Mail' required />
-					<FormInput name='fullName' label='Полное имя' required />
+					<FormInput name='name' label='Полное имя' required />
 
 					<FormInput
 						type='password'
 						name='password'
 						label='Новый пароль'
-						required
 					/>
 					<FormInput
 						type='password'
 						name='confirmPassword'
 						label='Повторите пароль'
-						required
 					/>
 
 					<Button
@@ -89,7 +92,7 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
 						onClick={onClickSignOut}
 						variant='secondary'
 						disabled={form.formState.isSubmitting}
-						className='text-base gap-2 h-10 p-2 flex-1 bg-orange-100 rounded-4xl cursor-pointer text-orange-400'
+						className='text-base gap-2 h-10 p-2 flex-1 border-2 border-orange-400 rounded-4xl cursor-pointer text-orange-400'
 						type='button'
 					>
 						Выйти

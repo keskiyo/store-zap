@@ -5,14 +5,14 @@ import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(req: any, res: any) {
+export async function GET(req: Request) {
 	try {
-		const user = await getServerSession(req, res, authOptions)
+		const user = await getServerSession(authOptions)
 
 		if (!user) {
 			return NextResponse.json(
 				{ message: 'Вы не авторизованы' },
-				{ status: 401 }
+				{ status: 401 },
 			)
 		}
 
@@ -32,7 +32,7 @@ export async function GET(req: any, res: any) {
 		console.log(error)
 		return NextResponse.json(
 			{ message: '[USER_GET] Server error' },
-			{ status: 500 }
+			{ status: 500 },
 		)
 	}
 }

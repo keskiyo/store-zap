@@ -4,33 +4,37 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function PATCH(
 	req: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> },
 ) {
 	try {
-		const id = Number(params.id)
+		const { id } = await params
+		const numberID = Number(id)
 		const data = (await req.json()) as { count: number }
 		const token = req.cookies.get('cartToken')?.value
 
 		if (!token) {
 			return NextResponse.json(
 				{ error: 'Токен корзины не найден' },
-				{ status: 400 }
+				{ status: 400 },
 			)
 		}
 
 		const cartProduct = await prisma.cartProduct.findFirst({
 			where: {
-				id,
+				id: numberID,
 			},
 		})
 
 		if (!cartProduct) {
-			return NextResponse.json({ error: 'Товар не найден' }, { status: 400 })
+			return NextResponse.json(
+				{ error: 'Товар не найден' },
+				{ status: 400 },
+			)
 		}
 
 		await prisma.cartProduct.update({
 			where: {
-				id,
+				id: numberID,
 			},
 			data: {
 				count: data.count,
@@ -44,39 +48,43 @@ export async function PATCH(
 		console.log('CART_PATCH error', error)
 		return NextResponse.json(
 			{ error: 'Ошибка обновления корзины' },
-			{ status: 500 }
+			{ status: 500 },
 		)
 	}
 }
 
 export async function DELETE(
 	req: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> },
 ) {
 	try {
-		const id = Number(params.id)
+		const { id } = await params
+		const numberID = Number(id)
 		const token = req.cookies.get('cartToken')?.value
 
 		if (!token) {
 			return NextResponse.json(
 				{ error: 'Токен корзины не найден' },
-				{ status: 400 }
+				{ status: 400 },
 			)
 		}
 
 		const cartProduct = await prisma.cartProduct.findFirst({
 			where: {
-				id,
+				id: numberID,
 			},
 		})
 
 		if (!cartProduct) {
-			return NextResponse.json({ error: 'Товар не найден' }, { status: 400 })
+			return NextResponse.json(
+				{ error: 'Товар не найден' },
+				{ status: 400 },
+			)
 		}
 
 		await prisma.cartProduct.delete({
 			where: {
-				id,
+				id: numberID,
 			},
 		})
 
@@ -87,7 +95,7 @@ export async function DELETE(
 		console.log('CART_DELETE error', error)
 		return NextResponse.json(
 			{ error: 'Ошибка удаления товара из корзины' },
-			{ status: 500 }
+			{ status: 500 },
 		)
 	}
 }

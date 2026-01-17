@@ -17,7 +17,10 @@ export async function POST(req: NextRequest) {
 		})
 
 		if (!order) {
-			return NextResponse.json({ message: 'Заказ не найден' }, { status: 404 })
+			return NextResponse.json(
+				{ message: 'Заказ не найден' },
+				{ status: 404 },
+			)
 		}
 
 		const isSucceeded = data.object.status === 'succeeded'
@@ -27,7 +30,9 @@ export async function POST(req: NextRequest) {
 				id: order.id,
 			},
 			data: {
-				status: isSucceeded ? OrderStatus.SUCCEEDED : OrderStatus.CANCELLED,
+				status: isSucceeded
+					? OrderStatus.SUCCEEDED
+					: OrderStatus.CANCELLED,
 			},
 		})
 
@@ -42,10 +47,11 @@ export async function POST(req: NextRequest) {
 			await sendEmail(
 				order.email,
 				'Rus-autovaz | Ваш заказ успешно оформлен !',
-				successOrderTemplate
+				successOrderTemplate,
 			)
 		} else {
 			// Отмена платежа
+			return NextResponse.json({ message: 'Заказ отменен' })
 		}
 
 		return NextResponse.json(data)
@@ -53,7 +59,7 @@ export async function POST(req: NextRequest) {
 		console.error('[CHECKOUT_CALLBACK] error', error)
 		return NextResponse.json(
 			{ message: 'Не удалось получить данные оплаты' },
-			{ status: 500 }
+			{ status: 500 },
 		)
 	}
 }

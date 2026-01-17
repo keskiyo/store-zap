@@ -17,7 +17,16 @@ interface ReturnProps {
 	sum: number
 }
 
-export const getCartDetails = (data: CartDTO): ReturnProps => {
+export const getCartDetails = (
+	data: CartDTO | null | undefined,
+): ReturnProps => {
+	if (!data || !data.items) {
+		return {
+			items: [],
+			sum: 0,
+		}
+	}
+
 	const items = data.items.map(item => ({
 		id: item.id,
 		count: item.count,

@@ -1,12 +1,12 @@
 'use client'
 
+import { cn } from '@/lib/utils'
 import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { IMaskInput } from 'react-imask'
-import { ErrorText } from '../another/errortext'
 import { ClearButton } from '../another/clear-button'
+import { ErrorText } from '../another/errortext'
 import { RequiredSymbol } from '../another/required-symbol'
-import { cn } from '@/lib/utils'
 
 interface Props {
 	name: string
@@ -53,10 +53,10 @@ export const PhoneInput: React.FC<Props> = ({
 						htmlFor={name}
 						onClick={handleLabelClick}
 						className={cn(
-							'absolute left-3 px-1 bg-white text-gray-500 font-medium transition-all duration-200',
+							'absolute left-3 px-1 bg-white text-gray-500 font-medium transition-all duration-200 cursor-pointer',
 							shouldLabelFloat
 								? '-top-2 text-[13px] text-orange-500'
-								: 'top-1/2 -translate-y-1/2 text-[15px]'
+								: 'top-1/2 -translate-y-1/2 text-[15px]',
 						)}
 					>
 						{label} {required && <RequiredSymbol />}
@@ -82,7 +82,9 @@ export const PhoneInput: React.FC<Props> = ({
 					)}
 				/>
 
-				{value && value.length > 0 && <ClearButton onClick={handleClear} />}
+				{value && value.length > 0 && (
+					<ClearButton onClick={handleClear} />
+				)}
 			</div>
 
 			{errorText && <ErrorText text={errorText} className='mt-2' />}

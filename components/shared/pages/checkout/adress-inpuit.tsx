@@ -10,7 +10,7 @@ import { useFormContext } from 'react-hook-form'
 
 const AddressSuggestions = dynamic(
 	() => import('react-dadata').then(mod => mod.AddressSuggestions),
-	{ ssr: false }
+	{ ssr: false },
 )
 
 interface Props {
@@ -67,7 +67,7 @@ export const AddressInput: React.FC<Props> = ({
 							'absolute left-3 px-1 bg-white text-gray-500 font-medium transition-all duration-200',
 							shouldLabelFloat
 								? '-top-2 text-[13px] text-orange-500'
-								: 'top-1/2 -translate-y-1/2 text-[15px]'
+								: 'top-1/2 -translate-y-1/2 text-[15px]',
 						)}
 					>
 						{label} {required && <RequiredSymbol />}
@@ -77,7 +77,9 @@ export const AddressInput: React.FC<Props> = ({
 					token='5fc0fb0cbe1bfcff969ca8901d391effc6210510'
 					value={inputValue}
 					onChange={data =>
-						setValue(name, data?.value || '', { shouldValidate: true })
+						setValue(name, data?.value || '', {
+							shouldValidate: true,
+						})
 					}
 					inputProps={{
 						placeholder: placeholder || 'Введите адрес',
@@ -90,12 +92,12 @@ export const AddressInput: React.FC<Props> = ({
 					{...props}
 				/>
 
-				{value && value.length > 0 && <ClearButton onClick={handleClear} />}
+				{value && value.length > 0 && (
+					<ClearButton onClick={handleClear} />
+				)}
 			</div>
 
 			{errorText && <ErrorText text={errorText} className='mt-2' />}
 		</div>
 	)
 }
-
-// DaData для адресов сайт

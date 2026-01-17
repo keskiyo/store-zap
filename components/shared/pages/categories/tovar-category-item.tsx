@@ -1,8 +1,8 @@
-import React from 'react'
-import Link from 'next/link'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui'
+import { cn } from '@/lib/utils'
 import { Plus } from 'lucide-react'
+import Link from 'next/link'
+import React from 'react'
 
 interface Props {
 	id: number
@@ -27,7 +27,7 @@ export const TovarItem: React.FC<Props> = ({
 		<div
 			className={cn(
 				'w-full max-w-4xl mx-auto bg-white rounded-md border border-gray-300 p-4 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1',
-				className
+				className,
 			)}
 		>
 			<div className='flex flex-col sm:flex-row gap-4'>
@@ -71,7 +71,9 @@ export const TovarItem: React.FC<Props> = ({
 								key={label}
 								className='flex items-center gap-2 text-gray-400 text-sm'
 							>
-								<span className='w-16 flex-shrink-0'>{label}</span>
+								<span className='w-16 flex-shrink-0'>
+									{label}
+								</span>
 								<span className='font-semibold text-gray-600 truncate'>
 									{value}
 								</span>
@@ -81,9 +83,11 @@ export const TovarItem: React.FC<Props> = ({
 
 					{/* Цена и кнопка */}
 					<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-auto'>
-						<div className='text-2xl font-bold text-orange-400'>{price} ₽</div>
+						<div className='text-2xl font-bold text-orange-400'>
+							{price} ₽
+						</div>
 						<Link href={`/product/${id}`}>
-							<Button className='bg-orange-400 rounded-md px-4 py-2 font-medium cursor-pointer whitespace-nowrap'>
+							<Button className='bg-orange-400 rounded-md text-white px-4 py-2 font-medium cursor-pointer whitespace-nowrap'>
 								<Plus size={20} className='mr-1' />
 								Добавить
 							</Button>

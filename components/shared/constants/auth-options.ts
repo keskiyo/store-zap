@@ -1,30 +1,24 @@
-import { AuthOptions } from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
-import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from '@/prisma/prisma-client'
 import { compare, hashSync } from 'bcrypt'
-import { UserRole } from '@prisma/client'
+import { AuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions: AuthOptions = {
 	providers: [
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID || '',
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-			profile(profile) {
-				return {
-					id: profile.id,
-					name: profile.name || profile.login,
-					email: profile.email,
-					image: profile.picture,
-					role: 'USER' as UserRole,
-				}
-			},
 		}),
 		CredentialsProvider({
 			name: 'credentials',
 			credentials: {
 				email: { label: 'Email', type: 'email', required: true },
-				password: { label: 'Password', type: 'password', required: true },
+				password: {
+					label: 'Password',
+					type: 'password',
+					required: true,
+				},
 			},
 			async authorize(credentials) {
 				if (!credentials) {
@@ -43,7 +37,7 @@ export const authOptions: AuthOptions = {
 
 				const isPasswordValid = await compare(
 					credentials.password,
-					findUser.password
+					findUser.password,
 				)
 
 				if (!isPasswordValid) {
