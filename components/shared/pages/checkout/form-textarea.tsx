@@ -41,7 +41,7 @@ export const FormTextarea: React.FC<Props> = ({
 
 	return (
 		<div className={cn('relative w-full', className)}>
-			<div className='relative border border-gray-300 rounded-md bg-white transition-all duration-300 focus-within:border-orange-500'>
+			<div className='relative border border-gray-600 rounded-md bg-white transition-all duration-300 focus-within:border-orange-500'>
 				{label && (
 					<label
 						className={cn(

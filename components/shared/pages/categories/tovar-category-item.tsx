@@ -83,7 +83,7 @@ export const TovarItem: React.FC<Props> = ({
 					<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-auto'>
 						<div className='text-2xl font-bold text-orange-400'>{price} ₽</div>
 						<Link href={`/product/${id}`}>
-							<Button className='bg-orange-500 text-white rounded-md px-4 py-2 font-medium cursor-pointer whitespace-nowrap'>
+							<Button className='bg-orange-400 rounded-md px-4 py-2 font-medium cursor-pointer whitespace-nowrap'>
 								<Plus size={20} className='mr-1' />
 								Добавить
 							</Button>

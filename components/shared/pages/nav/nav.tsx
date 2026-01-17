@@ -1,16 +1,16 @@
 'use client'
 
-import React from 'react'
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import Image from 'next/image'
 import {
 	AuthModal,
 	NavMobile,
 	ProfileButton,
 	TopKatalog,
 } from '@/components/shared'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import React from 'react'
 import { toast } from 'sonner'
 
 interface Props {
@@ -62,21 +62,28 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 						<div className='flex items-center gap-4 flex-shrink-0 min-w-[300px] justify-end'>
 							<Link
 								href='/category'
-								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap text-[17px]'
+								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap flex flex-column align-items-center cursor-pointer font-size-[22px]'
 							>
-								Категории
+								🔧
+								<span>Категории</span>
 							</Link>
 
 							<Link
 								href='/contacts'
-								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap text-[17px]'
+								className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 whitespace-nowrap flex flex-column align-items-center cursor-pointer font-size-[22px]'
 							>
-								Контакты
+								💬
+								<span>Контакты</span>
 							</Link>
 
-							<AuthModal open={openAuth} onClose={() => setOpenAuth(false)} />
+							<AuthModal
+								open={openAuth}
+								onClose={() => setOpenAuth(false)}
+							/>
 
-							<ProfileButton onClickSingIn={() => setOpenAuth(true)} />
+							<ProfileButton
+								onClickSingIn={() => setOpenAuth(true)}
+							/>
 						</div>
 					</div>
 					<NavMobile />

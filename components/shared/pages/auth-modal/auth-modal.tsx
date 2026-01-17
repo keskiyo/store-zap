@@ -42,7 +42,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 							})
 						}
 						type='button'
-						className='gap-2 h-10 p-2 flex-1 border-2 hover:border-orange-400 rounded-4xl cursor-pointer'
+						className='gap-2 h-10 p-2 flex-1 bg-orange-200 rounded-4xl cursor-pointer text-orange-400 border-orange-400'
 					>
 						<img
 							className='w-5 h-5'
@@ -52,10 +52,9 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 					</Button>
 				</div>
 				<Button
-					variant='outline'
 					onClick={onSwitchType}
 					type='button'
-					className='h-12 cursor-pointer border-2 hover:border-orange-400 rounded-4xl'
+					className='h-12 cursor-pointer bg-orange-200 rounded-4xl text-orange-400 border-orange-400'
 				>
 					{type !== 'login' ? 'Войти' : 'Регистрация'}
 				</Button>

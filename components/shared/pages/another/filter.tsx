@@ -95,7 +95,7 @@ export const Filter: React.FC<Props> = ({ className }) => {
 				<div className='flex justify-center gap-4 px-4'>
 					<Button
 						onClick={handleApply}
-						className='bg-orange-500 hover:bg-orange-400 text-white border-orange-500 hover:border-orange-400 transition-colors cursor-pointer px-6 py-2'
+						className='bg-orange-500 hover:bg-orange-400 border-orange-500 hover:border-orange-400 transition-colors cursor-pointer px-6 py-2'
 					>
 						Применить
 					</Button>

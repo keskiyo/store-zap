@@ -146,8 +146,26 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
 	}
 }
 
-export async function registerUser(body: Prisma.UserCreateInput) {
+export async function registerUser(
+	body: Prisma.UserCreateInput & { captchaToken: string }
+) {
 	try {
+		const captchaResponse = await fetch('https://hcaptcha.com/siteverify', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: `response=${body.captchaToken}&secret=${process.env.HCAPTCHA_SECRET_KEY}`,
+		})
+
+		const captchaResult = await captchaResponse.json()
+
+		if (!captchaResult.success) {
+			throw new Error(
+				'Ошибка проверки безопасности. Пожалуйста, попробуйте еще раз'
+			)
+		}
+
 		const user = await prisma.user.findFirst({
 			where: {
 				email: body.email,
@@ -179,17 +197,17 @@ export async function registerUser(body: Prisma.UserCreateInput) {
 			},
 		})
 
+		const verificationUser = await VerificationUserTemplate({
+			code,
+		})
+
 		await sendEmail(
 			createdUser.email,
 			'Rus-autovaz | 📝 Подтверждение регистрации',
-			VerificationUserTemplate({
-				code,
-			})
+			verificationUser
 		)
 	} catch (err) {
 		console.log('Error [CREATE_USER]', err)
 		throw err
 	}
 }
-
-// 21 35

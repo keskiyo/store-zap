@@ -15,6 +15,9 @@ export const formRegisterSchema = formLoginSchema
 	.extend({
 		name: z.string().min(2, { message: 'Введите имя и фамилию' }),
 		confirmPassword: passwordSchema,
+		captchaToken: z
+			.string()
+			.min(1, 'Пожалуйста, пройдите проверку безопасности'),
 	})
 	.refine(data => data.password === data.confirmPassword, {
 		message: 'Пароли не совпадают',

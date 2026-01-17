@@ -4,11 +4,10 @@ import { ProductWithRelations } from '@/@types/prisma'
 import { Title } from '@/components/shared'
 import { Button } from '@/components/ui'
 import { useCartStore } from '@/store/cart'
-import { ProductSpecification } from '@prisma/client'
 import toast from 'react-hot-toast'
 
 interface Props {
-	product: ProductWithRelations & { specifications: ProductSpecification[] }
+	product: ProductWithRelations
 }
 
 export const ProductDescriptions: React.FC<Props> = ({ product }) => {
@@ -32,7 +31,11 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 	}
 	return (
 		<>
-			<Title text={product.name} size='md' className='font-extrabold mb-2' />
+			<Title
+				text={product.name}
+				size='md'
+				className='font-extrabold mb-2'
+			/>
 
 			<p className='text-gray-600 mb-2 text-1xl px-3'>
 				<span className='font-medium'>Бренд:</span> {product.brand} |{' '}
@@ -41,12 +44,17 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 
 			{product.specifications.length > 0 && (
 				<div className='mb-6'>
-					<h3 className='font-semibold text-lg mb-3'>Характеристики</h3>
+					<h3 className='font-semibold text-lg mb-3'>
+						Характеристики
+					</h3>
 					<div className='overflow-hidden rounded-xl border border-gray-200'>
 						<table className='w-[400px] text-sm'>
 							<tbody>
 								{product.specifications.map(spec => (
-									<tr key={spec.id} className='border-b last:border-0'>
+									<tr
+										key={spec.id}
+										className='border-b last:border-0'
+									>
 										<td className='bg-gray-50 px-4 py-2 text-gray-600 font-medium w-1/3'>
 											{spec.key}
 										</td>
@@ -69,7 +77,9 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 							: 'bg-red-100 text-red-600'
 					}`}
 				>
-					{isAvailable ? `В наличии: ${product.count} шт.` : 'Нет в наличии'}
+					{isAvailable
+						? `В наличии: ${product.count} шт.`
+						: 'Нет в наличии'}
 				</span>
 			</div>
 
@@ -86,7 +96,7 @@ export const ProductDescriptions: React.FC<Props> = ({ product }) => {
 				disabled={!isAvailable}
 				className={`font-bold py-3 px-6 rounded-lg transition-colors duration-200 ${
 					isAvailable
-						? 'bg-orange-500 hover:bg-orange-400 text-white cursor-pointer'
+						? 'bg-orange-400 cursor-pointer'
 						: 'bg-gray-300 text-gray-500'
 				}`}
 			>

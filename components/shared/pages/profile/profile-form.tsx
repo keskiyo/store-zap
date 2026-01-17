@@ -79,7 +79,7 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
 
 					<Button
 						disabled={form.formState.isSubmitting}
-						className='text-base mt-10'
+						className='text-base mt-10 gap-2 h-10 p-2 flex-1 bg-orange-400 rounded-4xl cursor-pointer text-white'
 						type='submit'
 					>
 						Сохранить
@@ -89,7 +89,7 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
 						onClick={onClickSignOut}
 						variant='secondary'
 						disabled={form.formState.isSubmitting}
-						className='text-base'
+						className='text-base gap-2 h-10 p-2 flex-1 bg-orange-100 rounded-4xl cursor-pointer text-orange-400'
 						type='button'
 					>
 						Выйти

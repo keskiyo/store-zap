@@ -1,14 +1,13 @@
 'use client'
 
-import { Title } from '@/components/shared/pages/another/title'
-import { formLoginSchema, TLoginSchema } from './schemas'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 import { FormInput } from '@/components/shared/pages/checkout/form-input'
 import { Button } from '@/components/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
+import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { formLoginSchema, TLoginSchema } from './schemas'
 
 interface Props {
 	onClose?: VoidFunction
@@ -55,7 +54,6 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 			>
 				<div className='flex justify-between items-center'>
 					<div className='mr-2'>
-						<Title text='Вход' size='sm' className='font-bold' />
 						<p className='texts-gray-400'>
 							Введите свою почту, чтобы войти в свой аккаунт.
 						</p>
@@ -69,11 +67,16 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 				</div>
 
 				<FormInput name='email' label='E-Mail' required />
-				<FormInput name='password' label='Пароль' type='password' required />
+				<FormInput
+					name='password'
+					label='Пароль'
+					type='password'
+					required
+				/>
 
 				<Button
 					loading={form.formState.isSubmitting}
-					className='h-12 text-base cursor-pointer rounded-4xl bg-orange-400 text-white hover:bg-orange-300'
+					className='h-12 text-base cursor-pointer rounded-4xl bg-orange-400 text-white'
 					type='submit'
 				>
 					Войти
@@ -82,5 +85,3 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 		</FormProvider>
 	)
 }
-
-// сделать плавный подъем текста внутри input при фокусе

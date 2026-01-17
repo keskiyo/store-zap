@@ -41,3 +41,5 @@ export async function GET(req: NextRequest) {
 		console.log('[VERIFY_GET] Server error', error)
 	}
 }
+
+// 21 57

@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
+import { AuthModal, ProfileButton, TopKatalog } from '@/components/shared'
+import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../../../ui'
-import { User, Menu, X } from 'lucide-react'
-import { TopKatalog } from '@/components/shared'
 
 interface Props {
 	className?: string
@@ -14,6 +14,7 @@ interface Props {
 
 export const NavMobile: React.FC<Props> = ({ className, hasSearch = true }) => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+	const [openAuth, setOpenAuth] = React.useState(false)
 
 	// Закрытие мобильного меню при изменении размера окна
 	useEffect(() => {
@@ -42,7 +43,9 @@ export const NavMobile: React.FC<Props> = ({ className, hasSearch = true }) => {
 						className='w-20 h-20'
 					/>
 					<Link href='/' className='flex flex-col'>
-						<strong className='text-3xl text-orange-500'>Rus-autovaz</strong>
+						<strong className='text-3xl text-orange-500'>
+							Rus-autovaz
+						</strong>
 						<p className='text-1xl text-gray-500'>Автозапчасти</p>
 					</Link>
 				</div>
@@ -53,7 +56,11 @@ export const NavMobile: React.FC<Props> = ({ className, hasSearch = true }) => {
 						className='lg:hidden flex items-center p-2 cursor-pointer'
 						onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
 					>
-						{isMobileMenuOpen ? <X size={40} /> : <Menu size={40} />}
+						{isMobileMenuOpen ? (
+							<X size={40} />
+						) : (
+							<Menu size={40} />
+						)}
 					</Button>
 				</div>
 			</div>
@@ -74,7 +81,7 @@ export const NavMobile: React.FC<Props> = ({ className, hasSearch = true }) => {
 							className='font-semibold text-gray-700 hover:text-orange-500 transition-colors duration-200 py-2 w-full text-center border-gray-500 outline text-base'
 							onClick={() => setIsMobileMenuOpen(false)}
 						>
-							Каталог
+							Категории
 						</Link>
 						<Link
 							href='/contacts'
@@ -83,13 +90,14 @@ export const NavMobile: React.FC<Props> = ({ className, hasSearch = true }) => {
 						>
 							Контакты
 						</Link>
-						<Button
-							variant='outline'
-							className='flex items-center gap-2 justify-center border-gray-500 hover:border-orange-500 hover:text-orange-500 transition-all duration-200 cursor-pointer w-full text-center text-base'
-						>
-							<User size={18} />
-							<span>Войти</span>
-						</Button>
+						<AuthModal
+							open={openAuth}
+							onClose={() => setOpenAuth(false)}
+						/>
+
+						<ProfileButton
+							onClickSingIn={() => setOpenAuth(true)}
+						/>
 					</div>
 				</div>
 			)}
