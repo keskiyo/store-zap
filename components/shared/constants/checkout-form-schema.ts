@@ -13,14 +13,21 @@ export const checkoutFormSchema = z.object({
 		},
 		{
 			message: 'Введите корректную почту',
-		}
+		},
 	),
 	phone: z
 		.string()
-		.min(11, { message: 'Введите корректный номер телефона' })
-		.refine(phone => /^7\d{10}$/.test(phone), {
-			message: 'Номер должен начинаться с 7 и содержать 11 цифр',
-		}),
+		.min(10, { message: 'Номер телефона обязателен' })
+		.refine(
+			phone => {
+				if (phone.length < 11) return true
+				return /^7\d{10}$/.test(phone)
+			},
+			{
+				message:
+					'Номер должен начинаться с 7 и содержать ровно 11 цифр',
+			},
+		),
 	address: z.string().min(5, { message: 'Введите корректный адрес' }),
 	comment: z.string().optional(),
 })

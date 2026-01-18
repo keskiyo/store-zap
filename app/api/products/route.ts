@@ -10,7 +10,6 @@ export async function GET(request: Request) {
 		const priceFrom = Number(searchParams.get('priceFrom'))
 		const priceTo = Number(searchParams.get('priceTo'))
 
-		// categoryId теперь корректно приходит при нажатии "Применить"
 		const categoryId = searchParams.get('categoryId')
 			? Number(searchParams.get('categoryId'))
 			: undefined
@@ -30,7 +29,6 @@ export async function GET(request: Request) {
 		}
 
 		if (brands) {
-			// Превращаем "Brand1,Brand2" в массив для Prisma
 			where.brand = {
 				in: brands.split(',').map(b => b.trim()),
 			}

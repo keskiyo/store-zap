@@ -27,7 +27,7 @@ export const useFilters = (): ReturnProps => {
 	const router = useRouter()
 	const pathname = usePathname()
 
-	// Инициализация фильтров из URL (только при монтировании)
+	// Инициализация фильтров из URL
 	const getInitialValues = React.useCallback(() => {
 		const brands =
 			searchParams.get('brands')?.split(',').filter(Boolean) || []
@@ -116,7 +116,7 @@ export const useFilters = (): ReturnProps => {
 	)
 
 	return {
-		selectedBrands: tempSelectedBrands, // Для совместимости с UI
+		selectedBrands: tempSelectedBrands,
 		prices: tempPrices,
 		tempSelectedBrands,
 		tempPrices,

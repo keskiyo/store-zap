@@ -12,36 +12,107 @@ export async function GET(req: NextRequest) {
 		const token = req.cookies.get('cartToken')?.value
 		const session = await getServerSession(authOptions)
 
-		const conditions: any[] = []
+		let cart
 
-		if (token) {
-			conditions.push({ token })
-		}
-
+		// Сценарий 1: Пользователь авторизован
 		if (session?.user?.id) {
-			conditions.push({ userId: Number(session.user.id) })
-		}
-
-		if (conditions.length === 0) {
-			return NextResponse.json({ items: [], sum: 0 })
-		}
-
-		const userCart = await prisma.cart.findFirst({
-			where: {
-				OR: conditions,
-			},
-			include: {
-				items: {
-					orderBy: { createdAt: 'desc' },
-					include: { product: true },
+			cart = await prisma.cart.findFirst({
+				where: {
+					userId: Number(session.user.id),
 				},
-			},
-		})
+				include: {
+					items: {
+						include: { product: true },
+					},
+				},
+			})
 
-		const response = NextResponse.json(userCart)
+			// Если корзины нет, создаем новую
+			if (!cart) {
+				const newToken = crypto.randomUUID()
+				cart = await prisma.cart.create({
+					data: {
+						userId: Number(session.user.id),
+						token: newToken,
+					},
+					include: {
+						items: {
+							include: { product: true },
+						},
+					},
+				})
+			} else if (!cart.token) {
+				// Если токен пропал, обновляем
+				await prisma.cart.update({
+					where: { id: cart.id },
+					data: { token: crypto.randomUUID() },
+				})
+			}
 
-		if (userCart && userCart.token) {
-			response.cookies.set('cartToken', userCart.token)
+			// ОБЪЕДИНЕНИЕ КОРЗИН
+			if (token) {
+				const oldCart = await prisma.cart.findFirst({
+					where: { token },
+					include: {
+						items: { include: { product: true } },
+					},
+				})
+
+				if (
+					oldCart &&
+					oldCart.id !== cart.id &&
+					oldCart.items.length > 0
+				) {
+					// Переносим товары
+					for (const oldItem of oldCart.items) {
+						const existingItem = cart.items.find(
+							item => item.productId === oldItem.productId,
+						)
+
+						if (existingItem) {
+							await prisma.cartProduct.update({
+								where: { id: existingItem.id },
+								data: {
+									count: existingItem.count + oldItem.count,
+								},
+							})
+						} else {
+							await prisma.cartProduct.update({
+								where: { id: oldItem.id },
+								data: { cartId: cart.id },
+							})
+						}
+					}
+
+					// Удаляем старую корзину
+					await prisma.cart.delete({ where: { id: oldCart.id } })
+
+					// Пересчитываем сумму через нашу функцию и обновляем переменную cart
+					cart = await updateCartTotalSum(cart.id)
+				}
+			}
+		}
+		// Сценарий 2: Гость
+		else {
+			if (!token) {
+				return NextResponse.json({ items: [], sum: 0 })
+			}
+
+			cart = await prisma.cart.findFirst({
+				where: { token },
+				include: {
+					items: {
+						orderBy: { createdAt: 'desc' },
+						include: { product: true },
+					},
+				},
+			})
+		}
+
+		const response = NextResponse.json(cart)
+
+		if (cart?.token) {
+			response.cookies.set('cartToken', cart.token)
 		}
 
 		return response
@@ -57,13 +128,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
 	try {
 		let token = req.cookies.get('cartToken')?.value
-
-		if (!token) {
-			token = crypto.randomUUID()
-		}
-
-		const userCart = await findOrCreateCart(token)
-
+		const session = await getServerSession(authOptions)
 		const data = (await req.json()) as CreateCartItemValues
 
 		const product = await prisma.product.findUnique({
@@ -77,38 +142,63 @@ export async function POST(req: NextRequest) {
 			)
 		}
 
+		let cart
+
+		// ЕСЛИ ПОЛЬЗОВАТЕЛЬ АВТОРИЗОВАН
+		if (session?.user?.id) {
+			cart = await prisma.cart.findFirst({
+				where: { userId: Number(session.user.id) },
+			})
+
+			if (!cart) {
+				const newToken = crypto.randomUUID()
+				cart = await prisma.cart.create({
+					data: {
+						userId: Number(session.user.id),
+						token: newToken,
+					},
+				})
+				token = newToken
+			}
+		}
+		// ЕСЛИ ПОЛЬЗОВАТЕЛЬ ГОСТЬ (Упрощаем код через findOrCreateCart)
+		else {
+			if (!token) {
+				token = crypto.randomUUID()
+			}
+
+			// Используем вашу функцию для поиска или создания корзины гостя
+			cart = await findOrCreateCart(token)
+		}
+
 		const findCartProduct = await prisma.cartProduct.findFirst({
 			where: {
-				cartId: userCart.id,
+				cartId: cart.id,
 				productId: data.productId,
 			},
 		})
 
-		// Если товар есть в корзине увеличиваем количество
 		if (findCartProduct) {
 			await prisma.cartProduct.update({
-				where: {
-					id: findCartProduct.id,
-				},
-				data: {
-					count: findCartProduct.count + 1,
-				},
+				where: { id: findCartProduct.id },
+				data: { count: findCartProduct.count + 1 },
 			})
 		} else {
-			// Если товара в корзине нет создаем его
 			await prisma.cartProduct.create({
 				data: {
-					cartId: userCart.id,
+					cartId: cart.id,
 					productId: data.productId,
 					count: 1,
 				},
 			})
 		}
 
-		const updateUserCart = await updateCartTotalSum(token)
-		const resp = NextResponse.json(updateUserCart)
-		resp.cookies.set('cartToken', token)
-		return resp
+		// Пересчитываем сумму и получаем обновленную корзину
+		const updatedCart = await updateCartTotalSum(cart.id)
+
+		const response = NextResponse.json(updatedCart)
+		response.cookies.set('cartToken', token || updatedCart.token)
+		return response
 	} catch (error) {
 		console.error('POST_CART error', error)
 		return NextResponse.json(

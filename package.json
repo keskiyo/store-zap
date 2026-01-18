@@ -1,23 +1,26 @@
 {
 	"name": "zap-store",
 	"version": "0.1.0",
+	"type": "module",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"build": "next build --webpack",
 		"start": "next start",
 		"lint": "next lint",
-		"prisma:push": "prisma db push",
-		"prisma:studio": "prisma studio",
-		"prisma:seed": "prisma db seed",
-		"prisma:reset": "prisma migrate reset"
+		"prisma:migrate": "prisma migrate dev",
+		"prisma:generate": "prisma generate",
+		"prisma:push": "prisma db push"
 	},
 	"prisma": {
-		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
+		"schema": "prisma/schema.prisma",
+		"config": "prisma.config.ts"
 	},
 	"dependencies": {
 		"@hcaptcha/react-hcaptcha": "^1.17.1",
 		"@hookform/resolvers": "^5.2.2",
+		"@prisma/adapter-pg": "^7.2.0",
 		"@prisma/client": "^5.22.0",
 		"@radix-ui/react-checkbox": "^1.3.2",
 		"@radix-ui/react-dialog": "^1.1.15",
@@ -25,6 +28,8 @@
 		"@radix-ui/react-select": "^2.2.5",
 		"@radix-ui/react-slider": "^1.3.5",
 		"@radix-ui/react-slot": "^1.2.4",
+		"@react-email/components": "^1.0.4",
+		"@react-email/render": "^2.0.2",
 		"@tailwindcss/typography": "^0.5.19",
 		"@types/axios": "^0.14.4",
 		"axios": "^1.13.2",

@@ -1,23 +1,24 @@
+import { render } from '@react-email/render'
 import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const sendEmail = async (
 	to: string,
 	subject: string,
-	template: React.ReactNode
+	template: React.ReactElement,
 ) => {
-	const resend = new Resend(process.env.RESEND_API_KEY)
+	try {
+		const emailHtml = await render(template)
 
-	const { data, error } = await resend.emails.send({
-		from: 'onboarding@resend.dev',
-		to,
-		subject,
-		text: '',
-		react: template,
-	})
-
-	if (error) {
+		await resend.emails.send({
+			from: 'onboarding@resend.dev',
+			to,
+			subject,
+			html: emailHtml,
+		})
+	} catch (error) {
+		console.log('Error [SEND_EMAIL]', error)
 		throw error
 	}
-
-	return data
 }

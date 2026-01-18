@@ -23,13 +23,15 @@ export const PhoneInput: React.FC<Props> = ({
 }) => {
 	const {
 		control,
-		formState: { errors },
+		formState: { errors, touchedFields },
 		setValue,
 		watch,
+		trigger,
 	} = useFormContext()
 
 	const value = watch(name)
 	const errorText = errors[name]?.message as string
+	const isTouched = touchedFields[name]
 
 	const handleClear = () => {
 		setValue(name, '', { shouldValidate: true })
@@ -43,6 +45,7 @@ export const PhoneInput: React.FC<Props> = ({
 	}
 
 	const [isFocused, setIsFocused] = React.useState(false)
+	const [displayValue, setDisplayValue] = React.useState('')
 	const shouldLabelFloat = isFocused || Boolean(value)
 
 	return (
@@ -69,21 +72,64 @@ export const PhoneInput: React.FC<Props> = ({
 						<IMaskInput
 							{...field}
 							mask='+7 (000) 000-00-00'
-							lazy={true}
-							unmask={false}
+							lazy={false}
+							unmask={true}
+							value={displayValue}
+							onAccept={(value, mask) => {
+								const cleanValue = mask.unmaskedValue
+								setDisplayValue(value)
+								if (cleanValue.length <= 11) {
+									field.onChange(cleanValue)
+
+									if (cleanValue.length === 11) {
+										setTimeout(() => trigger(name), 100)
+									}
+								}
+							}}
+							onFocus={e => {
+								setIsFocused(true)
+								// Если поле пустое, показываем маску с префиксом
+								if (!displayValue) {
+									e.target.value = '+7 ('
+								}
+							}}
+							onBlur={e => {
+								setIsFocused(false)
+								const cleanValue = e.target.value.replace(
+									/\D/g,
+									'',
+								)
+
+								// При уходе с поля валидируем только если есть хотя бы одна цифра
+								if (cleanValue.length > 0) {
+									trigger(name)
+								}
+
+								// Если поле почти пустое после blur, очищаем его
+								if (cleanValue.length <= 1) {
+									setDisplayValue('')
+									field.onChange('')
+								}
+							}}
+							// Запрещаем ввод нецифр
+							prepare={value => value.replace(/\D/g, '')}
 							className='flex w-full h-[48px] border-none bg-transparent px-3 text-[15px] focus:outline-none focus:ring-0 rounded-lg border-2 border-gray-200 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-transparent focus:border-orange-500 focus:ring-orange-100 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200'
-							label='Номер телефона'
-							onFocus={() => setIsFocused(true)}
-							onBlur={() => setIsFocused(false)}
+							placeholder='+7 (___) ___-__-__'
 							inputRef={(el: HTMLInputElement) => {
 								inputRef.current = el
+								field.ref(el)
 							}}
 						/>
 					)}
 				/>
 
-				{value && value.length > 0 && (
-					<ClearButton onClick={handleClear} />
+				{displayValue && displayValue.length > 0 && (
+					<ClearButton
+						onClick={() => {
+							handleClear()
+							setDisplayValue('')
+						}}
+					/>
 				)}
 			</div>
 

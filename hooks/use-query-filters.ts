@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import qs from 'qs'
 import React from 'react'
 import { Filters } from './use-filters'
@@ -10,9 +10,7 @@ interface QueryFiltersProps {
 
 export const useQueryFilters = ({ filters, categoryId }: QueryFiltersProps) => {
 	const router = useRouter()
-	const searchParams = useSearchParams()
 
-	// Реф, чтобы избежать лишних обновлений при первом рендере
 	const isMounted = React.useRef(false)
 
 	React.useEffect(() => {
@@ -21,9 +19,8 @@ export const useQueryFilters = ({ filters, categoryId }: QueryFiltersProps) => {
 			return
 		}
 
-		// Подготавливаем новые параметры
 		const newParams = {
-			...(categoryId && { categoryId }), // Добавляем categoryId, если он есть
+			...(categoryId && { categoryId }),
 			...filters.prices,
 			brands:
 				Array.from(filters.selectedBrands).length > 0
@@ -36,7 +33,6 @@ export const useQueryFilters = ({ filters, categoryId }: QueryFiltersProps) => {
 			skipNulls: true,
 		})
 
-		// Обновляем URL без перезагрузки страницы
 		router.push(queryStr ? `?${queryStr}` : '', {
 			scroll: false,
 		})

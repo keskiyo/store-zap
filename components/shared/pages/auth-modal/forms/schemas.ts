@@ -15,9 +15,9 @@ export const formRegisterSchema = formLoginSchema
 	.extend({
 		name: z.string().min(2, { message: 'Введите имя и фамилию' }),
 		confirmPassword: passwordSchema,
-		captchaToken: z
-			.string()
-			.min(1, 'Пожалуйста, пройдите проверку безопасности'),
+		// captchaToken: z
+		// 	.string()
+		// 	.min(1, 'Пожалуйста, пройдите проверку безопасности'),
 	})
 	.refine(data => data.password === data.confirmPassword, {
 		message: 'Пароли не совпадают',
@@ -30,7 +30,7 @@ export const fromUpdateSchema = z
 			.string()
 			.regex(
 				/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-				'Введите корректный email'
+				'Введите корректный email',
 			),
 		name: z.string().min(2, 'Имя слишком короткое'),
 		password: z.string().min(6).optional().or(z.literal('')),
@@ -44,7 +44,7 @@ export const fromUpdateSchema = z
 		{
 			message: 'Пароли не совпадают',
 			path: ['confirmPassword'],
-		}
+		},
 	)
 
 export type TLoginSchema = z.infer<typeof formLoginSchema>

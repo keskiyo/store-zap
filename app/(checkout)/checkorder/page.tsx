@@ -28,6 +28,8 @@ export default function CheckOrder() {
 
 	const form = useForm<CheckoutFormValues>({
 		resolver: zodResolver(checkoutFormSchema),
+		mode: 'onTouched',
+		reValidateMode: 'onChange',
 		defaultValues: {
 			email: '',
 			firstName: '',

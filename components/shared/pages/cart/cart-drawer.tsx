@@ -46,10 +46,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 					{sum > 0 && (
 						<SheetHeader>
 							<SheetTitle>
-								В корзине{' '}
-								<span className='font-bold'>
-									{items.length}
-								</span>
+								В корзине <span>{items.length}</span>
 							</SheetTitle>
 						</SheetHeader>
 					)}

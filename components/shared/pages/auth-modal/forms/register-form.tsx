@@ -26,7 +26,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
 	// 	const isLocal =
 	// 		window.location.hostname === 'localhost' ||
 	// 		window.location.hostname === '127.0.0.1'
-	// 	setIsLocalhost(isLocal)
+	// setIsLocalhost(isLocal)
 	// }, [])
 
 	const form = useForm<TRegisterSchema>({

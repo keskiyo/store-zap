@@ -18,7 +18,6 @@
 	--foreground: var(--black);
 	--primary: var(--orange);
 	--primary-foreground: var(--white);
-	--secondary: var(--purple);
 	--secondary-foreground: var(--white);
 	--muted: #f3f4f6;
 	--muted-foreground: #6b7280;
@@ -300,4 +299,16 @@
 	html {
 		scroll-behavior: auto;
 	}
+}
+
+#nprogress .bar {
+	@apply bg-primary !important;
+}
+
+#nprogress .peg {
+	@apply shadow-md shadow-primary !important;
+}
+
+#nprogress .spinner-icon {
+	@apply border-t-primary border-l-primary !important;
 }

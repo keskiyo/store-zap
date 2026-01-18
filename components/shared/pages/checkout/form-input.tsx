@@ -27,6 +27,7 @@ export const FormInput: React.FC<Props> = ({
 		formState: { errors },
 		watch,
 		setValue,
+		trigger,
 	} = useFormContext()
 
 	const value = watch(name)
@@ -45,6 +46,14 @@ export const FormInput: React.FC<Props> = ({
 
 	const [isFocused, setIsFocused] = React.useState(false)
 	const shouldLabelFloat = isFocused || Boolean(value)
+
+	const { ref, ...field } = register(name)
+
+	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+		setIsFocused(false)
+		field.onBlur(e)
+		trigger(name)
+	}
 
 	return (
 		<div className={cn('relative w-full', className)}>
@@ -65,15 +74,15 @@ export const FormInput: React.FC<Props> = ({
 				)}
 
 				<Input
-					{...register(name)}
+					{...field}
 					{...props}
 					ref={e => {
+						ref(e)
 						inputRef.current = e
-						register(name).ref(e)
 					}}
 					className='w-full h-[48px] border-none bg-transparent px-3 text-[15px] focus:outline-none focus:ring-0'
 					onFocus={() => setIsFocused(true)}
-					onBlur={() => setIsFocused(false)}
+					onBlur={handleBlur}
 				/>
 
 				{value && <ClearButton onClick={onClickClear} />}
