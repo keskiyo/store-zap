@@ -14,6 +14,7 @@ model User {
   password         String
   role             UserRole          @default(USER)
   verified         DateTime?
+  isBlocked        Boolean           @default(false)
   provider         String?
   providerId       String?
   createdAt        DateTime          @default(now())
@@ -60,14 +61,15 @@ model Category {
 }
 
 model Cart {
-  id        Int           @id @default(autoincrement())
-  sum       Float         @default(0)
-  token     String
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  userId    Int?          @unique
-  user      User?         @relation(fields: [userId], references: [id])
-  items     CartProduct[]
+  id         Int           @id @default(autoincrement())
+  sum        Float         @default(0)
+  token      String
+  adminNotes String?       @db.Text
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  userId     Int?          @unique
+  user       User?         @relation(fields: [userId], references: [id])
+  items      CartProduct[]
 }
 
 model CartProduct {

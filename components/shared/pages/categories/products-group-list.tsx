@@ -1,8 +1,8 @@
+import { ProductWithRelations } from '@/@types/prisma'
 import { TovarItem } from '@/components/shared'
+import { Skeleton } from '@/components/ui'
 import { cn } from '@/lib/utils'
 import React from 'react'
-import { Skeleton } from '@/components/ui'
-import { ProductWithRelations } from '@/@types/prisma'
 
 interface Props {
 	items: ProductWithRelations[]
@@ -25,7 +25,7 @@ export const ProductsGroupList: React.FC<Props> = ({
 				className={cn(
 					'flex flex-col items-center gap-4',
 					listClassName,
-					className
+					className,
 				)}
 			>
 				{Array.from({ length: 4 }).map((_, index) => (
@@ -71,7 +71,9 @@ export const ProductsGroupList: React.FC<Props> = ({
 				<h3 className='text-lg font-medium text-gray-900 mb-2'>
 					Товары не найдены
 				</h3>
-				<p className='text-gray-500'>Попробуйте изменить параметры фильтров</p>
+				<p className='text-gray-500'>
+					Попробуйте изменить параметры фильтров
+				</p>
 			</div>
 		)
 	}
@@ -81,7 +83,7 @@ export const ProductsGroupList: React.FC<Props> = ({
 			className={cn(
 				'flex flex-col items-center gap-4',
 				listClassName,
-				className
+				className,
 			)}
 		>
 			{items.map((product, i) => (
@@ -93,6 +95,7 @@ export const ProductsGroupList: React.FC<Props> = ({
 					price={product.price}
 					article={product.article}
 					brand={product.brand}
+					count={product.count}
 				/>
 			))}
 		</div>

@@ -1,4 +1,8 @@
+import { AdminNav } from '@/components/shared/pages'
+import { getUserSession } from '@/lib/get-user-session'
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import './admin-style.css'
 
 export const metadata: Metadata = {
@@ -6,10 +10,22 @@ export const metadata: Metadata = {
 	description: 'Панель администратора',
 }
 
-export default function AdminLayout({
+export default async function AdminLayout({
 	children,
-}: {
+}: Readonly<{
 	children: React.ReactNode
-}) {
-	return <main className='min-h-screen flex flex-col'>{children}</main>
+}>) {
+	const session = await getUserSession()
+
+	if (!session || session?.role !== 'ADMIN') {
+		return redirect('/not-auth')
+	}
+	return (
+		<main className='min-h-screen flex flex-col'>
+			<Suspense>
+				<AdminNav />
+			</Suspense>
+			{children}
+		</main>
+	)
 }

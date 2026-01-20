@@ -1,3 +1,4 @@
+import { AddToCartButton } from '@/components/shared'
 import { Button } from '@/components/ui'
 import { cn } from '@/lib/utils'
 import { Plus } from 'lucide-react'
@@ -11,6 +12,7 @@ interface Props {
 	article: string
 	brand: string
 	imageUrl: string
+	count: number
 	className?: string
 }
 
@@ -21,8 +23,10 @@ export const TovarItem: React.FC<Props> = ({
 	article,
 	brand,
 	imageUrl,
+	count,
 	className,
 }) => {
+	console.log(`Товар: ${name}, Количество (count):`, count)
 	return (
 		<div
 			className={cn(
@@ -86,12 +90,22 @@ export const TovarItem: React.FC<Props> = ({
 						<div className='text-2xl font-bold text-orange-400'>
 							{price} ₽
 						</div>
-						<Link href={`/product/${id}`}>
-							<Button className='bg-orange-400 rounded-md text-white px-4 py-2 font-medium cursor-pointer whitespace-nowrap'>
+						<div className='flex justify-center gap-3'>
+							<Link href={`/product/${id}`}>
+								<Button className='bg-white-400 rounded-md text-orange-400 border border-gray-200 px-4 py-2 font-medium cursor-pointer whitespace-nowrap hover:border-orange-400'>
+									Подробнее
+								</Button>
+							</Link>
+							<AddToCartButton
+								productId={id}
+								productName={name}
+								count={count}
+								className='px-4 py-2'
+							>
 								<Plus size={20} className='mr-1' />
 								Добавить
-							</Button>
-						</Link>
+							</AddToCartButton>
+						</div>
 					</div>
 				</div>
 			</div>

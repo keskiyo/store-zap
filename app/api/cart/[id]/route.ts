@@ -10,16 +10,9 @@ export async function PATCH(
 		const { id } = await params
 		const numberID = Number(id)
 		const data = (await req.json()) as { count: number }
-		const token = req.cookies.get('cartToken')?.value
 
-		if (!token) {
-			return NextResponse.json(
-				{ error: 'Токен корзины не найден' },
-				{ status: 400 },
-			)
-		}
-
-		const cartProduct = await prisma.cartProduct.findFirst({
+		// Находим товар в корзине
+		const cartProduct = await prisma.cartProduct.findUnique({
 			where: {
 				id: numberID,
 			},
@@ -27,23 +20,32 @@ export async function PATCH(
 
 		if (!cartProduct) {
 			return NextResponse.json(
-				{ error: 'Товар не найден' },
-				{ status: 400 },
+				{ error: 'Товар не найден' },
+				{ status: 404 },
 			)
 		}
 
-		await prisma.cartProduct.update({
-			where: {
-				id: numberID,
-			},
-			data: {
-				count: data.count,
-			},
-		})
+		if (data.count <= 0) {
+			// Если количество 0 или меньше - удаляем товар
+			await prisma.cartProduct.delete({
+				where: { id: numberID },
+			})
+		} else {
+			// Иначе обновляем количество
+			await prisma.cartProduct.update({
+				where: {
+					id: numberID,
+				},
+				data: {
+					count: data.count,
+				},
+			})
+		}
 
-		const updateUserCart = await updateCartTotalSum(token)
+		// ВАЖНО: Передаем cartProduct.cartId (ЧИСЛО), а не token (СТРОКА)
+		const updatedCart = await updateCartTotalSum(cartProduct.cartId)
 
-		return NextResponse.json(updateUserCart)
+		return NextResponse.json(updatedCart)
 	} catch (error) {
 		console.log('CART_PATCH error', error)
 		return NextResponse.json(
@@ -60,16 +62,9 @@ export async function DELETE(
 	try {
 		const { id } = await params
 		const numberID = Number(id)
-		const token = req.cookies.get('cartToken')?.value
 
-		if (!token) {
-			return NextResponse.json(
-				{ error: 'Токен корзины не найден' },
-				{ status: 400 },
-			)
-		}
-
-		const cartProduct = await prisma.cartProduct.findFirst({
+		// Находим товар, чтобы знать, в какой корзине его пересчитывать
+		const cartProduct = await prisma.cartProduct.findUnique({
 			where: {
 				id: numberID,
 			},
@@ -77,20 +72,24 @@ export async function DELETE(
 
 		if (!cartProduct) {
 			return NextResponse.json(
-				{ error: 'Товар не найден' },
-				{ status: 400 },
+				{ error: 'Товар не найден' },
+				{ status: 404 },
 			)
 		}
 
+		const cartId = cartProduct.cartId
+
+		// Удаляем товар
 		await prisma.cartProduct.delete({
 			where: {
 				id: numberID,
 			},
 		})
 
-		const updateUserCart = await updateCartTotalSum(token)
+		// ВАЖНО: Передаем cartId (ЧИСЛО) для пересчета суммы
+		const updatedCart = await updateCartTotalSum(cartId)
 
-		return NextResponse.json(updateUserCart)
+		return NextResponse.json(updatedCart)
 	} catch (error) {
 		console.log('CART_DELETE error', error)
 		return NextResponse.json(

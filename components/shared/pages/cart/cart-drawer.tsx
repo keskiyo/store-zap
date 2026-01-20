@@ -22,6 +22,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 	const { sum, items, updateItemCount, removeCartItem } = useCart()
 	const [redirecting, setRedirecting] = React.useState(false)
 
+	const totalCount = items.reduce((acc, item) => acc + item.count, 0)
+
 	const onClickCountButton = (
 		id: number,
 		count: number,
@@ -35,7 +37,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 		<Sheet>
 			<SheetTrigger asChild>{children}</SheetTrigger>
 
-			<SheetContent className='flex flex-col justify-between pb-0 bg-[#F4F1EE] [&>button]:hidden'>
+			<SheetContent className='flex flex-col justify-between pb-0 bg-[#F4F1EE]'>
 				<SheetTitle className='sr-only'>Корзина покупок</SheetTitle>
 				<div
 					className={cn(
@@ -46,7 +48,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 					{sum > 0 && (
 						<SheetHeader>
 							<SheetTitle>
-								В корзине <span>{items.length}</span>
+								В корзине <span>{totalCount}</span>
 							</SheetTitle>
 						</SheetHeader>
 					)}
@@ -83,7 +85,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 					{sum > 0 && (
 						<>
-							<div className='mx-6 mt-5 overflow-auto flex-1'>
+							<div className='-mx-6 mt-5 overflow-auto flex-1 px-6'>
 								{items.map(item => (
 									<div key={item.id} className='mb-2'>
 										<CartDrawerItem

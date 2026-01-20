@@ -5,7 +5,7 @@ export default function NotAuth() {
 		<div className='flex flex-col items-center justify-center mt-40'>
 			<InfoBlock
 				title='Доступ запрещён'
-				text='Для просмотра данной страницы необходимо авторизоваться'
+				text='Для просмотра данной страницы необходимо авторизоваться или у вас не достаточно прав.'
 				imageUrl='/assets/images/lock.png'
 			/>
 		</div>

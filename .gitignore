@@ -42,6 +42,5 @@ next-env.d.ts
 
 
 /prisma/migrations
-/.qodo
 /.vscode
 AGENTS.md

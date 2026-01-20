@@ -14,6 +14,8 @@ interface Props {
 export const CartButton: React.FC<Props> = ({ className }) => {
 	const { sum, items, loading } = useCartStore()
 
+	const totalCount = items.reduce((acc, item) => acc + item.count, 0)
+
 	return (
 		<CartDrawer>
 			<Button
@@ -30,7 +32,7 @@ export const CartButton: React.FC<Props> = ({ className }) => {
 					<span className='h-4 w-[1px] bg-white/30 mx-2' />
 					<div className='flex items-center gap-1 transition-all duration-300 group-hover:opacity-0 group-hover:-translate-x-4'>
 						<ShoppingCart size={16} strokeWidth={2} />
-						<span className='font-semibold'>{items.length}</span>
+						<span className='font-semibold'>{totalCount}</span>
 					</div>
 					<ArrowBigRight
 						size={20}

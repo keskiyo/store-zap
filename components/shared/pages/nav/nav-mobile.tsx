@@ -37,8 +37,8 @@ export const NavMobile: React.FC<Props> = ({ className, hasSearch = true }) => {
 					<Image
 						src='/forSite/logoauto.jpg'
 						alt='rus.avto'
-						width={60}
-						height={60}
+						width={50}
+						height={50}
 						priority
 						className='w-20 h-20'
 					/>

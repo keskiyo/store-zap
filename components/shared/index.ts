@@ -1,3 +1,4 @@
+export { AddToCartButton } from './pages/another/add-to-cart-button'
 export { CheckboxFilterGroup } from './pages/another/checkbox-filter-group'
 export { ClearButton } from './pages/another/clear-button'
 export { DebugInfo } from './pages/another/DebugInfo'

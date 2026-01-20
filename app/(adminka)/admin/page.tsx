@@ -1,3 +1,9 @@
-export default function Admin() {
-	return <div>Admin</div>
+import { AdminDashboard } from '@/components/shared/pages'
+
+export default function Dashboard() {
+	return (
+		<div className='container py-10'>
+			<AdminDashboard />
+		</div>
+	)
 }

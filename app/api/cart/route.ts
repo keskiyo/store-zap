@@ -87,7 +87,6 @@ export async function GET(req: NextRequest) {
 					// Удаляем старую корзину
 					await prisma.cart.delete({ where: { id: oldCart.id } })
 
-					// Пересчитываем сумму через нашу функцию и обновляем переменную cart
 					cart = await updateCartTotalSum(cart.id)
 				}
 			}
@@ -161,13 +160,11 @@ export async function POST(req: NextRequest) {
 				token = newToken
 			}
 		}
-		// ЕСЛИ ПОЛЬЗОВАТЕЛЬ ГОСТЬ (Упрощаем код через findOrCreateCart)
+		// ЕСЛИ ПОЛЬЗОВАТЕЛЬ ГОСТЬ
 		else {
 			if (!token) {
 				token = crypto.randomUUID()
 			}
-
-			// Используем вашу функцию для поиска или создания корзины гостя
 			cart = await findOrCreateCart(token)
 		}
 
@@ -193,7 +190,6 @@ export async function POST(req: NextRequest) {
 			})
 		}
 
-		// Пересчитываем сумму и получаем обновленную корзину
 		const updatedCart = await updateCartTotalSum(cart.id)
 
 		const response = NextResponse.json(updatedCart)
