@@ -4,6 +4,6 @@ interface Props {
 	className?: string
 }
 
-export const AdminCarts: React.FC<Props> = ({ className }) => {
+export const AdminOrders: React.FC<Props> = ({ className }) => {
 	return <div className={className}></div>
 }

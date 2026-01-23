@@ -1,5 +1,6 @@
 'use client'
 
+import { Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 
 type Product = {
@@ -75,7 +76,7 @@ export default function ProductsPage() {
 	}
 
 	return (
-		<div className='bg-white p-6 rounded-lg shadow'>
+		<div className='container bg-white p-6 rounded-lg shadow'>
 			<div className='flex justify-between items-center mb-6'>
 				<h1 className='text-2xl font-bold'>Управление товарами</h1>
 				<button
@@ -127,18 +128,18 @@ export default function ProductsPage() {
 								<td className='py-3 px-2'>
 									{product.count} шт.
 								</td>
-								<td className='py-3 px-2 flex gap-2'>
+								<td className='py-3 px-2 flex gap-4'>
 									<button
 										onClick={() => openEditModal(product)}
 										className='text-blue-600 hover:underline'
 									>
-										Ред.
+										<Pencil size={20} />
 									</button>
 									<button
 										onClick={() => handleDelete(product.id)}
 										className='text-red-600 hover:underline'
 									>
-										Удалить
+										<Trash2 size={20} />
 									</button>
 								</td>
 							</tr>

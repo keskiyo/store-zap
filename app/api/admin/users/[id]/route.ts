@@ -2,17 +2,32 @@ import { prisma } from '@/prisma/prisma-client'
 import bcrypt from 'bcrypt'
 import { NextResponse } from 'next/server'
 
-// GET: Получить одного пользователя (для страницы редактирования)
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+// Получить пользователя
+export async function GET(
+	_: Request,
+	{ params }: { params: Promise<{ id: string }> },
+) {
 	try {
+		const { id } = await params
+
+		const userId = Number(id)
+
+		if (isNaN(userId)) {
+			return NextResponse.json(
+				{ error: 'Неверный ID пользователя' },
+				{ status: 400 },
+			)
+		}
+
 		const user = await prisma.user.findUnique({
-			where: { id: Number(params.id) },
+			where: { id: userId },
 			select: {
 				id: true,
 				name: true,
 				email: true,
 				role: true,
 				isBlocked: true,
+				verified: true,
 			},
 		})
 
@@ -25,6 +40,8 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
 
 		return NextResponse.json(user)
 	} catch (error) {
+		console.error('GET /api/admin/users/[id] Error:', error)
+
 		return NextResponse.json(
 			{ error: 'Ошибка получения данных' },
 			{ status: 500 },
@@ -35,12 +52,12 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
 // PUT: Редактирование пользователя
 export async function PUT(
 	req: Request,
-	{ params }: { params: { id: string } },
+	{ params }: { params: Promise<{ id: string }> },
 ) {
 	try {
-		const { id } = params
+		const { id } = await params
 		const body = await req.json()
-		const { name, email, role, password } = body
+		const { name, email, role, password, verified } = body
 
 		const updateData: any = {
 			name,
@@ -49,7 +66,11 @@ export async function PUT(
 		}
 
 		if (password) {
-			updateData.password = await bcrypt.hashSync(password, 12)
+			updateData.password = bcrypt.hashSync(password, 12)
+		}
+
+		if (typeof verified === 'boolean') {
+			updateData.verified = verified ? new Date() : null
 		}
 
 		const user = await prisma.user.update({
@@ -59,8 +80,32 @@ export async function PUT(
 
 		return NextResponse.json(user)
 	} catch (error) {
+		console.error('PUT /api/admin/users/[id] Error', error)
+
 		return NextResponse.json(
 			{ error: 'Ошибка обновления пользователя' },
+			{ status: 500 },
+		)
+	}
+}
+
+// DELETE: Удаление пользователя
+export async function DELETE(
+	req: Request,
+	{ params }: { params: Promise<{ id: string }> },
+) {
+	try {
+		const { id } = await params
+
+		await prisma.user.delete({
+			where: { id: Number(id) },
+		})
+
+		return NextResponse.json({ message: 'Пользователь удален' })
+	} catch (error) {
+		console.error('DELETE /api/admin/users/[id] Error:', error)
+		return NextResponse.json(
+			{ error: 'Ошибка удаления пользователя' },
 			{ status: 500 },
 		)
 	}
@@ -69,10 +114,10 @@ export async function PUT(
 // PATCH: Блокировка / Разблокировка
 export async function PATCH(
 	req: Request,
-	{ params }: { params: { id: string } },
+	{ params }: { params: Promise<{ id: string }> },
 ) {
 	try {
-		const { id } = params
+		const { id } = await params
 		const body = await req.json()
 		const { isBlocked } = body
 
@@ -83,6 +128,7 @@ export async function PATCH(
 
 		return NextResponse.json(user)
 	} catch (error) {
+		console.error('BLOCK /api/admin/users/[id] Error:', error)
 		return NextResponse.json(
 			{ error: 'Ошибка смены статуса блокировки' },
 			{ status: 500 },

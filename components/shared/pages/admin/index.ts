@@ -1,5 +1,6 @@
-export { AdminCarts } from './carts/admin-carts'
 export { AdminDashboard } from './dashboard/admin-dashboard'
 export { AdminNav } from './nav/admin-nav'
+export { AdminOrders } from './orders/admin-orders'
 export { AdminProducts } from './products/admin-products'
 export { AdminUsers } from './users/admin-users'
+export { EditUserPage } from './users/user-editing'

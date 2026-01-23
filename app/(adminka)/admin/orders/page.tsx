@@ -76,7 +76,7 @@ export default function CartsPage() {
 	}
 
 	return (
-		<div className='bg-white p-6 rounded-lg shadow'>
+		<div className='container bg-white p-6 rounded-lg shadow'>
 			<h1 className='text-2xl font-bold mb-6'>Корзины пользователей</h1>
 
 			<div className='space-y-4'>

@@ -11,14 +11,17 @@ export async function GET() {
 				name: true,
 				email: true,
 				role: true,
+				verified: true,
 				isBlocked: true,
 				createdAt: true,
+				updatedAt: true,
 			},
-			orderBy: { createdAt: 'desc' },
+			orderBy: { id: 'asc' },
 		})
 
 		return NextResponse.json(users)
 	} catch (error) {
+		console.error('GET /api/admin/users Error:', error)
 		return NextResponse.json(
 			{ error: 'Ошибка получения пользователей' },
 			{ status: 500 },
@@ -30,7 +33,7 @@ export async function GET() {
 export async function POST(req: Request) {
 	try {
 		const body = await req.json()
-		const { name, email, password, role } = body
+		const { name, email, password, role, verified } = body
 
 		if (!email || !password) {
 			return NextResponse.json(
@@ -39,7 +42,7 @@ export async function POST(req: Request) {
 			)
 		}
 
-		const hashedPassword = await bcrypt.hashSync(password, 12)
+		const hashedPassword = bcrypt.hashSync(password, 12)
 
 		const user = await prisma.user.create({
 			data: {
@@ -47,13 +50,13 @@ export async function POST(req: Request) {
 				email,
 				password: hashedPassword,
 				role: role || 'USER',
+				verified: verified ? new Date() : null,
 			},
 		})
 
-		const { password: _, ...userWithoutPassword } = user
-
-		return NextResponse.json(userWithoutPassword, { status: 201 })
+		return NextResponse.json(user, { status: 201 })
 	} catch (error) {
+		console.error('POST /api/admin/users Error:', error)
 		return NextResponse.json(
 			{ error: 'Ошибка создания пользователя (возможно email занят)' },
 			{ status: 500 },

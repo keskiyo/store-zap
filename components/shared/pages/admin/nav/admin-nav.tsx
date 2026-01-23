@@ -1,5 +1,6 @@
 'use client'
 
+import { AuthModal, ProfileButton } from '@/components/shared'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -10,6 +11,7 @@ interface Props {
 
 export const AdminNav: React.FC<Props> = ({ className }) => {
 	const pathname = usePathname()
+	const [openAuth, setOpenAuth] = React.useState(false)
 	const isActive = (path: string) =>
 		pathname === path ? 'text-orange-500 font-bold' : 'text-gray-700'
 	return (
@@ -64,26 +66,26 @@ export const AdminNav: React.FC<Props> = ({ className }) => {
 									Товары
 								</Link>
 								<Link
-									href='/admin/carts'
-									className={`font-semibold transition-colors duration-200 ${isActive('/admin/carts')}`}
+									href='/admin/orders'
+									className={`font-semibold transition-colors duration-200 ${isActive('/admin/orders')}`}
 								>
-									Корзины
+									Заказы пользователей
 								</Link>
 							</div>
 
-							{/* ПРАВАЯ ЧАСТЬ: Профиль и Выход */}
-							<div className='flex items-center gap-4 flex-shrink-0 min-w-[200px] justify-end'>
+							{/* ПРАВАЯ ЧАСТЬ: Выход */}
+							<div className='flex items-center gap-4 flex-shrink-0 min-w-[100px] justify-end'>
 								<div className='flex items-center gap-3'>
 									<div className='flex flex-col'>
-										<span className='text-sm font-bold text-gray-800'>
-											Admin
-										</span>
-										<Link
-											href='/api/auth/logout'
-											className='text-sm text-red-500 hover:underline cursor-pointer'
-										>
-											Выйти
-										</Link>
+										<AuthModal
+											open={openAuth}
+											onClose={() => setOpenAuth(false)}
+										/>
+										<ProfileButton
+											onClickSingIn={() =>
+												setOpenAuth(true)
+											}
+										/>
 									</div>
 								</div>
 							</div>

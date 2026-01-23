@@ -1,251 +1,161 @@
 'use client'
 
-import { Button } from '@/components/ui'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { Button, Input } from '@/components/ui'
+import { Search, Settings } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useEffect, useMemo, useState } from 'react'
+import { AdminUsersTable } from './table/AdminUsersTable'
+import { INITIAL_COLUMNS } from './table/constants'
+import { CreateUserModal } from './table/CreateUserModal'
+import { SettingsModal } from './table/SettingModal'
+import { sortUsers } from './table/tableUtils'
+import { ColumnDef, ColumnKey } from './table/types'
+import { useAdminUsers } from './table/useAdminTableHook'
 
-type UserRole = 'USER' | 'ADMIN'
-
-type User = {
-	id: number
-	name: string
-	email: string
-	role: UserRole
-	isBlocked: boolean
-	createdAt: string
+interface Props {
+	className?: string
 }
 
-export default function AdminUsers() {
-	const [users, setUsers] = useState<User[]>([])
-	const [loading, setLoading] = useState(true)
-	const [isModalOpen, setIsModalOpen] = useState(false)
+export const AdminUsers: React.FC<Props> = ({ className }) => {
+	const { data: session } = useSession()
+	const { users, loading, handleCreateUser, toggleBlock, handleDeleteUser } =
+		useAdminUsers()
 
-	// Загрузка данных
-	const fetchUsers = async () => {
-		try {
-			const res = await fetch('/api/admin/users')
-			if (!res.ok) throw new Error('Ошибка сети')
-			const data = await res.json()
-			setUsers(data)
-		} catch (e) {
-			console.error(e)
-			alert('Не удалось загрузить пользователей')
-		} finally {
-			setLoading(false)
-		}
-	}
+	const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+	const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+	const [searchTerm, setSearchTerm] = useState('')
+	const [columns, setColumns] = useState<ColumnDef[]>(INITIAL_COLUMNS)
+	const [sortConfig, setSortConfig] = useState<{
+		key: ColumnKey
+		direction: 'asc' | 'desc'
+	} | null>(null)
 
+	// Загрузка настроек из localStorage при монтировании (привязка к ID пользователя)
 	useEffect(() => {
-		fetchUsers()
-	}, [])
+		// Если админ авторизован, используем его ID для ключа, иначе 'default'
+		const userId = session?.user?.id || 'default'
+		const storageKey = `admin-users-columns-${userId}`
 
-	// Создание пользователя (в модальном окне)
-	const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		const formData = new FormData(e.target as HTMLFormElement)
-		const data = Object.fromEntries(formData.entries())
-
-		try {
-			const res = await fetch('/api/admin/users', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(data),
-			})
-
-			if (res.ok) {
-				setIsModalOpen(false)
-				fetchUsers()
-				;(e.target as HTMLFormElement).reset()
-			} else {
-				alert('Ошибка при создании')
+		const savedColumns = localStorage.getItem(storageKey)
+		if (savedColumns) {
+			try {
+				setColumns(JSON.parse(savedColumns))
+			} catch (e) {
+				console.error('Ошибка загрузки настроек колонок', e)
 			}
-		} catch (error) {
-			alert('Ошибка сети')
 		}
+	}, [session?.user?.id])
+
+	// Сохранение настроек в localStorage при их изменении
+	useEffect(() => {
+		const userId = session?.user?.id || 'default'
+		const storageKey = `admin-users-columns-${userId}`
+
+		// Сохраняем только если список колонок изменился от первоначального
+		localStorage.setItem(storageKey, JSON.stringify(columns))
+	}, [columns, session?.user?.id])
+
+	// Фильтрация + Сортировка
+	const processedUsers = useMemo(() => {
+		let items = [...users]
+
+		if (searchTerm) {
+			const lowerTerm = searchTerm.toLowerCase()
+			items = items.filter(
+				user =>
+					user.name.toLowerCase().includes(lowerTerm) ||
+					user.email.toLowerCase().includes(lowerTerm),
+			)
+		}
+
+		return sortUsers(items, sortConfig)
+	}, [users, searchTerm, sortConfig])
+
+	// Вычисляем видимые колонки
+	const visibleColumns = columns.filter(c => c.isVisible)
+
+	const requestSort = (key: ColumnKey) => {
+		let direction: 'asc' | 'desc' = 'asc'
+		if (
+			sortConfig &&
+			sortConfig.key === key &&
+			sortConfig.direction === 'asc'
+		) {
+			direction = 'desc'
+		}
+		setSortConfig({ key, direction })
 	}
 
-	// Блокировка пользователя
-	const toggleBlock = async (id: number, currentStatus: boolean) => {
-		if (
-			!confirm(
-				`Вы уверены, что хотите ${currentStatus ? 'разблокировать' : 'заблокировать'} пользователя?`,
-			)
+	const toggleColumnVisibility = (key: ColumnKey) => {
+		setColumns(prev =>
+			prev.map(col =>
+				col.key === key ? { ...col, isVisible: !col.isVisible } : col,
+			),
 		)
-			return
-
-		try {
-			const res = await fetch(`/api/admin/users/${id}`, {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ isBlocked: !currentStatus }),
-			})
-
-			if (res.ok) {
-				fetchUsers()
-			}
-		} catch (error) {
-			alert('Ошибка изменения статуса')
-		}
 	}
 
 	if (loading) return <div className='p-6'>Загрузка...</div>
 
 	return (
-		<div className='bg-white p-6 rounded-lg shadow'>
-			<div className='flex justify-between items-center mb-6'>
+		<div className={`bg-white p-6 rounded-lg shadow ${className || ''}`}>
+			<div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6'>
 				<h1 className='text-2xl font-bold'>
 					Управление пользователями
 				</h1>
-				<Button
-					onClick={() => setIsModalOpen(true)}
-					className='bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700'
-				>
-					+ Добавить пользователя
-				</Button>
+				{/* Строка поиска */}
+				<div className='relative mt-2 md:mt-0'>
+					<Search
+						className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'
+						size={18}
+					/>
+					<Input
+						type='text'
+						placeholder='Поиск по имени или email'
+						value={searchTerm}
+						onChange={e => setSearchTerm(e.target.value)}
+						className='w-full md:w-[500px] pl-10 pr-4 py-2 h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500'
+					/>
+				</div>
+
+				<div className='flex gap-3 w-full md:w-auto'>
+					<Button
+						onClick={() => setIsSettingsModalOpen(true)}
+						className='bg-gray-600 text-white px-3 py-2 rounded hover:bg-gray-500'
+						title='Настроить колонки'
+					>
+						<Settings size={20} />
+					</Button>
+
+					<Button
+						onClick={() => setIsCreateModalOpen(true)}
+						className='bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700'
+					>
+						+ Добавить пользователя
+					</Button>
+				</div>
 			</div>
 
-			<table className='w-full text-left border-collapse'>
-				<thead>
-					<tr className='border-b border-gray-200'>
-						<th className='py-3 px-2'>ID</th>
-						<th className='py-3 px-2'>Имя</th>
-						<th className='py-3 px-2'>Email</th>
-						<th className='py-3 px-2'>Роль</th>
-						<th className='py-3 px-2'>Статус</th>
-						<th className='py-3 px-2'>Действия</th>
-					</tr>
-				</thead>
-				<tbody>
-					{users.map(user => (
-						<tr
-							key={user.id}
-							className='border-b border-gray-100 hover:bg-gray-50'
-						>
-							<td className='py-3 px-2'>{user.id}</td>
-							<td className='py-3 px-2 font-medium'>
-								{user.name}
-							</td>
-							<td className='py-3 px-2'>{user.email}</td>
-							<td className='py-3 px-2'>
-								<span
-									className={`px-2 py-1 rounded text-xs ${
-										user.role === 'ADMIN'
-											? 'bg-purple-100 text-purple-800'
-											: 'bg-gray-100 text-gray-800'
-									}`}
-								>
-									{user.role}
-								</span>
-							</td>
-							<td className='py-3 px-2'>
-								{user.isBlocked ? (
-									<span className='text-red-600 font-bold text-xs'>
-										Заблокирован
-									</span>
-								) : (
-									<span className='text-green-600 font-bold text-xs'>
-										Активен
-									</span>
-								)}
-							</td>
-							<td className='py-3 px-2 flex gap-2'>
-								{/* Ссылка на страницу редактирования */}
-								<Link
-									href={`/admin/users/${user.id}`}
-									className='text-blue-600 hover:underline font-medium'
-								>
-									Ред.
-								</Link>
-								<Button
-									onClick={() =>
-										toggleBlock(user.id, user.isBlocked)
-									}
-									className={`text-sm underline ${
-										user.isBlocked
-											? 'text-green-600'
-											: 'text-red-600'
-									}`}
-								>
-									{user.isBlocked ? 'Разблок.' : 'Блок'}
-								</Button>
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
+			<AdminUsersTable
+				users={processedUsers}
+				visibleColumns={visibleColumns}
+				sortConfig={sortConfig}
+				onSort={requestSort}
+				onBlock={toggleBlock}
+				onDelete={handleDeleteUser}
+			/>
 
-			{/* Модальное окно добавления */}
-			{isModalOpen && (
-				<div className='fixed inset-0 bg-black/50 flex justify-center items-center z-50'>
-					<div className='bg-white p-6 rounded-lg w-full max-w-md'>
-						<h2 className='text-xl font-bold mb-4'>
-							Добавить пользователя
-						</h2>
-						<form onSubmit={handleCreateUser} className='space-y-4'>
-							<div>
-								<label className='block text-sm font-medium mb-1'>
-									Имя
-								</label>
-								<input
-									name='name'
-									type='text'
-									className='w-full border p-2 rounded'
-									required
-								/>
-							</div>
-							<div>
-								<label className='block text-sm font-medium mb-1'>
-									Email
-								</label>
-								<input
-									name='email'
-									type='email'
-									className='w-full border p-2 rounded'
-									required
-								/>
-							</div>
-							<div>
-								<label className='block text-sm font-medium mb-1'>
-									Пароль
-								</label>
-								<input
-									name='password'
-									type='password'
-									className='w-full border p-2 rounded'
-									required
-								/>
-							</div>
-							<div>
-								<label className='block text-sm font-medium mb-1'>
-									Роль
-								</label>
-								<select
-									name='role'
-									className='w-full border p-2 rounded'
-								>
-									<option value='USER'>USER</option>
-									<option value='ADMIN'>ADMIN</option>
-								</select>
-							</div>
-							<div className='flex justify-end gap-2 mt-4'>
-								<Button
-									type='button'
-									onClick={() => setIsModalOpen(false)}
-									className='px-4 py-2 text-gray-600'
-								>
-									Отмена
-								</Button>
-								<Button
-									type='submit'
-									className='px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600'
-								>
-									Сохранить
-								</Button>
-							</div>
-						</form>
-					</div>
-				</div>
-			)}
+			<CreateUserModal
+				isOpen={isCreateModalOpen}
+				onClose={() => setIsCreateModalOpen(false)}
+				onSubmit={handleCreateUser}
+			/>
+
+			<SettingsModal
+				isOpen={isSettingsModalOpen}
+				columns={columns}
+				onClose={() => setIsSettingsModalOpen(false)}
+				onToggle={toggleColumnVisibility}
+			/>
 		</div>
 	)
 }
