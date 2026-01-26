@@ -9,8 +9,8 @@ interface Props {
 	visibleColumns: ColumnDef[]
 	sortConfig: SortConfig | null
 	onSort: (key: ColumnKey) => void
-	onBlock: (id: number, status: boolean) => Promise<boolean>
-	onDelete: (id: number, name: string) => Promise<boolean>
+	onBlock: (id: number, currentStatus: boolean) => void
+	onDelete: (id: number, name: string) => void
 }
 
 export const AdminUsersTable = ({
@@ -79,9 +79,9 @@ export const AdminUsersTable = ({
 									<input
 										type='checkbox'
 										checked={user.isBlocked}
-										onChange={() =>
+										onChange={e => {
 											onBlock(user.id, user.isBlocked)
-										}
+										}}
 										className='w-5 h-5 accent-red-600 rounded border-gray-300 focus:ring-2 focus:ring-red-200 cursor-pointer transition-colors'
 									/>
 									<span className='text-sm font-medium text-gray-700 group-hover:text-red-600 transition-colors'>
@@ -99,7 +99,9 @@ export const AdminUsersTable = ({
 								</Link>
 
 								<Button
-									onClick={() => onDelete(user.id, user.name)}
+									onClick={() => {
+										onDelete(user.id, user.name)
+									}}
 									className='p-1 text-red-700 hover:text-red-800 hover:bg-red-50 rounded transition-colors px-0 py-0 h-auto bg-transparent'
 									title='Удалить'
 								>

@@ -53,6 +53,7 @@ export const authOptions: AuthOptions = {
 					name: findUser.name,
 					email: findUser.email,
 					role: findUser.role,
+					isBlocked: findUser.isBlocked,
 				}
 			},
 		}),
@@ -74,13 +75,7 @@ export const authOptions: AuthOptions = {
 
 				const findUser = await prisma.user.findFirst({
 					where: {
-						OR: [
-							{ email: user.email },
-							{
-								provider: account?.provider,
-								providerId: account?.providerAccountId,
-							},
-						],
+						email: user.email,
 					},
 				})
 
@@ -106,6 +101,7 @@ export const authOptions: AuthOptions = {
 						verified: new Date(),
 						provider: account?.provider,
 						providerId: account?.providerAccountId,
+						isBlocked: false,
 					},
 				})
 
@@ -132,6 +128,7 @@ export const authOptions: AuthOptions = {
 				token.role = findUser.role
 				token.name = findUser.name
 				token.email = findUser.email
+				token.isBlocked = findUser.isBlocked
 			}
 
 			return token
@@ -141,6 +138,7 @@ export const authOptions: AuthOptions = {
 			if (session?.user) {
 				session.user.id = token.id
 				session.user.role = token.role
+				session.user.isBlocked = token.isBlocked
 			}
 
 			return session

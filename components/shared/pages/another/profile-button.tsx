@@ -1,14 +1,8 @@
 'use client'
 
 import { Button } from '@/components/ui'
-import {
-	ChevronDown,
-	CircleUser,
-	LayoutDashboard,
-	SquareUser,
-	User,
-} from 'lucide-react'
-import { useSession } from 'next-auth/react'
+import { ChevronDown, CircleUser, SquareUser, User } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -25,6 +19,10 @@ export const ProfileButton: React.FC<Props> = ({
 	const [isOpen, setIsOpen] = useState(false)
 
 	const handleToggle = () => setIsOpen(!isOpen)
+
+	const onClickSignOut = () => {
+		signOut({ callbackUrl: '/' })
+	}
 
 	return (
 		<div className={className}>
@@ -58,10 +56,10 @@ export const ProfileButton: React.FC<Props> = ({
 
 					{/* Выпадающее меню */}
 					{isOpen && (
-						<div className='absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1'>
+						<div className='absolute flex flex-col items-center justify-center right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1'>
 							<Link
 								href='/profile'
-								className='block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors'
+								className='flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors'
 								onClick={() => setIsOpen(false)}
 							>
 								<SquareUser size={14} />
@@ -75,10 +73,18 @@ export const ProfileButton: React.FC<Props> = ({
 									className='flex items-center gap-2 px-4 py-2 text-sm text-orange-600 font-medium hover:bg-orange-50 transition-colors border-t border-gray-100 mt-1 pt-2'
 									onClick={() => setIsOpen(false)}
 								>
-									<LayoutDashboard size={14} />
 									Панель администратора
 								</Link>
 							)}
+
+							<Button
+								onClick={onClickSignOut}
+								variant='secondary'
+								className='flex items-center gap-2 px-4 py-2 text-sm text-orange-600 font-medium hover:text-orange-400 transition-colors'
+								type='button'
+							>
+								Выйти
+							</Button>
 						</div>
 					)}
 				</div>

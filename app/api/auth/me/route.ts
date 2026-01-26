@@ -24,6 +24,9 @@ export async function GET(req: Request) {
 				name: true,
 				email: true,
 				password: false,
+				role: true,
+				isBlocked: true,
+				verified: true,
 			},
 		})
 

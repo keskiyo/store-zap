@@ -12,8 +12,17 @@ interface Props {
 export const AdminNav: React.FC<Props> = ({ className }) => {
 	const pathname = usePathname()
 	const [openAuth, setOpenAuth] = React.useState(false)
-	const isActive = (path: string) =>
-		pathname === path ? 'text-orange-500 font-bold' : 'text-gray-700'
+	const isActive = (path: string) => {
+		if (path === '/admin') {
+			return pathname === '/admin' || pathname === '/admin/'
+				? 'text-orange-500 font-bold'
+				: 'text-gray-700'
+		}
+
+		return pathname === path || pathname.startsWith(`${path}/`)
+			? 'text-orange-500 font-bold'
+			: 'text-gray-700'
+	}
 	return (
 		<div className={className}>
 			<div className='bg-gray-50'>

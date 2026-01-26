@@ -66,7 +66,7 @@ export async function PUT(
 		}
 
 		if (password) {
-			updateData.password = bcrypt.hashSync(password, 12)
+			updateData.password = bcrypt.hashSync(password, 10)
 		}
 
 		if (typeof verified === 'boolean') {

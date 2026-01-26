@@ -11,6 +11,7 @@ declare module 'next-auth' {
 			name?: string | null
 			email?: string | null
 			image?: string | null
+			isBlocked?: boolean | null
 		}
 	}
 
@@ -19,6 +20,7 @@ declare module 'next-auth' {
 		name?: string | null
 		email?: string | null
 		role: UserRole
+		isBlocked?: boolean | null
 	}
 }
 
@@ -26,5 +28,6 @@ declare module 'next-auth/jwt' {
 	interface JWT extends DefaultJWT {
 		id: string
 		role: UserRole
+		isBlocked?: boolean
 	}
 }

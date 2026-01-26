@@ -48,21 +48,23 @@ export const Nav: React.FC<Props> = ({ hasSearch = true, className }) => {
 				<div className='container '>
 					<div className='hidden lg:flex items-center justify-between py-3 gap-4'>
 						<div className='flex items-center gap-3 flex-shrink-0 min-w-[140px]'>
-							<Image
-								src='/forSite/logoauto.jpg'
-								alt='rus-autovaz'
-								width={65}
-								height={65}
-								priority
-								className='w-15 h-15 lg:w-19 lg:h-19'
-							/>
-							<Link href='/' className='flex flex-col'>
-								<strong className='text-lg lg:text-xl text-orange-500'>
-									Rus-autovaz
-								</strong>
-								<p className='text-xs lg:text-sm text-gray-500 leading-3'>
-									Автозапчасти
-								</p>
+							<Link href='/' className='flex items-center gap-2'>
+								<Image
+									src='/forSite/logoauto.jpg'
+									alt='rus-autovaz'
+									width={65}
+									height={65}
+									priority
+									className='w-16 h-16 lg:w-20 lg:h-20'
+								/>
+								<div className='flex flex-col items-start self-center leading-none gap-0.5'>
+									<strong className='text-lg lg:text-xl text-orange-500 leading-tight mt-2'>
+										Rus-autovaz
+									</strong>
+									<p className='text-xs lg:text-sm text-gray-500 leading-none'>
+										Автозапчасти
+									</p>
+								</div>
 							</Link>
 						</div>
 						{hasSearch && (
