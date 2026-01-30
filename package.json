@@ -32,6 +32,8 @@
 		"@react-email/render": "^2.0.2",
 		"@tailwindcss/typography": "^0.5.19",
 		"@types/axios": "^0.14.4",
+		"ag-grid-community": "^35.0.1",
+		"ag-grid-react": "^35.0.1",
 		"axios": "^1.13.2",
 		"bcrypt": "^6.0.0",
 		"class-variance-authority": "^0.7.1",

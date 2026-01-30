@@ -1,8 +1,33 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { sortUsers } from './tableUtils'
-import { ColumnKey, User } from './types'
+import { ColumnKey, SortConfig, User } from './types'
+
+// Сортировка массива пользователей
+export const sortUsers = (
+	users: User[],
+	sortConfig: SortConfig | null,
+): User[] => {
+	let sortableItems = [...users]
+	if (sortConfig !== null) {
+		sortableItems.sort((a, b) => {
+			const aValue = a[sortConfig.key]
+			const bValue = b[sortConfig.key]
+
+			if (aValue === null || aValue === undefined) return 1
+			if (bValue === null || bValue === undefined) return -1
+
+			if (aValue < bValue) {
+				return sortConfig.direction === 'asc' ? -1 : 1
+			}
+			if (aValue > bValue) {
+				return sortConfig.direction === 'asc' ? 1 : -1
+			}
+			return 0
+		})
+	}
+	return sortableItems
+}
 
 export const useUsersFilter = (users: User[]) => {
 	const [searchTerm, setSearchTerm] = useState('')

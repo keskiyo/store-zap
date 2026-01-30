@@ -1,3 +1,4 @@
+import { updateUserSchema } from '@/lib/admin-user-from'
 import { prisma } from '@/prisma/prisma-client'
 import bcrypt from 'bcrypt'
 import { NextResponse } from 'next/server'
@@ -57,16 +58,16 @@ export async function PUT(
 	try {
 		const { id } = await params
 		const body = await req.json()
-		const { name, email, role, password, verified } = body
+		const dto = updateUserSchema.parse(body)
+
+		const { password, verified, ...rest } = dto
 
 		const updateData: any = {
-			name,
-			email,
-			role,
+			...rest,
 		}
 
 		if (password) {
-			updateData.password = bcrypt.hashSync(password, 10)
+			updateData.password = await bcrypt.hash(password, 10)
 		}
 
 		if (typeof verified === 'boolean') {
@@ -76,15 +77,21 @@ export async function PUT(
 		const user = await prisma.user.update({
 			where: { id: Number(id) },
 			data: updateData,
+			select: {
+				id: true,
+				name: true,
+				email: true,
+				role: true,
+				isBlocked: true,
+				verified: true,
+			},
 		})
 
 		return NextResponse.json(user)
-	} catch (error) {
-		console.error('PUT /api/admin/users/[id] Error', error)
-
+	} catch (error: any) {
 		return NextResponse.json(
-			{ error: 'Ошибка обновления пользователя' },
-			{ status: 500 },
+			{ error: error.message ?? 'Ошибка обновления пользователя' },
+			{ status: 400 },
 		)
 	}
 }

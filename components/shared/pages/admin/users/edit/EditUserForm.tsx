@@ -1,14 +1,11 @@
 'use client'
 
-import {
-	EditUserValues,
-	editUserSchema,
-} from '@/components/shared/constants/admin-users-schema'
 import { Button } from '@/components/ui'
+import { UpdateUserDTO, updateUserSchema } from '@/lib/admin-user-from'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { EditUserFormProps } from './types'
+import { EditUserFormProps } from '../table/types'
 
 export const EditUserForm = ({
 	user,
@@ -24,8 +21,8 @@ export const EditUserForm = ({
 		reset,
 		setValue,
 		watch,
-	} = useForm<EditUserValues>({
-		resolver: zodResolver(editUserSchema),
+	} = useForm<UpdateUserDTO>({
+		resolver: zodResolver(updateUserSchema),
 		defaultValues: {
 			name: '',
 			email: '',
@@ -53,7 +50,7 @@ export const EditUserForm = ({
 		return <div className='p-6'>Загрузка данных пользователя...</div>
 	if (!user) return null
 
-	const onFormSubmit: SubmitHandler<EditUserValues> = async data => {
+	const onFormSubmit: SubmitHandler<UpdateUserDTO> = async data => {
 		await onSubmit(data)
 	}
 

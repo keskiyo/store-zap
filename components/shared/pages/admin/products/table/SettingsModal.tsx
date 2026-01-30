@@ -2,17 +2,17 @@
 
 import { Button } from '@/components/ui'
 import { RotateCcw, X } from 'lucide-react'
-import { ColumnDef, ColumnKey } from './types'
+import { ColumnDef, ProductColumnKey } from './types'
 
 interface Props {
 	isOpen: boolean
 	columns: ColumnDef[]
 	onClose: () => void
-	onToggle: (key: ColumnKey) => void
+	onToggle: (key: ProductColumnKey) => void
 	onReset: () => void
 }
 
-export const SettingsModal = ({
+export const ProductsSettingsModal = ({
 	isOpen,
 	columns,
 	onClose,
@@ -26,7 +26,7 @@ export const SettingsModal = ({
 			<div className='bg-white p-6 rounded-lg w-full max-w-sm'>
 				<div className='flex justify-between items-center mb-4'>
 					<h2 className='text-xl font-bold'>
-						Настройка колонок пользователей
+						Настройка колонок товаров
 					</h2>
 					<button
 						onClick={onClose}

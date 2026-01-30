@@ -4,7 +4,7 @@ import { Button } from '@/components/ui'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useConfirmDialog } from '@/hooks/useConfirmDialog'
 import { Settings } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { SearchBar } from '../../another/search-admin-input'
 import { AdminUsersTable } from './table/AdminUsersTable'
 import { CreateUserModal } from './table/CreateUserModal'
@@ -20,20 +20,24 @@ interface Props {
 export const AdminUsers = ({ className }: Props) => {
 	const { users, loading, handleCreateUser, toggleBlock, handleDeleteUser } =
 		useAdminUsers()
-	const { columns, toggleColumnVisibility } = useColumnSettings()
+	const { columns, toggleColumnVisibility, resetToDefault } =
+		useColumnSettings()
 	const {
 		searchTerm,
 		setSearchTerm,
+		processedUsers,
 		sortConfig,
 		requestSort,
-		processedUsers,
 	} = useUsersFilter(users)
 	const { confirmDialog, showDialog, hideDialog } = useConfirmDialog()
 
 	const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 	const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
-	const visibleColumns = columns.filter(c => c.isVisible)
+	// Фильтруем только видимые колонки
+	const visibleColumns = useMemo(() => {
+		return columns.filter(col => col.isVisible)
+	}, [columns])
 
 	const openBlockModal = (id: number, currentStatus: boolean) => {
 		showDialog({
@@ -64,25 +68,29 @@ export const AdminUsers = ({ className }: Props) => {
 	if (loading) return <div className='p-6'>Загрузка...</div>
 
 	return (
-		<div className={`bg-white p-6 rounded-lg shadow ${className || ''}`}>
+		<div
+			className={`bg-white p-6 rounded-lg shadow flex flex-col h-full ${className || ''}`}
+		>
 			<div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6'>
-				<h1 className='text-2xl font-bold'>
+				<h1 className='text-2xl font-bold text-gray-800'>
 					Управление пользователями
 				</h1>
 
 				<SearchBar
 					value={searchTerm}
 					onChange={setSearchTerm}
-					placeholder='Поиск по имени или email'
+					placeholder='Поиск по имени или email...'
 				/>
 
-				<div className='flex gap-3 w-full md:w-auto'>
+				<div className='flex gap-3 w-full md:w-auto items-center'>
 					<Button
 						onClick={() => setIsSettingsModalOpen(true)}
-						className='bg-gray-600 text-white px-3 py-2 rounded hover:bg-gray-500'
+						variant='outline'
+						className='flex items-center gap-2'
 						title='Настроить колонки'
 					>
-						<Settings size={20} />
+						<Settings size={18} />
+						Колонки
 					</Button>
 					<Button
 						onClick={() => setIsCreateModalOpen(true)}
@@ -93,14 +101,17 @@ export const AdminUsers = ({ className }: Props) => {
 				</div>
 			</div>
 
-			<AdminUsersTable
-				users={processedUsers}
-				visibleColumns={visibleColumns}
-				sortConfig={sortConfig}
-				onSort={requestSort}
-				onBlock={openBlockModal}
-				onDelete={openDeleteModal}
-			/>
+			{/* Основной контейнер для таблицы с flexbox */}
+			<div className='flex-1 min-h-0 overflow-hidden relative border border-gray-200 rounded-lg'>
+				<AdminUsersTable
+					users={processedUsers}
+					visibleColumns={visibleColumns}
+					sortConfig={sortConfig}
+					onSort={requestSort}
+					onBlock={openBlockModal}
+					onDelete={openDeleteModal}
+				/>
+			</div>
 
 			<CreateUserModal
 				isOpen={isCreateModalOpen}
@@ -113,6 +124,7 @@ export const AdminUsers = ({ className }: Props) => {
 				columns={columns}
 				onClose={() => setIsSettingsModalOpen(false)}
 				onToggle={toggleColumnVisibility}
+				onReset={resetToDefault}
 			/>
 
 			{confirmDialog && (

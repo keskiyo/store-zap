@@ -1,7 +1,9 @@
+'use client' // Обязательно для интерактивности
+
 import { Button } from '@/components/ui'
 import { ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { renderCellContent } from './tableUtils'
+import { renderCellContent } from './renderCellContent'
 import { ColumnDef, ColumnKey, SortConfig, User } from './types'
 
 interface Props {
@@ -24,36 +26,54 @@ export const AdminUsersTable = ({
 	return (
 		<div className='overflow-x-auto border rounded-lg'>
 			<table className='w-full text-left border-collapse'>
+				{/* Исправляем colgroup - убираем лишний пробел */}
+				<colgroup>
+					{visibleColumns.map(col => (
+						<col
+							key={col.key}
+							style={{
+								width: '150px',
+								minWidth: '100px',
+								maxWidth: '400px',
+							}}
+						/>
+					))}
+					<col style={{ width: '200px' }} />
+				</colgroup>
 				<thead className='bg-gray-50'>
 					<tr>
 						{visibleColumns.map(col => (
 							<th
 								key={col.key}
 								onClick={() => onSort(col.key)}
-								className='py-3 px-4 font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none transition-colors group border-b border-gray-400'
+								className='py-3 px-4 font-semibold text-gray-700 cursor-pointer hover:bg-gray-200 select-none transition-colors group border-b border-gray-400 relative'
+								style={{ position: 'relative' }}
 							>
-								<div className='flex items-center gap-1'>
-									{col.label}
-									<span className='text-gray-400 group-hover:text-gray-600 flex flex-col'>
-										{sortConfig?.key === col.key ? (
-											sortConfig.direction === 'asc' ? (
-												<ChevronUp
-													size={16}
-													className='text-orange-500'
-												/>
+								<div className='flex items-center justify-between'>
+									<div className='flex items-center gap-1'>
+										{col.label}
+										<span className='text-gray-400 group-hover:text-gray-600 flex flex-col'>
+											{sortConfig?.key === col.key ? (
+												sortConfig.direction ===
+												'asc' ? (
+													<ChevronUp
+														size={16}
+														className='text-orange-500'
+													/>
+												) : (
+													<ChevronDown
+														size={16}
+														className='text-orange-500'
+													/>
+												)
 											) : (
-												<ChevronDown
-													size={16}
-													className='text-orange-500'
-												/>
-											)
-										) : (
-											<>
-												<ChevronUp size={12} />
-												<ChevronDown size={12} />
-											</>
-										)}
-									</span>
+												<>
+													<ChevronUp size={12} />
+													<ChevronDown size={12} />
+												</>
+											)}
+										</span>
+									</div>
 								</div>
 							</th>
 						))}
@@ -63,13 +83,19 @@ export const AdminUsersTable = ({
 					</tr>
 				</thead>
 				<tbody>
-					{users.map((user, index) => (
+					{users.map(user => (
 						<tr
 							key={user.id}
-							className='border-b border-gray-300 hover:bg-gray-50 last:border-0'
+							className='border-b border-gray-300 hover:bg-orange-200 last:border-0'
 						>
 							{visibleColumns.map(col => (
-								<td key={col.key} className='py-3 px-4 text-sm'>
+								<td
+									key={col.key}
+									className='py-3 px-4 text-sm overflow-hidden text-ellipsis whitespace-nowrap'
+									style={{
+										maxWidth: '150px',
+									}}
+								>
 									{renderCellContent(user, col.key)}
 								</td>
 							))}

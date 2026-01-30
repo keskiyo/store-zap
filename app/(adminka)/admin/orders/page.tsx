@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 type CartItem = {
 	id: number
@@ -72,7 +73,7 @@ export default function CartsPage() {
 			c.id === cartId ? { ...c, adminNotes: note } : c,
 		)
 		setCarts(updatedCarts)
-		alert('Заметка сохранена')
+		toast.success('Заметка сохранена')
 	}
 
 	return (

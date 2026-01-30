@@ -1,35 +1,24 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
-import { INITIAL_COLUMNS } from './constants'
-import { ColumnDef } from './types'
+import { useState } from 'react'
+import { ColumnDef, ColumnKey } from './types'
+
+// Начальные данные уже с правильным типом ColumnDef
+export const INITIAL_COLUMNS: ColumnDef[] = [
+	{ key: 'id', label: 'ID', isVisible: true },
+	{ key: 'name', label: 'Имя', isVisible: true },
+	{ key: 'email', label: 'Email', isVisible: true },
+	{ key: 'role', label: 'Роль', isVisible: true },
+	{ key: 'verified', label: 'Подтвержден', isVisible: true },
+	{ key: 'isBlocked', label: 'Статус', isVisible: true },
+	{ key: 'createdAt', label: 'Создан', isVisible: false },
+	{ key: 'updatedAt', label: 'Обновлен', isVisible: false },
+]
 
 export const useColumnSettings = () => {
-	const { data: session } = useSession()
 	const [columns, setColumns] = useState<ColumnDef[]>(INITIAL_COLUMNS)
 
-	useEffect(() => {
-		const userId = session?.user?.id || 'default'
-		const storageKey = `admin-users-columns-${userId}`
-		const savedColumns = localStorage.getItem(storageKey)
-
-		if (savedColumns) {
-			try {
-				setColumns(JSON.parse(savedColumns))
-			} catch (e) {
-				console.error('Ошибка загрузки настроек колонок', e)
-			}
-		}
-	}, [session?.user?.id])
-
-	useEffect(() => {
-		const userId = session?.user?.id || 'default'
-		const storageKey = `admin-users-columns-${userId}`
-		localStorage.setItem(storageKey, JSON.stringify(columns))
-	}, [columns, session?.user?.id])
-
-	const toggleColumnVisibility = (key: ColumnDef['key']) => {
+	const toggleColumnVisibility = (key: ColumnKey) => {
 		setColumns(prev =>
 			prev.map(col =>
 				col.key === key ? { ...col, isVisible: !col.isVisible } : col,
@@ -37,5 +26,25 @@ export const useColumnSettings = () => {
 		)
 	}
 
-	return { columns, setColumns, toggleColumnVisibility }
+	const resetToDefault = () => {
+		setColumns(
+			INITIAL_COLUMNS.map(col => ({
+				...col,
+				isVisible: col.isVisible,
+			})),
+		)
+	}
+
+	const setColumnVisibility = (key: ColumnKey, isVisible: boolean) => {
+		setColumns(prev =>
+			prev.map(col => (col.key === key ? { ...col, isVisible } : col)),
+		)
+	}
+
+	return {
+		columns,
+		toggleColumnVisibility,
+		resetToDefault,
+		setColumnVisibility,
+	}
 }

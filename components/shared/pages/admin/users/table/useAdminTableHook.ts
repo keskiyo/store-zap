@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { User } from './types'
 
 export const useAdminUsers = () => {
@@ -13,7 +14,7 @@ export const useAdminUsers = () => {
 			setUsers(data)
 		} catch (e) {
 			console.error(e)
-			alert('Не удалось загрузить пользователей')
+			toast.error('Не удалось загрузить пользователей')
 		} finally {
 			setLoading(false)
 		}
@@ -36,11 +37,11 @@ export const useAdminUsers = () => {
 				fetchUsers()
 				return true
 			} else {
-				alert('Ошибка при создании')
+				toast.error('Ошибка при создании')
 				return false
 			}
 		} catch (error) {
-			alert('Ошибка сети')
+			toast.error('Ошибка сети')
 			return false
 		}
 	}
@@ -69,7 +70,7 @@ export const useAdminUsers = () => {
 			}
 			return false
 		} catch (error) {
-			alert('Ошибка изменения статуса')
+			toast.error('Ошибка изменения статуса')
 			return false
 		}
 	}
@@ -97,7 +98,7 @@ export const useAdminUsers = () => {
 			}
 			return false
 		} catch (error) {
-			alert('Ошибка сети')
+			toast.error('Ошибка сети')
 			return false
 		}
 	}

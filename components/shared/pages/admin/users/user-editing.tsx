@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation'
 import { EditUserForm } from './edit/EditUserForm'
-import { EditUserPageProps } from './edit/types'
 import { useEditUser } from './edit/useEditUser'
+import { EditUserPageProps } from './table/types'
 
 export const EditUserPage: React.FC<EditUserPageProps> = ({
 	className,
