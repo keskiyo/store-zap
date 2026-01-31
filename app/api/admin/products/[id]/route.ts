@@ -85,13 +85,12 @@ export async function PUT(
 		const imageFile = formData.get('imageUrl') as File | null
 
 		const dto = parseProductFormData(formData)
+		const { specifications, ...productData } = dto
 
 		const imageUrl = await processProductImage({
 			file: imageFile,
 			oldImage: existingProduct.imageUrl,
 		})
-
-		const { specifications, ...productData } = dto
 
 		await prisma.$transaction(async tx => {
 			await tx.product.update({

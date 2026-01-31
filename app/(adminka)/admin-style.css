@@ -115,6 +115,9 @@
 	ol {
 		@apply list-decimal;
 	}
+	ul ::marker {
+		content: '';
+	}
 }
 
 /* Custom Components */

@@ -39,7 +39,6 @@ export async function POST(req: Request) {
 		const validation = createUserSchema.safeParse(body)
 
 		if (!validation.success) {
-			// Если есть ошибки валидации, возвращаем их клиенту
 			return NextResponse.json(
 				{
 					error: 'Ошибка валидации данных',
@@ -53,7 +52,7 @@ export async function POST(req: Request) {
 		}
 
 		// Данные прошли валидацию
-		const { name, email, password, role } = validation.data
+		const { name, email, password, role, verified } = validation.data
 		const hashedPassword = bcrypt.hashSync(password, 10)
 
 		// Создаем пользователя в БД
@@ -63,7 +62,7 @@ export async function POST(req: Request) {
 				email,
 				password: hashedPassword,
 				role: role || 'USER',
-				// verified по умолчанию null в Prisma схеме
+				verified: verified ? new Date() : null,
 			},
 		})
 

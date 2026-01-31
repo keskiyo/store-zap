@@ -52,7 +52,7 @@ export const ConfirmDialog = ({
 					<DialogDescription>{description}</DialogDescription>
 				</DialogHeader>
 				<DialogFooter>
-					<Button onClick={onClose} variant='ghost'>
+					<Button onClick={onClose} variant='outline'>
 						{cancelText}
 					</Button>
 					<Button

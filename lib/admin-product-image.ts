@@ -2,7 +2,7 @@ import { mkdir, unlink, writeFile } from 'fs/promises'
 import path from 'path'
 
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'tovars')
-const DEFAULT_IMAGE = '/tovars/No img.jpg'
+const DEFAULT_IMAGE = '/tovars/Noimg.jpg'
 
 type ProcessImageArgs = {
 	file: File | null
@@ -30,8 +30,8 @@ export async function processProductImage({
 		try {
 			const oldPath = path.join(process.cwd(), 'public', oldImage)
 			await unlink(oldPath)
-		} catch {
-			//
+		} catch (error) {
+			console.warn('Не удалось удалить старый файл:', error)
 		}
 	}
 
