@@ -1,6 +1,6 @@
-import type { Metadata } from 'next'
-import { Suspense } from 'react'
 import { Nav } from '@/components/shared/index'
+import type { Metadata } from 'next'
+// import { Suspense } from 'react'
 
 export const metadata: Metadata = {
 	title: 'Rus-autovaz | Корзина',
@@ -14,9 +14,9 @@ export default function CheckoutLayout({
 }) {
 	return (
 		<main className='min-h-screen flex flex-col bg-[#ececec]'>
-			<Suspense>
-				<Nav hasSearch={false} className='border-b-gray-200' />
-			</Suspense>
+			{/* <Suspense> */}
+			<Nav hasSearch={false} className='border-b-gray-200' />
+			{/* </Suspense> */}
 			{children}
 		</main>
 	)

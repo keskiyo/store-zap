@@ -14,9 +14,13 @@ import toast from 'react-hot-toast'
 
 interface Props {
 	onClose?: VoidFunction
+	callbackUrl?: string
 }
 
-export const RegisterForm: React.FC<Props> = ({ onClose }) => {
+export const RegisterForm: React.FC<Props> = ({
+	onClose,
+	callbackUrl = '/',
+}) => {
 	// const captchaRef = React.useRef<HCaptcha>(null)
 	// const [captchaToken, setCaptchaToken] = React.useState<string>('')
 	// const [isLocalhost, setIsLocalhost] = React.useState(false)

@@ -6,9 +6,14 @@ import React from 'react'
 interface Props {
 	open: boolean
 	onClose: () => void
+	callbackUrl?: string
 }
 
-export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
+export const AuthModal: React.FC<Props> = ({
+	open,
+	onClose,
+	callbackUrl = '/',
+}) => {
 	const [type, setType] = React.useState<'login' | 'register'>('login')
 
 	const onSwitchType = () => {
@@ -26,9 +31,15 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 				</DialogTitle>
 
 				{type === 'login' ? (
-					<LoginForm onClose={handleClose} />
+					<LoginForm
+						onClose={handleClose}
+						callbackUrl={callbackUrl}
+					/>
 				) : (
-					<RegisterForm onClose={handleClose} />
+					<RegisterForm
+						onClose={handleClose}
+						callbackUrl={callbackUrl}
+					/>
 				)}
 
 				<hr />
@@ -37,7 +48,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 						variant='secondary'
 						onClick={() =>
 							signIn('google', {
-								callbackUrl: '/',
+								callbackUrl: callbackUrl,
 								redirect: true,
 							})
 						}

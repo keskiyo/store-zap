@@ -1,18 +1,37 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export const CartSyncer = () => {
 	const { status } = useSession()
+	const [hasSynced, setHasSynced] = useState(false)
 
 	useEffect(() => {
-		if (status === 'authenticated') {
+		// Синхронизируем только один раз при аутентификации
+		if (status === 'authenticated' && !hasSynced) {
 			fetch('/api/auth/sync-cart', {
 				method: 'POST',
-			}).catch(err => console.error('Ошибка синхронизации корзины:', err))
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then(response => {
+					if (response.ok) {
+						setHasSynced(true) // Помечаем как синхронизированное
+						console.log('Корзина успешно синхронизирована')
+					}
+				})
+				.catch(err =>
+					console.error('Ошибка синхронизации корзины:', err),
+				)
 		}
-	}, [status])
+
+		// Сбрасываем флаг при разлогине
+		if (status === 'unauthenticated') {
+			setHasSynced(false)
+		}
+	}, [status, hasSynced])
 
 	return null
 }

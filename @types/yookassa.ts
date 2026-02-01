@@ -29,6 +29,7 @@ export interface Confirmation {
 
 export interface Metadata {
 	order_id: string
+	user_id?: string
 }
 
 export type PaymentCallbackData = {
@@ -53,7 +54,7 @@ export type PaymentCallbackData = {
 		refunded_amount: { value: string; currency: 'RUB' }
 		paid: boolean
 		refundable: true
-		metadata: { order_id: string }
+		metadata: { order_id: string; user_id?: string }
 		authorization_details: {
 			rrn: string
 			auth_code: string

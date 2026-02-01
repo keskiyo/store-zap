@@ -1,6 +1,7 @@
 import { AdminNav } from '@/components/shared/pages'
 import { getUserSession } from '@/lib/get-user-session'
 import type { Metadata } from 'next'
+// import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { Toaster } from 'react-hot-toast'
 import './admin-style.css'

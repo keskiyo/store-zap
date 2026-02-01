@@ -11,9 +11,10 @@ import { formLoginSchema, TLoginSchema } from './schemas'
 
 interface Props {
 	onClose?: VoidFunction
+	callbackUrl?: string
 }
 
-export const LoginForm: React.FC<Props> = ({ onClose }) => {
+export const LoginForm: React.FC<Props> = ({ onClose, callbackUrl = '/' }) => {
 	const form = useForm<TLoginSchema>({
 		resolver: zodResolver(formLoginSchema),
 		defaultValues: {
@@ -38,6 +39,7 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 			})
 
 			onClose?.()
+			window.location.href = callbackUrl
 		} catch (error) {
 			console.error('Error [LOGIN]', error)
 			toast.error('Не удалось войти в аккаунт', {

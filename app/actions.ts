@@ -44,7 +44,7 @@ export async function createOrder(data: CheckoutFormValues) {
 		// Создание заказа
 		const order = await prisma.order.create({
 			data: {
-				// userId,
+				userId: userCart.userId,
 				token: cartToken,
 				status: OrderStatus.PENDING,
 				totalAmount: userCart.sum,
@@ -56,27 +56,30 @@ export async function createOrder(data: CheckoutFormValues) {
 				email: data.email,
 			},
 		})
-		// Очищение суммы корзины
-		await prisma.cart.update({
-			where: {
-				id: userCart.id,
-			},
-			data: {
-				sum: 0,
-			},
-		})
-		// Удаление товаров из корзины
-		await prisma.cartProduct.deleteMany({
-			where: {
-				cartId: userCart.id,
-			},
-		})
+
+		// TODO: Проверить оформление заказа, статусы оплаты и привязку к userId, очищение корзины пользователя
+		// // Очищение суммы корзины
+		// await prisma.cart.update({
+		// 	where: {
+		// 		id: userCart.id,
+		// 	},
+		// 	data: {
+		// 		sum: 0,
+		// 	},
+		// })
+		// // Удаление товаров из корзины
+		// await prisma.cartProduct.deleteMany({
+		// 	where: {
+		// 		cartId: userCart.id,
+		// 	},
+		// })
 
 		// Создание ссылки для оплаты
 		const paymentData = await createPayment({
 			amount: order.totalAmount,
 			orderId: order.id,
 			description: 'Оплата заказа #' + order.name,
+			userId: order.userId,
 		})
 
 		if (!paymentData) {
@@ -102,7 +105,6 @@ export async function createOrder(data: CheckoutFormValues) {
 			paymentUrl,
 		})
 
-		// Проверка на undefined для исправления ошибки TypeScript
 		if (payOrderTemplate) {
 			await sendEmail(
 				data.email,
