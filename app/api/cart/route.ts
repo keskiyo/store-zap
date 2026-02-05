@@ -1,6 +1,6 @@
 import { authOptions } from '@/components/shared/constants/auth-options'
-import { findOrCreateCart } from '@/lib/find-or-create-cart'
-import { updateCartTotalSum } from '@/lib/update-cart-total-sum'
+import { findOrCreateCart } from '@/lib/database/find-or-create-cart'
+import { updateCartTotalSum } from '@/lib/database/update-cart-total-sum'
 import { prisma } from '@/prisma/prisma-client'
 import { CreateCartItemValues } from '@/services/dto/cart.dto'
 import crypto from 'crypto'

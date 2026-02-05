@@ -1,4 +1,4 @@
-import { updateCartTotalSum } from '@/lib/update-cart-total-sum'
+import { updateCartTotalSum } from '@/lib/database/update-cart-total-sum'
 import { prisma } from '@/prisma/prisma-client'
 import { NextRequest, NextResponse } from 'next/server'
 

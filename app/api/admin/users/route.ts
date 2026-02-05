@@ -1,4 +1,4 @@
-import { createUserSchema } from '@/lib/admin-user-from'
+import { createUserSchema } from '@/lib/auth/admin-user-from'
 import { prisma } from '@/prisma/prisma-client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import bcrypt from 'bcrypt'

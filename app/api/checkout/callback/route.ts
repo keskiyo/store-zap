@@ -1,8 +1,8 @@
-import { PaymentCallbackData } from '@/@types/yookassa'
-import { OrderSuccessTemplate } from '@/components/shared/pages/email-templates/order-success'
-import { sendEmail } from '@/lib/sendEmail'
+import { OrderSuccessTemplate } from '@/components/email/OrderSuccess'
+import { sendEmail } from '@/lib/email/sendEmail'
 import { prisma } from '@/prisma/prisma-client'
 import { CartItemDTO } from '@/services/dto/cart.dto'
+import { PaymentCallbackData } from '@/types/external/yookassa.types'
 import { OrderStatus } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 

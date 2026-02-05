@@ -14,7 +14,21 @@ export async function GET(request: Request) {
 			? Number(searchParams.get('categoryId'))
 			: undefined
 
-		const where: any = {}
+		interface ProductWhereClause {
+			categoryId?: number
+			OR?: Array<{
+				name?: { contains: string; mode: 'insensitive' }
+				article?: { contains: string; mode: 'insensitive' }
+				brand?: { contains: string; mode: 'insensitive' }
+			}>
+			brand?: { in: string[] }
+			price?: {
+				gte?: number
+				lte?: number
+			}
+		}
+
+		const where: ProductWhereClause = {}
 
 		if (categoryId) {
 			where.categoryId = categoryId

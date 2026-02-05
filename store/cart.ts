@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { CartStateItem, getCartDetails } from '../lib/get-cart-details'
+import { CartStateItem, getCartDetails } from '@/lib/database/get-cart-details'
 import { Api } from '../services/api-client'
 import { CreateCartItemValues } from '../services/dto/cart.dto'
 
@@ -38,8 +38,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 			}
 			set(getCartDetails(data))
 		} catch (error) {
-			console.error(error)
-			set({ error: true, items: [], sum: 0 })
+			console.error('[Cart] ${methodName} error:', error)
 		} finally {
 			set({ loading: false })
 		}
@@ -53,8 +52,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 				set(getCartDetails(data))
 			}
 		} catch (error) {
-			console.error(error)
-			set({ error: true })
+			console.error('[Cart] ${methodName} error:', error)
 		} finally {
 			set({ loading: false })
 		}
@@ -74,8 +72,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 				set(getCartDetails(data))
 			}
 		} catch (error) {
-			console.error(error)
-			set({ error: true })
+			console.error('[Cart] ${methodName} error:', error)
 		} finally {
 			set(state => ({
 				loading: false,
@@ -92,8 +89,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 				set(getCartDetails(data))
 			}
 		} catch (error) {
-			console.error(error)
-			set({ error: true })
+			console.error('[Cart] ${methodName} error:', error)
 		} finally {
 			set({ loading: false })
 		}

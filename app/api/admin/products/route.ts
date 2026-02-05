@@ -1,4 +1,3 @@
-// app/api/admin/products/route.ts
 import { prisma } from '@/prisma/prisma-client'
 import { mkdir, writeFile } from 'fs/promises'
 import { NextResponse } from 'next/server'

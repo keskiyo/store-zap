@@ -1,5 +1,5 @@
-import { AdminNav } from '@/components/shared/pages'
-import { getUserSession } from '@/lib/get-user-session'
+import { AdminNav } from '@/components/features/admin/nav/AdminNav'
+import { getUserSession } from '@/lib/auth/get-user-session'
 import type { Metadata } from 'next'
 // import { redirect } from 'next/navigation'
 import { Suspense } from 'react'

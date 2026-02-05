@@ -1,5 +1,5 @@
-import { parseProductFormData } from '@/lib/admin-product-form'
-import { processProductImage } from '@/lib/admin-product-image'
+import { parseProductFormData } from '@/lib/database/admin-product-form'
+import { processProductImage } from '@/lib/database/admin-product-image'
 import { prisma } from '@/prisma/prisma-client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { unlink } from 'fs/promises'

@@ -1,4 +1,4 @@
-import { CartSyncer } from '@/components/shared/pages/another/cart-syncer'
+import { CartSyncer } from '@/components/features/common/cart-syncer'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { Footer, Nav } from '../../components/shared'

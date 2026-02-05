@@ -1,4 +1,4 @@
-import { updateUserSchema } from '@/lib/admin-user-from'
+import { updateUserSchema } from '@/lib/auth/admin-user-from'
 import { prisma } from '@/prisma/prisma-client'
 import bcrypt from 'bcrypt'
 import { NextResponse } from 'next/server'

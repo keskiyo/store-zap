@@ -1,6 +1,6 @@
 import { EditProductPage } from '@/components/shared/pages'
 
-export default async function EditProductPageWrapper({
+export default async function ProductsPageForAdmin({
 	params,
 }: {
 	params: Promise<{ id: string }>

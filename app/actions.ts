@@ -1,11 +1,11 @@
 'use server'
 
-import { VerificationUserTemplate } from '@/components/shared'
+import { PayOrderTemplate } from '@/components/email/PayOrder'
+import { VerificationUserTemplate } from '@/components/email/VerificationUser'
 import { CheckoutFormValues } from '@/components/shared/constants/checkout-form-schema'
-import { PayOrderTemplate } from '@/components/shared/pages/email-templates/pay-order'
-import { createPayment } from '@/lib/create-payment'
-import { getUserSession } from '@/lib/get-user-session'
-import { sendEmail } from '@/lib/sendEmail'
+import { getUserSession } from '@/lib/auth/get-user-session'
+import { sendEmail } from '@/lib/email/sendEmail'
+import { createPayment } from '@/lib/payments/create-payment'
 import { prisma } from '@/prisma/prisma-client'
 import { OrderStatus, Prisma } from '@prisma/client'
 import { hashSync } from 'bcrypt'
@@ -116,7 +116,7 @@ export async function createOrder(data: CheckoutFormValues) {
 
 		return paymentUrl
 	} catch (err) {
-		console.log('[CreateOrder] server error', err)
+		console.error('[CreateOrder] server error', err)
 	}
 }
 
@@ -144,7 +144,7 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
 			data,
 		})
 	} catch (err) {
-		console.log('Error [UPDATE_USER]', err)
+		console.error('Error [UPDATE_USER]', err)
 		throw err
 	}
 }
@@ -236,7 +236,7 @@ export async function registerUser(body: Prisma.UserCreateInput) {
 			)
 		}
 	} catch (err) {
-		console.log('Error [CREATE_USER]', err)
+		console.error('Error [CREATE_USER]', err)
 		throw err
 	}
 }
