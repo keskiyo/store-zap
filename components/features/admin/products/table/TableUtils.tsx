@@ -1,4 +1,8 @@
-import { Product, ProductColumnKey, SortConfig } from './types'
+import {
+	Product,
+	ProductColumnKey,
+	SortConfig,
+} from '../../../../../types/admin/products'
 
 // Сортировка массива товаров
 export const sortProducts = (

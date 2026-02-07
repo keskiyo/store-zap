@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { ColumnKey, SortConfig, User } from './types'
+import { ColumnKey, SortConfig, User } from '../../../../../types/admin/users'
 
 // Сортировка массива пользователей
 export const sortUsers = (

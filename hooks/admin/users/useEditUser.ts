@@ -3,7 +3,7 @@
 import { UpdateUserDTO } from '@/lib/auth/admin-user-from'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { UseEditUserParams, User } from '../table/types'
+import { UseEditUserParams, User } from '../../../types/admin/users'
 
 export const useEditUser = ({ id, router }: UseEditUserParams) => {
 	const [user, setUser] = useState<User | null>(null)

@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Product } from '../../../../types/admin/products'
 import { ProductForm } from './table/ProductForm'
-import { Product } from './table/types'
 
 interface Category {
 	id: number

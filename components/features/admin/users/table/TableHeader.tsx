@@ -1,7 +1,11 @@
 'use client'
 
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { ColumnDef, ColumnKey, SortConfig } from './types'
+import {
+	ColumnDef,
+	ColumnKey,
+	SortConfig,
+} from '../../../../../types/admin/users'
 
 interface Props {
 	columns: ColumnDef[]

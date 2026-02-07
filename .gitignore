@@ -44,4 +44,3 @@ next-env.d.ts
 /prisma/migrations
 /.vscode
 AGENTS.md
-FIXES.txt

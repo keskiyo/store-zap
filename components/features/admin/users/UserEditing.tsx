@@ -1,9 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { EditUserForm } from './edit/EditUserForm'
-import { useEditUser } from './edit/useEditUser'
-import { EditUserPageProps } from './table/types'
+import { useEditUser } from '../../../../hooks/admin/users/useEditUser'
+import { EditUserPageProps } from '../../../../types/admin/users'
+import { EditUserForm } from './table/EditUserForm'
 
 export const EditUserPage: React.FC<EditUserPageProps> = ({
 	className,

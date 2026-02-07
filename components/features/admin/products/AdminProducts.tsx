@@ -3,15 +3,17 @@
 import { SearchBar } from '@/components/layout/header/search-admin-input'
 import { Button } from '@/components/ui'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
+import {
+	productsColumnSettings,
+	useAdminProducts,
+	useProductFilter,
+} from '@/hooks'
 import { useConfirmDialog } from '@/hooks/ui/use-confirm-dialog'
 import { Settings } from 'lucide-react'
 import React, { useState } from 'react'
 import { AdminProductsTable } from './table/AdminProductTable'
 import { CreateProductModal } from './table/CreateProductModal'
 import { ProductsSettingsModal } from './table/SettingsModal'
-import { useAdminProducts } from './table/useAdminTableHook'
-import { useColumnSettings } from './table/useColumnSettings'
-import { useProductFilter } from './table/useProductFilters'
 
 interface Props {
 	className?: string
@@ -19,7 +21,7 @@ interface Props {
 
 export const AdminProducts: React.FC<Props> = ({ className }) => {
 	const { columns, toggleColumnVisibility, resetToDefault } =
-		useColumnSettings()
+		productsColumnSettings()
 	const { products, loading, handleCreateProduct, handleDeleteProduct } =
 		useAdminProducts()
 	const {

@@ -1,4 +1,4 @@
-import { Order } from './types'
+import { Order } from '../../../../../types/admin/orders'
 
 interface Props {
 	order: Order

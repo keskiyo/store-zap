@@ -1,5 +1,5 @@
+import { Order } from '../../../../../types/admin/orders'
 import { AdminCommentArea } from './AdminCommentArea'
-import { Order } from './types'
 
 interface Props {
 	order: Order

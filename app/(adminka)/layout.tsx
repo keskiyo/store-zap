@@ -1,7 +1,5 @@
 import { AdminNav } from '@/components/features/admin/nav/AdminNav'
-import { getUserSession } from '@/lib/auth/get-user-session'
 import type { Metadata } from 'next'
-// import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { Toaster } from 'react-hot-toast'
 import './admin-style.css'
@@ -16,11 +14,6 @@ export default async function AdminLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const session = await getUserSession()
-
-	// if (!session || session?.role !== 'ADMIN') {
-	// 	return redirect('/not-auth')
-	// }
 	return (
 		<main className='min-h-screen flex flex-col'>
 			<Suspense>

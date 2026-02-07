@@ -1,10 +1,10 @@
 'use client'
 
+import { INITIAL_COLUMNS } from '@/constants/admin/products-constants'
+import { ColumnDef, ProductColumnKey } from '@/types/admin/products'
 import { useState } from 'react'
-import { INITIAL_COLUMNS } from './constants'
-import { ColumnDef, ProductColumnKey } from './types'
 
-export const useColumnSettings = () => {
+export const productsColumnSettings = () => {
 	const [columns, setColumns] = useState<ColumnDef[]>(INITIAL_COLUMNS)
 
 	const toggleColumnVisibility = (key: ProductColumnKey) => {

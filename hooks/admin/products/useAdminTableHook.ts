@@ -1,6 +1,6 @@
+import { Product } from '@/types'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Product } from './types'
 
 export const useAdminProducts = () => {
 	const [products, setProducts] = useState<Product[]>([])

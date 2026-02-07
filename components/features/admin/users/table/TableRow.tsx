@@ -3,8 +3,8 @@
 import { Button } from '@/components/ui'
 import { Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
+import { ColumnDef, User } from '../../../../../types/admin/users'
 import { renderCellContent } from './RenderCellContent'
-import { ColumnDef, User } from './types'
 
 interface Props {
 	user: User

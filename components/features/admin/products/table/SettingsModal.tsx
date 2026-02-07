@@ -2,7 +2,10 @@
 
 import { Button } from '@/components/ui'
 import { RotateCcw, X } from 'lucide-react'
-import { ColumnDef, ProductColumnKey } from './types'
+import {
+	ColumnDef,
+	ProductColumnKey,
+} from '../../../../../types/admin/products'
 
 interface Props {
 	isOpen: boolean

@@ -5,7 +5,7 @@ import { UpdateUserDTO, updateUserSchema } from '@/lib/auth/admin-user-from'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { EditUserFormProps } from '../table/types'
+import { EditUserFormProps } from '../../../../../types/admin/users'
 
 export const EditUserForm = ({
 	user,

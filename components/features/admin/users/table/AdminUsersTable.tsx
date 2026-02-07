@@ -11,9 +11,14 @@ import {
 } from '@/components/ui/pagination'
 import { getPageNumbers } from '@/hooks/ui/use-pagination'
 import { useMemo, useState } from 'react'
+import {
+	ColumnDef,
+	ColumnKey,
+	SortConfig,
+	User,
+} from '../../../../../types/admin/users'
 import { AdminUsersTableHeader } from './TableHeader'
 import { AdminUsersTableRow } from './TableRow'
-import { ColumnDef, ColumnKey, SortConfig, User } from './types'
 
 interface Props {
 	users: User[]

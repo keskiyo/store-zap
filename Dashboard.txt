@@ -1,0 +1,233 @@
+# DASHBOARD IMPLEMENTATION PROMPT
+
+## Project Analysis Summary
+
+Based on thorough analysis of this Next.js 16 e-commerce project, here's what we have:
+
+### Current State
+- **Admin Dashboard**: Currently just placeholder with "Тут будет DASHBOARD"
+- **Rich Database**: PostgreSQL with Prisma ORM (Users, Products, Orders, Categories, Cart)
+- **Admin Infrastructure**: Complete admin panel with users, products, orders management
+- **UI Components**: Radix UI + Tailwind CSS + AG Grid for advanced tables
+- **Authentication**: NextAuth with role-based access (USER/ADMIN)
+- **No Chart Library**: Currently missing data visualization components
+
+### Available Data for Dashboard
+- **Users**: Total count, roles, verification status, block status, growth trends
+- **Products**: Stock levels, categories, pricing, top sellers, low stock alerts
+- **Orders**: Status breakdown (PENDING/SUCCEEDED/CANCELLED), revenue, daily/weekly trends
+- **Cart**: Active carts, conversion potential, abandoned cart analysis
+- **Categories**: Performance by category, product distribution
+
+## Dashboard Implementation Strategy
+
+### 1. Core Metrics Cards (Top Priority)
+```
+- Total Revenue (monthly/weekly comparison with % change)
+- Active Users (total + new this month)
+- Total Orders (with status breakdown icons)
+- Products in Stock (with low stock warnings)
+- Conversion Rate (orders / active carts)
+```
+
+### 2. Charts & Data Visualization
+**Required Library**: Add `recharts` (React-specific, lightweight, TypeScript-friendly)
+
+**Chart Types to Implement**:
+- **Revenue Trend**: Line chart (daily/weekly/monthly)
+- **Order Status Distribution**: Pie/Donut chart
+- **Top Products**: Horizontal bar chart
+- **User Growth**: Area chart
+- **Category Performance**: Grouped bar chart
+
+### 3. Real-time Features (Unique Selling Points)
+```
+- Live Order Notifications (WebSocket or Server-Sent Events)
+- Real-time Stock Updates (when products ordered)
+- Active User Sessions (currently browsing)
+- Cart Abandonment Alerts (when users leave with items)
+```
+
+### 4. Advanced Analytics Features
+```
+- Customer Lifetime Value (CLV) calculation
+- Average Order Value (AOV) tracking
+- Product Performance Correlation (which products sell together)
+- Seasonal Trend Analysis
+- Geographic Distribution (if address data available)
+```
+
+### 5. Quick Actions Panel
+```
+- Add New Product (modal)
+- View Pending Orders (filtered view)
+- Manage Low Stock Items
+- Generate Reports (CSV/Excel export)
+- Send Promotional Emails
+```
+
+### 6. Activity Feed (Bottom Section)
+```
+- Recent Orders (last 10 with status indicators)
+- New User Registrations
+- Product Updates (price changes, stock updates)
+- System Notifications
+```
+
+## Technical Implementation Plan
+
+### Phase 1: API Endpoints for Dashboard Data
+```typescript
+// Create /api/admin/dashboard/stats
+- Total revenue calculation
+- User counts and growth
+- Order statistics
+- Product inventory levels
+- Conversion metrics
+
+// Create /api/admin/dashboard/charts
+- Revenue over time
+- Order status distribution
+- Top products data
+- User growth data
+```
+
+### Phase 2: UI Components Development
+```typescript
+// Metric Cards Component
+- Animated number counting
+- Trend indicators (up/down arrows)
+- Color coding (green/red for positive/negative)
+- Loading skeletons
+
+// Chart Components
+- Responsive design
+- Custom tooltips
+- Interactive legends
+- Export functionality
+
+// Activity Feed Component
+- Real-time updates
+- Pagination
+- Filtering by type
+- Quick action buttons
+```
+
+### Phase 3: Real-time Features
+```typescript
+// WebSocket Integration
+- Order status updates
+- Stock level changes
+- New user registrations
+- Cart abandonment events
+
+// Server-Sent Events (Alternative)
+- Simpler implementation
+- Automatic reconnection
+- Event filtering
+```
+
+## Unique Features to Implement
+
+### 1. Smart Inventory Management
+```
+- Predictive Stock Alerts (based on sales trends)
+- Automatic Reorder Suggestions
+- Seasonal Demand Forecasting
+- Supplier Performance Tracking
+```
+
+### 2. Customer Behavior Analytics
+```
+- Heatmap of Popular Products
+- Customer Journey Mapping
+- Cart Abandonment Flow Analysis
+- Repeat Purchase Patterns
+```
+
+### 3. Revenue Optimization Tools
+```
+- Dynamic Pricing Suggestions
+- Cross-sell Recommendations
+- Promotional Campaign Impact Analysis
+- Best Time to Send Marketing Emails
+```
+
+### 4. Operational Efficiency Dashboard
+```
+- Order Processing Time Tracking
+- Customer Support Response Metrics
+- Website Performance Indicators
+- Error Rate Monitoring
+```
+
+### 5. Business Intelligence Features
+```
+- Custom Date Range Analysis
+- KPI Goal Setting and Tracking
+- Automated Report Generation
+- Business Health Score
+```
+
+## Implementation Details
+
+### File Structure to Create:
+```
+/components/features/admin/dashboard/
+├── AdminDashboard.tsx (main component)
+├── MetricCard.tsx
+├── RevenueChart.tsx
+├── OrdersChart.tsx
+├── TopProductsChart.tsx
+├── ActivityFeed.tsx
+├── QuickActions.tsx
+└── index.ts
+
+/app/api/admin/dashboard/
+├── stats/route.ts
+├── charts/route.ts
+└── activity/route.ts
+
+/hooks/admin/
+├── use-dashboard-stats.ts
+├── use-dashboard-charts.ts
+└── use-real-time-updates.ts
+```
+
+### Database Queries Optimization:
+```typescript
+// Use Prisma aggregates for performance
+- _sum for revenue calculations
+- _count for user/order statistics
+- groupBy for time-based data
+- select with include for related data
+```
+
+### Performance Considerations:
+- Implement caching for expensive queries
+- Use database indexes for date-based queries
+- Lazy load charts with intersection observer
+- Optimize API responses with pagination
+- Consider materialized views for complex analytics
+
+### Security & Permissions:
+- Admin-only access control
+- Data filtering by user role
+- Audit logging for dashboard actions
+- Rate limiting for API endpoints
+
+## Success Metrics
+- Page load time < 2 seconds
+- Real-time updates < 1 second latency
+- Mobile-responsive design
+- Accessibility compliance (WCAG 2.1)
+- Cross-browser compatibility
+
+## Future Enhancements
+- AI-powered sales predictions
+- Advanced customer segmentation
+- Multi-currency support
+- Integration with external analytics tools
+- Custom dashboard builder for different user roles
+
+This implementation will transform the basic admin panel into a comprehensive business intelligence platform with real-time insights and actionable analytics.

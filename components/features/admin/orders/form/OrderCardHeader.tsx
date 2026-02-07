@@ -1,5 +1,5 @@
-import { Order } from './types'
-import { formatDate, getStatusColor, getStatusLabel } from './utils'
+import { formatDate, getStatusColor, getStatusLabel } from '@/hooks'
+import { Order } from '../../../../../types/admin/orders'
 
 interface Props {
 	order: Order

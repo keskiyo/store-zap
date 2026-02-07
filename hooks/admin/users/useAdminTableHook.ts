@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { User } from './types'
+import { User } from '../../../../../types/admin/users'
 
 export const useAdminUsers = () => {
 	const [users, setUsers] = useState<User[]>([])

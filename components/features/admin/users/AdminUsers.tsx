@@ -3,15 +3,13 @@
 import { SearchBar } from '@/components/layout/header/search-admin-input'
 import { Button } from '@/components/ui'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
+import { useAdminUsers, userColumnSettings, useUsersFilter } from '@/hooks'
 import { useConfirmDialog } from '@/hooks/ui/use-confirm-dialog'
 import { Settings } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { AdminUsersTable } from './table/AdminUsersTable'
 import { CreateUserModal } from './table/CreateUserModal'
 import { SettingsModal } from './table/SettingModal'
-import { useAdminUsers } from './table/useAdminTableHook'
-import { useColumnSettings } from './table/useColumnSettings'
-import { useUsersFilter } from './table/useUserFilters'
 
 interface Props {
 	className?: string
@@ -21,7 +19,7 @@ export const AdminUsers: React.FC<Props> = ({ className }) => {
 	const { users, loading, handleCreateUser, toggleBlock, handleDeleteUser } =
 		useAdminUsers()
 	const { columns, toggleColumnVisibility, resetToDefault } =
-		useColumnSettings()
+		userColumnSettings()
 	const {
 		searchTerm,
 		setSearchTerm,

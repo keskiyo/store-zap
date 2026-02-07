@@ -14,8 +14,13 @@ import { getPageNumbers } from '@/hooks/ui/use-pagination'
 import { ChevronDown, ChevronUp, Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import {
+	ColumnDef,
+	Product,
+	ProductColumnKey,
+	SortConfig,
+} from '../../../../../types/admin/products'
 import { renderCellContent } from './TableUtils'
-import { ColumnDef, Product, ProductColumnKey, SortConfig } from './types'
 
 interface Props {
 	products: Product[]

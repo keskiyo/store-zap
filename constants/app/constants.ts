@@ -1,4 +1,4 @@
-import { ColumnDef } from '@/components/features/admin/products/table/types'
+import { ColumnDef } from '@/types/admin/products'
 
 export const INITIAL_COLUMNSS: ColumnDef[] = [
 	{ key: 'id', label: 'ID', isVisible: true },

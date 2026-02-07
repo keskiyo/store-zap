@@ -1,4 +1,4 @@
-import { Product as PrismaProduct } from '@prisma/client'
+import { Product as PrismaProduct } from '../api/index'
 export type Product = PrismaProduct & {
 	category?: { id: number; name: string; imageUrl?: string | null }
 	specifications?: Array<{ id: number; key: string; value: string }>

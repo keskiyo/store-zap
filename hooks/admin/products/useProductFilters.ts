@@ -1,8 +1,8 @@
 'use client'
 
+import { sortProducts } from '@/components/features/admin/products/table/TableUtils'
+import { Product, ProductColumnKey } from '@/types/admin/products'
 import { useMemo, useState } from 'react'
-import { sortProducts } from './TableUtils'
-import { Product, ProductColumnKey } from './types'
 
 export const useProductFilter = (products: Product[]) => {
 	const [searchTerm, setSearchTerm] = useState('')

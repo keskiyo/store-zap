@@ -1,7 +1,7 @@
 'use client'
 
+import { ColumnDef, ColumnKey } from '@/types/admin/users'
 import { useState } from 'react'
-import { ColumnDef, ColumnKey } from './types'
 
 // Начальные данные уже с правильным типом ColumnDef
 export const INITIAL_COLUMNS: ColumnDef[] = [
@@ -15,7 +15,7 @@ export const INITIAL_COLUMNS: ColumnDef[] = [
 	{ key: 'updatedAt', label: 'Обновлен', isVisible: false },
 ]
 
-export const useColumnSettings = () => {
+export const userColumnSettings = () => {
 	const [columns, setColumns] = useState<ColumnDef[]>(INITIAL_COLUMNS)
 
 	const toggleColumnVisibility = (key: ColumnKey) => {

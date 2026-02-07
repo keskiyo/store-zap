@@ -1,4 +1,4 @@
-import { OrderStatus } from './types'
+import { OrderStatus } from '@/types/admin/orders'
 
 export const formatDate = (dateString: string) => {
 	return new Date(dateString).toLocaleString('ru-RU', {

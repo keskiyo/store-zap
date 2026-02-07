@@ -1,4 +1,4 @@
-import { ColumnKey, User } from './types'
+import { ColumnKey, User } from '../../../../../types/admin/users'
 
 export const renderCellContent = (user: User, key: ColumnKey) => {
 	const value = user[key]
