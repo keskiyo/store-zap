@@ -66,3 +66,5 @@ export function TopProductsChart({ data }: Props) {
 		</ResponsiveContainer>
 	)
 }
+
+export default TopProductsChart

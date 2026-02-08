@@ -42,3 +42,5 @@ export function OrdersChart({ data }: Props) {
 		</ResponsiveContainer>
 	)
 }
+
+export default OrdersChart

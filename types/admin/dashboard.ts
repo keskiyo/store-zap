@@ -75,3 +75,9 @@ export type ActivityData = {
 		count: number
 	}[]
 }
+
+export type DashboardFilters = {
+	range: 'all' | 'month' | 'week' | 'day'
+	categoryId?: string
+	status?: 'SUCCEEDED' | 'PENDING' | 'CANCELLED'
+}

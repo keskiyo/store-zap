@@ -1,4 +1,4 @@
-export * from './ActivityFeed'
+export * from './activity/ActivityFeed'
 export * from './chart/CategoryChart'
 export * from './chart/OrdersChart'
 export * from './chart/RevenueChart'

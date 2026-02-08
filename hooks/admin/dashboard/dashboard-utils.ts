@@ -90,7 +90,7 @@ export function useDashboardCharts(filters: any) {
 	return { data, loading }
 }
 
-export function useDashboardActivity(filters: any) {
+export function useDashboardActivity() {
 	const [orders, setOrders] = useState<any[]>([])
 	const [users, setUsers] = useState<any[]>([])
 	const [lowStock, setLowStock] = useState<any[]>([])
@@ -100,7 +100,6 @@ export function useDashboardActivity(filters: any) {
 	const [lowStockOffset, setLowStockOffset] = useState(0)
 
 	const [loading, setLoading] = useState(false)
-	const [dataf, setData] = useState<any>(null)
 
 	const load = async (type?: 'orders' | 'users' | 'lowStock') => {
 		setLoading(true)
@@ -131,16 +130,6 @@ export function useDashboardActivity(filters: any) {
 
 		setLoading(false)
 	}
-
-	useEffect(() => {
-		const params = new URLSearchParams(filters as any).toString()
-
-		fetch(`/api/admin/dashboard/activity?${params}`)
-			.then(r => r.json())
-			.then(d => setData(d))
-			.finally(() => setLoading(false))
-	}, [JSON.stringify(filters)])
-
 	useEffect(() => {
 		load()
 	}, [])
@@ -151,6 +140,5 @@ export function useDashboardActivity(filters: any) {
 		loadMoreUsers: () => load('users'),
 		loadMoreLowStock: () => load('lowStock'),
 		loading,
-		dataf,
 	}
 }

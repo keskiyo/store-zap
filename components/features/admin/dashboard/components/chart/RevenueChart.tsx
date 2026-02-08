@@ -50,3 +50,5 @@ export function RevenueChart({ data }: Props) {
 		</ResponsiveContainer>
 	)
 }
+
+export default RevenueChart
