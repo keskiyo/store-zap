@@ -65,6 +65,11 @@ export const ProfileButton: React.FC<Props> = ({
 								<SquareUser size={14} />
 								Мой профиль
 							</Link>
+							<Link
+								href='/profile/cart'
+								className='flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors'
+								onClick={() => setIsOpen(false)}
+							></Link>
 
 							{/* Кнопка админа показывается только если роль ADMIN */}
 							{session.user.role === 'ADMIN' && (

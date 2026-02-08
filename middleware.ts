@@ -32,7 +32,7 @@ export async function middleware(req: NextRequest) {
 	// 2️⃣ Неавторизованный пользователь
 	// if (!isLoggedIn) {
 	// 	if (isAdminRoute || isProfileRoute || isCheckOrderRoute) {
-	// 		const url = new URL('/', req.url)
+	// 		const url = new URL('/not-auth', req.url)
 	// 		// Добавляем параметр для открытия модалки
 	// 		url.searchParams.set('showAuthModal', 'true')
 	// 		// Сохраняем путь, куда хотел попасть пользователь
@@ -51,5 +51,10 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/admin/:path*', '/profile', '/checkorder/:path*', '/blocked'],
+	matcher: [
+		'/admin/:path*',
+		'/profile/:path*',
+		'/checkorder/:path*',
+		'/blocked',
+	],
 }

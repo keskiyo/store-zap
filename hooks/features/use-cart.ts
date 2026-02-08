@@ -1,7 +1,8 @@
-import { CartStateItem } from '@/lib/get-cart-details'
-import { useCartStore } from '@/store/cart'
 import React from 'react'
-import { CreateCartItemValues } from '../services/dto/cart.dto'
+
+import { CartStateItem } from '@/lib/database/get-cart-details'
+import { CreateCartItemValues } from '@/services/dto/cart.dto'
+import { useCartStore } from '@/store/cart'
 
 type ReturnProps = {
 	sum: number
