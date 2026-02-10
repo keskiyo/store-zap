@@ -53,6 +53,7 @@ export interface Order {
 	status: string
 	createdAt: Date
 	items: OrderItem[]
+	address?: string
 }
 
 export interface OrderItem {
@@ -61,4 +62,21 @@ export interface OrderItem {
 	productId: number
 	quantity: number
 	price: number
+}
+
+export type OrderStatus = 'completed' | 'processing' | 'canceled'
+
+export interface OrderHistoryItem {
+	name: string
+	price: number
+}
+
+export interface OrderHistoryData {
+	id: string
+	date: string
+	status: OrderStatus
+	total: number
+	address: string
+	items: OrderHistoryItem[]
+	deliveryFee?: number
 }

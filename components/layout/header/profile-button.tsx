@@ -1,7 +1,13 @@
 'use client'
 
 import { Button } from '@/components/ui'
-import { ChevronDown, CircleUser, SquareUser, User } from 'lucide-react'
+import {
+	ChevronDown,
+	CircleUser,
+	ClipboardList,
+	SquareUser,
+	User,
+} from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -69,7 +75,10 @@ export const ProfileButton: React.FC<Props> = ({
 								href='/profile/cart'
 								className='flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors'
 								onClick={() => setIsOpen(false)}
-							></Link>
+							>
+								<ClipboardList size={14} />
+								История заказов
+							</Link>
 
 							{/* Кнопка админа показывается только если роль ADMIN */}
 							{session.user.role === 'ADMIN' && (
