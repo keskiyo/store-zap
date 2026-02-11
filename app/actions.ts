@@ -58,6 +58,12 @@ export async function createOrder(data: CheckoutFormValues) {
 		})
 
 		// TODO: Проверить оформление заказа, статусы оплаты и привязку к userId, очищение корзины пользователя
+
+		// Тестовые карты ЮKassa
+		// 5555 5555 5555 4642 (Mastercard)
+		// 4000 0000 0000 0002 (Visa)
+		// 2200 0000 0000 0079 (Mir)
+
 		// // Очищение суммы корзины
 		// await prisma.cart.update({
 		// 	where: {

@@ -1,26 +1,18 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card-history'
 import { useOrders } from '@/hooks'
-import { OrderHistoryData, OrderHistoryItem, OrderStatus } from '@/types'
-import { motion } from 'framer-motion'
-import { ChevronDown, Filter, MapPin, Package, Search } from 'lucide-react'
-import React, { JSX, useState } from 'react'
-
-const statusColors: Record<OrderStatus, string> = {
-	completed: 'bg-green-100 text-green-700',
-	processing: 'bg-yellow-100 text-yellow-700',
-	canceled: 'bg-red-100 text-red-700',
-}
+import { OrderHistoryData, OrderStatus } from '@/types'
+import { ChevronDown, Filter, Package, Search } from 'lucide-react'
+import React, { useState } from 'react'
+import { OrderCard } from './OrderCard'
 
 const statusLabels: Record<OrderStatus, string> = {
-	completed: 'Доставлен',
-	processing: 'Готовится',
+	completed: 'Завершён',
+	processing: 'В процессе',
 	canceled: 'Отменён',
 }
 
-export function OrderHistory(): JSX.Element {
+export function OrderHistory(): React.JSX.Element {
 	const [search, setSearch] = useState<string>('')
 	const [filter, setFilter] = useState<OrderStatus | 'all'>('all')
 	const [filterOpen, setFilterOpen] = useState(false)
@@ -39,7 +31,7 @@ export function OrderHistory(): JSX.Element {
 
 	if (error) {
 		return (
-			<div className='min-h-screen bg-gray-50 flex items-center justify-center'>
+			<div className=' bg-gray-50 flex items-center justify-center'>
 				<p className='text-red-500'>Ошибка: {error}</p>
 			</div>
 		)
@@ -47,13 +39,9 @@ export function OrderHistory(): JSX.Element {
 
 	return (
 		<div className='min-h-screen bg-gray-50 p-4 md:p-6'>
-			<div className='max-w-4xl mx-auto'>
+			<div className=' mx-auto'>
 				{/* Header */}
-				<motion.div
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					className='flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4'
-				>
+				<div className='flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4'>
 					<div>
 						<h1 className='text-2xl font-bold'>История заказов</h1>
 						<p className='text-gray-500 text-sm'>
@@ -77,9 +65,8 @@ export function OrderHistory(): JSX.Element {
 
 						{/* Filter */}
 						<div className='relative'>
-							<Button
-								variant='outline'
-								className='flex gap-2 h-10 px-3'
+							<button
+								className='flex items-center gap-2 h-10 px-3 border rounded-lg bg-white shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500'
 								onClick={() => setFilterOpen(prev => !prev)}
 							>
 								<Filter className='w-4 h-4' />
@@ -89,7 +76,7 @@ export function OrderHistory(): JSX.Element {
 										filterOpen ? 'rotate-180' : ''
 									}`}
 								/>
-							</Button>
+							</button>
 
 							{filterOpen && (
 								<div className='absolute right-0 mt-2 bg-white shadow-lg rounded-xl overflow-hidden z-50 min-w-[180px] border border-gray-100'>
@@ -124,7 +111,7 @@ export function OrderHistory(): JSX.Element {
 							)}
 						</div>
 					</div>
-				</motion.div>
+				</div>
 
 				{/* Loading State */}
 				{loading && (
@@ -138,122 +125,10 @@ export function OrderHistory(): JSX.Element {
 
 				{/* Orders List */}
 				{!loading && (
-					<div className='space-y-4'>
-						{filteredOrders.map(
-							(order: OrderHistoryData, index: number) => (
-								<motion.div
-									key={order.id}
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{
-										duration: 0.3,
-										delay: index * 0.05,
-									}}
-								>
-									<Card className='border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow'>
-										<CardContent className='p-0'>
-											{/* Header Card */}
-											<div className='bg-white p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2'>
-												<div className='flex items-center gap-2'>
-													<Package className='w-5 h-5 text-orange-500' />
-													<span className='font-bold text-gray-900'>
-														{order.id}
-													</span>
-													<span
-														className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${statusColors[order.status]}`}
-													>
-														{
-															statusLabels[
-																order.status
-															]
-														}
-													</span>
-												</div>
-												<span className='text-sm text-gray-500'>
-													{order.date}
-												</span>
-											</div>
-
-											{/* Body Card */}
-											<div className='p-4 space-y-4'>
-												{/* Address */}
-												<div className='flex items-start gap-2 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg'>
-													<MapPin className='w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0' />
-													<span className='break-words'>
-														{order.address}
-													</span>
-												</div>
-
-												{/* Items List */}
-												<div className='space-y-2'>
-													{order.items.map(
-														(
-															item: OrderHistoryItem,
-															idx: number,
-														) => (
-															<div
-																key={idx}
-																className='flex justify-between items-center text-sm'
-															>
-																<span className='text-gray-700 font-medium pr-2'>
-																	{item.name}
-																</span>
-																<span className='text-gray-900 font-semibold whitespace-nowrap'>
-																	{item.price.toLocaleString()}{' '}
-																	₽
-																</span>
-															</div>
-														),
-													)}
-												</div>
-
-												{/* Totals */}
-												<div className='pt-2 border-t border-dashed border-gray-200 space-y-1'>
-													{order.deliveryFee !==
-														undefined && (
-														<div className='flex justify-between text-sm text-gray-500'>
-															<span>
-																Доставка
-															</span>
-															<span>120 ₽</span>
-														</div>
-													)}
-													<div className='flex justify-between items-center pt-2'>
-														<span className='font-bold text-gray-900 text-lg'>
-															Итого
-														</span>
-														<span className='font-bold text-gray-900 text-xl'>
-															{order.total.toLocaleString()}{' '}
-															₽
-														</span>
-													</div>
-												</div>
-											</div>
-
-											{/* Footer / Action */}
-											<div className='p-4 bg-gray-50/50'>
-												{order.status ===
-													'completed' && (
-													<Button className='w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-xl shadow-sm shadow-red-200 transition-all active:scale-[0.98]'>
-														Повторить заказ
-													</Button>
-												)}
-												{order.status ===
-													'canceled' && (
-													<Button
-														variant='outline'
-														className='w-full text-gray-400 cursor-not-allowed border-dashed'
-														disabled
-													>
-														Заказ отменён
-													</Button>
-												)}
-											</div>
-										</CardContent>
-									</Card>
-								</motion.div>
-							),
-						)}
+					<div className='space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2'>
+						{filteredOrders.map((order: OrderHistoryData) => (
+							<OrderCard key={order.id} order={order} />
+						))}
 					</div>
 				)}
 

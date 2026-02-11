@@ -1,10 +1,11 @@
 import { Order, OrderHistoryData, OrderStatus } from '@/types'
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 
 interface ApiOrderItem {
 	name: string
 	price: number
 	count?: number
+	imageUrl?: string
 }
 
 const mapStatus = (dbStatus: string): OrderStatus => {
@@ -30,50 +31,45 @@ const formatDate = (dateString: string | Date) => {
 	})
 }
 
-export const useOrders = () => {
-	const [orders, setOrders] = useState<OrderHistoryData[]>([])
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState<string | null>(null)
+const fetcher = async (url: string) => {
+	const res = await fetch(url)
 
-	useEffect(() => {
-		const fetchOrders = async () => {
-			try {
-				setLoading(true)
-				const res = await fetch('/api/orders')
+	if (!res.ok) {
+		throw new Error(`HTTP error! status: ${res.status}`)
+	}
 
-				if (!res.ok) {
-					throw new Error('Ошибка сети')
-				}
+	const jsonData = await res.json()
+	const orders: (Order & { items: ApiOrderItem[] })[] = jsonData
 
-				// Указываем тип, что ожидаем массив объектов типа Order
-				const data: (Order & { items: ApiOrderItem[] })[] =
-					await res.json()
+	return orders.map((order: Order & { items: ApiOrderItem[] }) => ({
+		id: `№ ${order.id}`,
+		date: formatDate(order.createdAt),
+		status: mapStatus(order.status),
+		total: order.totalAmount,
+		address: order.address || 'Адрес не указан',
+		items: order.items.map((item: ApiOrderItem) => ({
+			name: item.name,
+			price: item.price * (item.count || 1),
+			imageUrl: item.imageUrl,
+		})),
+	}))
+}
 
-				// Трансформируем данные
-				const transformedData: OrderHistoryData[] = data.map(
-					(order: Order & { items: ApiOrderItem[] }) => ({
-						id: `№ ${order.id}`,
-						date: formatDate(order.createdAt),
-						status: mapStatus(order.status),
-						total: order.totalAmount,
-						address: order.address || 'Адрес не указан',
-						items: order.items.map((item: ApiOrderItem) => ({
-							name: item.name,
-							price: item.price * (item.count || 1),
-						})),
-					}),
-				)
+export const useOrders = (pollingInterval: number = 30000) => {
+	const { data, error, mutate } = useSWR<OrderHistoryData[], Error>(
+		'/api/orders-history',
+		fetcher,
+		{
+			refreshInterval: pollingInterval,
+			revalidateOnFocus: false, // Не обновляем при фокусе
+			revalidateOnReconnect: true, // Обновляем при восстановлении соединения
+		},
+	)
 
-				setOrders(transformedData)
-			} catch (err: any) {
-				setError(err.message)
-			} finally {
-				setLoading(false)
-			}
-		}
-
-		fetchOrders()
-	}, [])
-
-	return { orders, loading, error }
+	return {
+		orders: data || [],
+		loading: !error && !data,
+		error: error?.message || null,
+		refetch: mutate,
+	}
 }

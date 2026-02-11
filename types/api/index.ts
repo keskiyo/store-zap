@@ -69,6 +69,7 @@ export type OrderStatus = 'completed' | 'processing' | 'canceled'
 export interface OrderHistoryItem {
 	name: string
 	price: number
+	imageUrl?: string
 }
 
 export interface OrderHistoryData {

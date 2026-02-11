@@ -44,16 +44,13 @@ export const OrderDetails = ({ order, onCommentSave, isUpdating }: Props) => {
 						<div className='border border-gray-100 rounded overflow-hidden'>
 							{itemsList.length > 0 ? (
 								itemsList.map((item: any, idx: number) => {
-									// 1. Ссылка на вложенный объект продукта
 									const product = item.product
 
-									// 2. Берем данные внутри product
 									const name =
 										product?.name || 'Товар без названия'
 									const price = Number(product?.price) || 0
 									const imageUrl = product?.imageUrl
 
-									// 3. Количество лежит вне product
 									const count = Number(item.count) || 0
 
 									return (
