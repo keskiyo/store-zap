@@ -15,6 +15,7 @@ import {
 import { Container } from '@/components/ui'
 import { useCart } from '@/hooks'
 import { Api } from '@/services/api-client'
+import { useCartStore } from '@/store/cart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
 import React from 'react'
@@ -58,14 +59,16 @@ export default function CheckOrder() {
 		try {
 			setSubmitting(true)
 
-			const url = await createOrder(data)
+			const result = await createOrder(data)
 
 			toast.error('Заказ успешно оформлен! 📝 Переход на оплату... ', {
 				icon: '✅',
 			})
 
-			if (url) {
-				location.href = url
+			if (result?.paymentUrl && result?.newCartToken) {
+				document.cookie = `cartToken=${result.newCartToken}; path=/; max-age=31536000`
+				useCartStore.getState().resetCart()
+				window.location.href = result.paymentUrl
 			}
 		} catch (err) {
 			console.log(err)
@@ -123,6 +126,7 @@ export default function CheckOrder() {
 							<CheckoutSidebar
 								sum={sum}
 								loading={loading || submitting}
+								formData={form.getValues()}
 							/>
 						</div>
 					</div>

@@ -125,7 +125,7 @@ export function OrderHistory(): React.JSX.Element {
 
 				{/* Orders List */}
 				{!loading && (
-					<div className='space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2'>
+					<div className='gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2'>
 						{filteredOrders.map((order: OrderHistoryData) => (
 							<OrderCard key={order.id} order={order} />
 						))}

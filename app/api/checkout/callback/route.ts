@@ -1,7 +1,4 @@
-import { OrderSuccessTemplate } from '@/components/email/OrderSuccess'
-import { sendEmail } from '@/lib/email/sendEmail'
 import { prisma } from '@/prisma/prisma-client'
-import { CartItemDTO } from '@/services/dto/cart.dto'
 import { PaymentCallbackData } from '@/types/external/yookassa.types'
 import { OrderStatus } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
@@ -14,9 +11,11 @@ export async function POST(req: NextRequest) {
 			? Number(data.object.metadata.user_id)
 			: null
 
+		const orderId = Number(data.object.metadata.order_id)
+
 		const order = await prisma.order.findFirst({
 			where: {
-				id: Number(data.object.metadata.order_id),
+				id: orderId,
 			},
 		})
 
@@ -27,6 +26,12 @@ export async function POST(req: NextRequest) {
 			)
 		}
 
+		console.log('=== ВЕБХУК ПРИШЁЛ ===')
+		console.log('Статус платежа:', data.object.status)
+		console.log('ID заказа:', orderId)
+		console.log('Метаданные:', data.object.metadata)
+		console.log('=======================')
+
 		// Определяем целевой статус заказа на основе статуса платежа от ЮKassa
 		let newStatus: OrderStatus
 
@@ -34,19 +39,27 @@ export async function POST(req: NextRequest) {
 			case 'succeeded':
 				newStatus = OrderStatus.SUCCEEDED
 				break
-			case 'canceled':
-				newStatus = OrderStatus.CANCELLED
-				break
+
 			case 'waiting_for_capture':
 				newStatus = OrderStatus.PENDING
 				break
+
+			case 'canceled':
+				newStatus = OrderStatus.CANCELLED
+				break
+
+			case 'pending':
+				newStatus = OrderStatus.PENDING
+				break
+
 			default:
-				// Для прочих статусов (например, pending) оставляем как есть или логируем ошибку
-				console.log(
-					`[CHECKOUT_CALLBACK] Необработанный статус: ${data.object.status}`,
+				// Для прочих статусов логируем и возвращаем
+				console.warn(
+					`[CHECKOUT_CALLBACK] Необработанный статус платежа: ${data.object.status}`,
+					{ orderId, paymentId: data.object.id },
 				)
 				return NextResponse.json(
-					{ message: 'Статус не требует обработки' },
+					{ message: 'Статус платежа не требует обработки' },
 					{ status: 200 },
 				)
 		}
@@ -56,59 +69,73 @@ export async function POST(req: NextRequest) {
 		}
 
 		await prisma.order.update({
-			where: {
-				id: order.id,
-			},
+			where: { id: order.id },
 			data: {
 				status: newStatus,
+				// Привязываем пользователя, если он не был привязан ранее
 				...(userId && !order.userId && { userId: userId }),
 			},
 		})
 
-		// Логика только для успешно оплаченного заказа
 		if (newStatus === OrderStatus.SUCCEEDED) {
-			const items = JSON.parse(order?.items as string) as CartItemDTO[]
-
-			const successOrderTemplate = await OrderSuccessTemplate({
-				orderId: order.id,
-				items,
-			})
-
-			await sendEmail(
-				order.email,
-				'Rus-autovaz | Ваш заказ успешно оформлен !',
-				successOrderTemplate,
+			console.log(
+				`[CHECKOUT_CALLBACK] Заказ #${order.id} успешно оплачен`,
 			)
 
-			// 2. Очищаем корзину, так как заказ оплачен
+			// Очищаем СТАРУЮ корзину (по токену из заказа)
+			// Новая корзина уже существует и пустая (новый токен)
 			if (order.token) {
-				const cart = await prisma.cart.findFirst({
-					where: {
-						token: order.token,
-					},
-				})
+				try {
+					const oldCart = await prisma.cart.findFirst({
+						where: { token: order.token }, // Старый токен из заказа
+					})
 
-				if (cart) {
-					// Обнуляем сумму
-					await prisma.cart.update({
-						where: {
-							id: cart.id,
-						},
-						data: {
-							sum: 0,
-						},
-					})
-					// Удаляем товары
-					await prisma.cartProduct.deleteMany({
-						where: {
-							cartId: cart.id,
-						},
-					})
+					if (oldCart) {
+						// Обнуляем сумму старой корзины
+						await prisma.cart.update({
+							where: { id: oldCart.id },
+							data: { sum: 0 },
+						})
+
+						// Удаляем товары из старой корзины
+						await prisma.cartProduct.deleteMany({
+							where: { cartId: oldCart.id },
+						})
+
+						console.log(
+							`[CHECKOUT_CALLBACK] Старая корзина очищена`,
+						)
+					}
+				} catch (cartError) {
+					console.error(
+						'[CHECKOUT_CALLBACK] Ошибка очистки корзины:',
+						cartError,
+					)
 				}
 			}
 		}
 
-		return NextResponse.json({ message: 'OK', data })
+		// ЛОГИКА ДЛЯ ОТМЕНЁННОГО ЗАКАЗА
+		if (newStatus === OrderStatus.CANCELLED) {
+			console.log(`[CHECKOUT_CALLBACK] Заказ #${order.id} отменён`)
+
+			// TODO: вернуть товары обратно в корзину
+		}
+
+		// ЛОГИКА ДЛЯ ОЖИДАЮЩЕГО ПОДТВЕРЖДЕНИЯ ЗАКАЗА
+		if (
+			newStatus === OrderStatus.PENDING &&
+			order.status !== OrderStatus.PENDING
+		) {
+			console.log(
+				`[CHECKOUT_CALLBACK] Заказ #${order.id} ожидает подтверждения оплаты`,
+			)
+		}
+
+		return NextResponse.json({
+			message: 'OK',
+			data: { orderId, newStatus },
+		})
 	} catch (error) {
 		console.error('[CHECKOUT_CALLBACK] error', error)
 		return NextResponse.json(

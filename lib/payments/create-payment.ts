@@ -1,4 +1,4 @@
-import { PaymentData } from '@/@types/yookassa'
+import { PaymentData } from '@/types/external/yookassa.types'
 import axios from 'axios'
 
 interface Props {
@@ -24,7 +24,7 @@ export async function createPayment(details: Props) {
 				value: details.amount,
 				currency: 'RUB',
 			},
-			capture: false,
+			capture: true,
 			description: details.description,
 			metadata: metadata,
 			confirmation: {

@@ -21,6 +21,9 @@ export interface CartState {
 
 	/* Запрос на удаление товара из корзины */
 	removeCartItem: (id: number) => Promise<void>
+
+	/* Сброс корзины к начальному состоянию */
+	resetCart: () => void
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -28,6 +31,15 @@ export const useCartStore = create<CartState>((set, get) => ({
 	error: false,
 	loading: true,
 	sum: 0,
+
+	resetCart: () => {
+		set({
+			items: [],
+			sum: 0,
+			loading: false,
+			error: false,
+		})
+	},
 
 	fetchCartItems: async () => {
 		try {

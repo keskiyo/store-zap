@@ -9,6 +9,7 @@ import { createPayment } from '@/lib/payments/create-payment'
 import { prisma } from '@/prisma/prisma-client'
 import { OrderStatus, Prisma } from '@prisma/client'
 import { hashSync } from 'bcrypt'
+import { randomUUID } from 'crypto'
 import { cookies } from 'next/headers'
 
 export async function createOrder(data: CheckoutFormValues) {
@@ -38,7 +39,7 @@ export async function createOrder(data: CheckoutFormValues) {
 			throw new Error('User cart not found')
 		}
 		// Если корзина пустая возвращаем ошибку
-		if (userCart?.sum === 0) {
+		if (userCart.sum === 0) {
 			throw new Error('Cart is empty')
 		}
 		// Создание заказа
@@ -57,28 +58,27 @@ export async function createOrder(data: CheckoutFormValues) {
 			},
 		})
 
-		// TODO: Проверить оформление заказа, статусы оплаты и привязку к userId, очищение корзины пользователя
-
 		// Тестовые карты ЮKassa
 		// 5555 5555 5555 4642 (Mastercard)
 		// 4000 0000 0000 0002 (Visa)
-		// 2200 0000 0000 0079 (Mir)
 
-		// // Очищение суммы корзины
-		// await prisma.cart.update({
-		// 	where: {
-		// 		id: userCart.id,
-		// 	},
-		// 	data: {
-		// 		sum: 0,
-		// 	},
-		// })
-		// // Удаление товаров из корзины
-		// await prisma.cartProduct.deleteMany({
-		// 	where: {
-		// 		cartId: userCart.id,
-		// 	},
-		// })
+		// Очистка корзины
+		await prisma.cart.update({
+			where: { id: userCart.id },
+			data: { sum: 0 },
+		})
+		await prisma.cartProduct.deleteMany({
+			where: { cartId: userCart.id },
+		})
+
+		// Создание нового токена для корзины
+		const newCartToken = randomUUID()
+		// Обновляем токен корзины (не создаём новую!)
+		// Старые товары остаются до подтверждения оплаты
+		await prisma.cart.update({
+			where: { id: userCart.id },
+			data: { token: newCartToken },
+		})
 
 		// Создание ссылки для оплаты
 		const paymentData = await createPayment({
@@ -120,7 +120,10 @@ export async function createOrder(data: CheckoutFormValues) {
 			)
 		}
 
-		return paymentUrl
+		return {
+			paymentUrl,
+			newCartToken,
+		}
 	} catch (err) {
 		console.error('[CreateOrder] server error', err)
 	}
